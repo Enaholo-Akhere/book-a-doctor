@@ -1,5 +1,11 @@
+import LoginComp from '@/components/Login';
+
 const Login = () => {
-  return <div>Login</div>;
+  return (
+    <section>
+      <LoginComp />
+    </section>
+  );
 };
 
 export default Login;
