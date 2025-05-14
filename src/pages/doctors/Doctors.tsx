@@ -1,4 +1,4 @@
-import DoctorsComp from '@/components/DoctorsComp';
+import DoctorsComp from '../../components/Doctors';
 import Testimonial from '@/components/Testimonial';
 
 const Doctors = () => {

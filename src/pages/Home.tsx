@@ -3,8 +3,8 @@ import Hero from '@/components/Home/Hero/Hero';
 import GetInTouch from '@/components/Home/GetInTouch/GetInTouch';
 import Feature from '@/components/Home/Feature/Feature';
 import Faq from '@/components/Home/Faq';
-import Services from '../components/ServicesComp';
-import DoctorsHome from '../components/DoctorsComp';
+import Services from '../components/Services';
+import DoctorsHome from '../components/Doctors';
 import Testimonial from '../components/Testimonial';
 
 const Home = () => {

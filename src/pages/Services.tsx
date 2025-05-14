@@ -1,4 +1,4 @@
-import ServicesComp from '@/components/ServicesComp';
+import ServicesComp from '../components/Services';
 
 const Services = () => {
   return (
