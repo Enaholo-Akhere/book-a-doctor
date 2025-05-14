@@ -1,5 +1,11 @@
+import SignupComp from '@/components/Signup';
+
 const Signup = () => {
-  return <div>Signup</div>;
+  return (
+    <section>
+      <SignupComp />
+    </section>
+  );
 };
 
 export default Signup;
