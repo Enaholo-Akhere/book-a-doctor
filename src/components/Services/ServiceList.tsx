@@ -1,5 +1,5 @@
 import { services } from '@/assets/data/services';
-import ServiceCard from '@/components/ServicesComp/ServiceCard';
+import ServiceCard from '@/components/Services/ServiceCard';
 import { useLocation } from 'react-router-dom';
 
 const ServiceList = () => {

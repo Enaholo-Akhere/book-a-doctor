@@ -1,8 +1,8 @@
 import doctorImg from '@/assets/images/doctor-img02.png';
 import starIcon from '@/assets/images/Star.png';
-import DoctorAbout from '@/components/DoctorsComp/DoctorAbout';
-import Feedback from '@/components/DoctorsComp/Feedback';
-import SidePanel from '@/components/DoctorsComp/SidePanel';
+import DoctorAbout from '../../components/Doctors/DoctorAbout';
+import Feedback from '../../components/Doctors/Feedback';
+import SidePanel from '../../components/Doctors/SidePanel';
 import { useState } from 'react';
 const DoctorDetails = () => {
   const [tab, setTab] = useState<string>('about');

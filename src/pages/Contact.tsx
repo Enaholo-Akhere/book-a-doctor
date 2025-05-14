@@ -1,5 +1,11 @@
+import ContactComp from '@/components/Contact';
+
 const Contact = () => {
-  return <div>Contact</div>;
+  return (
+    <section>
+      <ContactComp />
+    </section>
+  );
 };
 
 export default Contact;
