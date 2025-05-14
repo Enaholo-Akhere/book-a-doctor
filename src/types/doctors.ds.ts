@@ -35,3 +35,13 @@ export interface ReviewInterface {
     photo: string; // URL or local path to image
     ratings: number; // 1 to 5
 };
+
+export interface SignupInterface {
+    email: string;
+    password: string,
+    name: string
+    role: string;
+    photo: File;
+    gender: string;
+
+}
