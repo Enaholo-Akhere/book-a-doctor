@@ -1,3 +1,5 @@
+import Button from '../Button';
+
 const SidePanel = () => {
   return (
     <div className='shadow-xl p-3 lg:p-5 rounded-md '>
@@ -38,9 +40,10 @@ const SidePanel = () => {
           </li>
         </ul>
       </div>
-      <button className='btn px-2 w-full rounded-md py-4'>
-        Book Appointment
-      </button>
+      <Button
+        title='Book Appointment'
+        classNameProps='btn px-2 w-full rounded-md py-4'
+      />
     </div>
   );
 };

@@ -32,8 +32,8 @@ const DoctorDetails = () => {
                   </span>
                 </div>
                 <p className='text__para text-[14px] leading-5 md:text-[15px] lg:max-w-[390px] '>
-                  Lorem ipsum dol or sit amet consectetur, adipisicing elit.
-                  Quos, reiciendis?
+                  Renowned surgeon who specializes in advanced, minimally
+                  invasive surgical procedures.
                 </p>
               </div>
             </div>

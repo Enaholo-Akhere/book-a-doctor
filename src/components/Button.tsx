@@ -7,6 +7,7 @@ const Button = ({
   btnWidth = 'w-fit',
   py = 'md:py-4 py-3',
   px = 'md:px-[30px] px-[20px] ',
+  classNameProps,
 }: {
   title: string;
   onClick?: () => void;
@@ -16,12 +17,13 @@ const Button = ({
   btnWidth?: string;
   px?: string;
   py?: string;
+  classNameProps: string;
 }) => {
   return (
     <button
       onClick={onClick}
       type={btnType}
-      className={`${bgColor} ${txtColor} ${btnWidth} ${px} ${py} hover:cursor-pointer hover:bg-primaryColor2 ease-in-out font-[600] rounded-[52px] text-[12px] md:text-[16px] `}
+      className={`${bgColor} ${txtColor} ${btnWidth} ${px} ${py} hover:cursor-pointer hover:bg-primaryColor2 ease-in-out font-[600] rounded-[52px] text-[12px] md:text-[16px] ${classNameProps} `}
     >
       {title}
     </button>
