@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import signupImg from '@/assets/images/signup.gif';
 import { SignupInterface } from '@/types/doctors.ds';
 import avatar from '@/assets/images/doctor-img01.png';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import PassStrength from './PassStre';
 
 const SignupComp = () => {
   const [selectedFile, setSelectedFile] = useState<File>(new File([], ''));
@@ -15,12 +17,15 @@ const SignupComp = () => {
     gender: '',
     role: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  useEffect(() => {}, []);
+
   const handleFileInputChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -36,6 +41,7 @@ const SignupComp = () => {
 
   const classStylings =
     'w-full pr-4 py-3 border-b border-solid border-[#0066FF61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer';
+
   return (
     <div className='px-5 lg:px-0'>
       <div className='w-full max-w-[1170px] mx-auto rounded-lg shadow-md md:p-10 '>
@@ -73,15 +79,25 @@ const SignupComp = () => {
                     className={classStylings}
                   />
                 </div>
-                <div className='mb-3'>
-                  <input
-                    type='password'
-                    placeholder='Password'
-                    name='password'
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    className={classStylings}
-                  />
+                <div>
+                  <div className='mb-3 flex border-b-1'>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder='Password'
+                      name='password'
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      className='w-full pr-4 py-3  border-solid border-[#0066FF61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer'
+                    />
+                    <button
+                      type='button'
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className=' text-gray-600 hover:text-gray-800 focus:outline-none'
+                    >
+                      {showPassword ? <FaEye /> : <FaEyeSlash />}
+                    </button>
+                  </div>
+                  {<PassStrength formData={formData} />}
                 </div>
                 <div className='mb-3 flex items-center justify-between '>
                   <label className='text-headingColor font-bold text-[15px] leading-7 '>

@@ -11,13 +11,12 @@ const DoctorAbout = () => {
           </span>
         </h3>
         <p className='text__para'>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore
-          facilis tempora quasi delectus iure neque, cum totam similique
-          corporis voluptatum dicta, accusamus pariatur, deleniti nostrum natus
-          molestiae quaerat quibusdam consequuntur. Laboriosam non placeat
-          doloremque recusandae earum fugiat repudiandae. Suscipit quam saepe
-          molestias sapiente praesentium sint incidunt aliquam iure dolorem
-          recusandae!
+          Dr. Richard Hughes is a highly respected surgeon known for his
+          expertise in minimally invasive procedures and patient-centered care.
+          With years of experience in the medical field, he is dedicated to
+          advancing surgical techniques and improving outcomes. His
+          professionalism and compassion have earned him recognition among peers
+          and patients alike
         </p>
       </div>
       <div className='mt-12'>
@@ -28,29 +27,29 @@ const DoctorAbout = () => {
           <li className='flex flex-col sm:flex-row sm:justify-between sm:items-end md:gap-5 mb-[30px] '>
             <div>
               <span className='text-irisBlueColor text-[15px] leading-6 font-semibold '>
-                {formatDate({ date: '06-23-2014' })} -{' '}
+                {formatDate({ date: '06-23-2011' })} -{' '}
                 {formatDate({ date: '09-16-2016' })}
               </span>
               <p className='text-[15px] leading-6 font-medium text-textColor '>
-                PHD in Surgeon
+                PhD in Surgery{' '}
               </p>
             </div>
             <p className='text-[16px] leading-5 font-medium text-textColor '>
-              New Apollo Hospital, New York.
+              Johns Hopkins University, Baltimore.{' '}
             </p>
           </li>
           <li className='flex flex-col sm:flex-row sm:justify-between sm:items-end md:gap-5 mb-[30px] '>
             <div>
               <span className='text-irisBlueColor text-[15px] leading-6 font-semibold '>
-                {formatDate({ date: '03-05-2008' })} -{' '}
+                {formatDate({ date: '03-05-2006' })} -{' '}
                 {formatDate({ date: '06-23-2010' })}
               </span>
               <p className='text-[15px] leading-6 font-medium text-textColor '>
-                PHD in Surgeon
+                Doctor of Medicine (MD)
               </p>
             </div>
             <p className='text-[16px] leading-5 font-medium text-textColor '>
-              New Apollo Hospital, New York.
+              Harvard Medical School, Boston.
             </p>
           </li>
         </ul>
@@ -62,24 +61,24 @@ const DoctorAbout = () => {
         <ul className='grid sm:grid-cols-2 gap-[30px] pt-4 md:p-5 '>
           <li className='p-4 rounded bg-[#FFF9EA] '>
             <span className='text-yellowColor text-[15px] leading-6 font-semibold '>
-              {formatDate({ date: '06-23-2010' })}
+              {formatDate({ date: '11-16-2017' })}
             </span>
             <p className='text-[16px] leading-6 font-medium text-textColor '>
               Sr. Surgeon
             </p>
             <p className='text-[14px] leading-5 font-medium text-textColor '>
-              New Apollo Hospital, New York.
+              New Olives Hospital, New York.
             </p>
           </li>
           <li className='p-4 rounded bg-[#FFF9EA] '>
             <span className='text-yellowColor text-[15px] leading-6 font-semibold '>
-              {formatDate({ date: '06-23-2010' })}
+              {formatDate({ date: '05-26-2024' })}
             </span>
             <p className='text-[16px] leading-6 font-medium text-textColor '>
-              Sr. Surgeon
+              Consultant
             </p>
             <p className='text-[14px] leading-5 font-medium text-textColor '>
-              New Apollo Hospital, New York.
+              St Thomas Hospital, Massachusetts.
             </p>
           </li>
         </ul>
