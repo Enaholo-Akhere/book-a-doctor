@@ -17,7 +17,7 @@ const Button = ({
   btnWidth?: string;
   px?: string;
   py?: string;
-  classNameProps: string;
+  classNameProps?: string;
 }) => {
   return (
     <button
