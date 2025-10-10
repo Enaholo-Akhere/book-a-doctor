@@ -123,7 +123,7 @@
   }
 
   .hero__section {
-    @apply bg-[url('hero-bg.png')] bg-no-repeat bg-center bg-cover;
+    @apply bg-[url('hero-bg.png')] bg-no-repeat bg-center bg-cover px-5;
   }
 
   .form__label {
