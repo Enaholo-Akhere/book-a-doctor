@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AiFillStar } from 'react-icons/ai';
+import Button from '../Button';
 
 const FeedbackForm = () => {
   const [rating, setRating] = useState<number>(0);
@@ -56,9 +57,18 @@ const FeedbackForm = () => {
           value={reviewText}
         ></textarea>
       </div>
-      <button type='submit' className='btn mt-5 py-4'>
+      <Button
+        title='Submit Feedback'
+        bgColor='bg-primaryColor'
+        txtColor='text-white'
+        btnWidth='w-fit'
+        px='md:px-[30px] px-[20px] '
+        py='md:py-4 py-3'
+        classNameProps='mt-5'
+      />
+      {/* <button type='submit' className='btn mt-5 py-4 cursor-pointer'>
         Submit Feedback
-      </button>
+      </button> */}
     </form>
   );
 };
