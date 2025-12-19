@@ -1,8 +1,23 @@
+// {
+//   // "files": [],
+//   "include": ["src", "swiper.d.ts"]
+//   // "references": [
+//   //   { "path": "./tsconfig.app.json" },
+//   //   { "path": "./tsconfig.node.json" }
+//   // ]
+// }
+
 {
-  "files": [],
-  "include": ["src", "swiper.d.ts"],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "compilerOptions": {
+    "baseUrl": "src", // Root folder for your aliases
+    "paths": {
+      "@/*": ["*"] // '@/' maps to 'src/*'
+    },
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true
+  },
+  "include": ["src"]
 }
