@@ -1,0 +1,13 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import doctorImg from '@/assets/images/doctor-img02.png';
+import starIcon from '@/assets/images/Star.png';
+import DoctorAbout from '../../components/Doctors/DoctorAbout';
+import Feedback from '../../components/Doctors/Feedback';
+import SidePanel from '../../components/Doctors/SidePanel';
+import { useState } from 'react';
+const DoctorDetails = () => {
+    const [tab, setTab] = useState('about');
+    return (_jsx("section", { children: _jsx("div", { className: 'max-w-[1170px] px-5 mx-auto ', children: _jsxs("div", { className: 'grid md:grid-cols-3 gap-[50px] ', children: [_jsxs("div", { className: 'md:col-span-2', children: [_jsxs("div", { className: 'flex items-center gap-5', children: [_jsx("figure", { className: 'max-w-[200px] max-h-[200px] ', children: _jsx("img", { src: doctorImg, alt: 'find a doctor', className: 'full' }) }), _jsxs("div", { children: [_jsx("span", { className: 'bg-[#CCF0F3] text-irisBlueColor py-1 px-6 lg:py-2 lg:px-6 text-[12px] rounded leading-4 lg:text-[16px] lg:leading-7 font-semibold ', children: "Surgeon" }), _jsx("h3", { className: 'text-headingColor text-[22px] leading-9 mt-3 font-bold  ', children: "Richard Hughes" }), _jsxs("div", { className: 'flex items-center gap-[6px] ', children: [_jsxs("span", { className: 'flex items-center gap-[6px] text-[14px] leading-5 lg:text-[16px] lg:leading-7 font-semibold text-headingColor ', children: [_jsx("img", { src: starIcon, alt: 'Doctors' }), "4.8"] }), _jsx("span", { className: 'text-[14px] leading-6 lg:text-[16px] lg:leading-7 font-[400] text-textColor ', children: "(272)" })] }), _jsx("p", { className: 'text__para text-[14px] leading-5 md:text-[15px] lg:max-w-[390px] ', children: "Renowned surgeon who specializes in advanced, minimally invasive surgical procedures." })] })] }), _jsxs("div", { className: 'mt-[50px] border-b border-solid border-[#0066ff34] ', children: [_jsx("button", { onClick: () => setTab('about'), className: `${tab === 'about' && 'border-b border-solid border-primaryColor'} py-2 px-5 mr-5 text-[16px] leading-7 text-headingColor font-semibold cursor-pointer `, children: "About" }), _jsx("button", { onClick: () => setTab('feedback'), className: `${tab === 'feedback' &&
+                                            'border-b border-solid border-primaryColor'} py-2 px-5 mr-5 text-[16px] leading-7 text-headingColor font-semibold cursor-pointer`, children: "Feedback" })] }), _jsxs("div", { className: 'mt-[50px] ', children: [tab === 'about' && _jsx(DoctorAbout, {}), tab === 'feedback' && _jsx(Feedback, {})] })] }), _jsx("div", { children: _jsx(SidePanel, {}) })] }) }) }));
+};
+export default DoctorDetails;

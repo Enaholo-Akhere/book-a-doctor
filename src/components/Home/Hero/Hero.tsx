@@ -11,7 +11,7 @@ const Hero = () => {
           <div className='w-[100%] lg:w-[40%] m-auto gap-y-[10px] xl:gap-y-[20px] 2xl:gap-y-[300px] mb-[50px]  2xl:mb-[50px] lg:mb-0'>
             <div className=' gap-3 2xl:gap-10 flex flex-col w-full '>
               <h1 className='text-[30px] md:text-[40px] 2xl:text-[60px] leading-[30px] md:leading-[70px] 2xl:leading-[70px] text-headingColor font-[800] '>
-                We help patients live a healthy, longer life.
+                We help patients live a healthy, longer life. 12334
               </h1>
               <p className='text__para flex-wrap leading-7 mt-[5px] mb-[10px]'>
                 Your health matters — and we’re here to support you every step
