@@ -41,7 +41,6 @@ const SignupComp = () => {
   };
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Add your form submission logic here
   };
 
   const classStylings =
