@@ -18,11 +18,16 @@ const SignupComp = () => {
     role: '',
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [showCheckPassword, setShowCheckPassword] = useState(false);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleBlur = () => {
+    if (formData.password.length <= 0) setShowCheckPassword(false);
   };
   useEffect(() => {}, []);
 
@@ -87,6 +92,8 @@ const SignupComp = () => {
                       name='password'
                       value={formData.password}
                       onChange={handleInputChange}
+                      onFocus={() => setShowCheckPassword(true)}
+                      onBlur={handleBlur}
                       className='w-full pr-4 py-3  border-solid border-[#0066FF61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer'
                     />
                     <button
@@ -97,7 +104,7 @@ const SignupComp = () => {
                       {showPassword ? <FaEye /> : <FaEyeSlash />}
                     </button>
                   </div>
-                  {<PassStrength formData={formData} />}
+                  {showCheckPassword && <PassStrength formData={formData} />}
                 </div>
                 <div className='mb-3 flex items-center justify-between '>
                   <label className='text-headingColor font-bold text-[15px] leading-7 '>
