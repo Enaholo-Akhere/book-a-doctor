@@ -1,70 +1,3 @@
-// {
-//   "compilerOptions": {
-//     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-//     "target": "ES2020",
-//     "useDefineForClassFields": true,
-//     "lib": ["ES2020", "DOM", "DOM.Iterable"],
-//     "module": "ESNext",
-//     "skipLibCheck": true,
-//     // "outDir": "dist/app",
-//     // "rootDir": "src",
-//     // "declaration": true,
-
-//     "paths": {
-//       "shared/*": ["../../packages/shared/src/*"],
-//       "@/*": ["./src/*"]
-//     },
-
-//     /* Bundler mode */
-//     "moduleResolution": "bundler",
-//     "allowImportingTsExtensions": true,
-//     "isolatedModules": true,
-//     "moduleDetection": "force",
-//     "noEmit": false,
-//     "jsx": "react-jsx",
-//     "composite": true,
-
-//     /* Linting */
-//     "strict": true,
-//     "noUnusedLocals": true,
-//     "noUnusedParameters": true,
-//     "noFallthroughCasesInSwitch": true,
-//     "noUncheckedSideEffectImports": true
-//   },
-//   "include": ["src"]
-// }
-
-// {
-//   "compilerOptions": {
-//     "composite": true,
-//     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-
-//     "target": "ES2020",
-//     "useDefineForClassFields": true,
-//     "lib": ["ES2020", "DOM", "DOM.Iterable"],
-
-//     "module": "ESNext",
-//     "skipLibCheck": true,
-
-//     "jsx": "react-jsx",
-//     "strict": true,
-
-//     "moduleResolution": "bundler",
-//     "allowImportingTsExtensions": true,
-//     "resolveJsonModule": true,
-//     "isolatedModules": true,
-
-//     "noEmit": true,
-//     "baseUrl": "./src",
-//     "paths": {
-//       // "shared/*": ["../../packages/shared/src/*"],
-//       "@/*": ["*"]
-//     }
-//   },
-
-//   "include": ["src"]
-// }
-
 {
   "compilerOptions": {
     "target": "ES2022",
@@ -89,5 +22,5 @@
       "@/*": ["*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "src/vite-env.d.ts"]
 }
