@@ -1,11 +1,9 @@
 import { usePasswordStrength } from '@/Hook/passwordStrength';
-import { SignupInterface } from '@/types/doctors.ds';
 import CheckStrength from './CheckStrength';
 
-const PassStrength = ({ formData }: { formData: SignupInterface }) => {
-  const { passwordValidation, passwordStrength } = usePasswordStrength(
-    formData.password
-  );
+const PassStrength = ({ password }: { password: string }) => {
+  const { passwordValidation, passwordStrength } =
+    usePasswordStrength(password);
 
   const PStrength = () => {
     if (passwordStrength.length <= 2) {
