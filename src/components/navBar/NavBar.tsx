@@ -1,8 +1,5 @@
 import { NavLink } from 'react-router-dom';
 
-// const menu =
-//   ' h-[100%]  top-0 right-0 bg-[#fff] z-999 flex flex-column justify-center align-items-center leading-[30px] block';
-
 const NavBar = ({
   navLink,
   toggleMenu,

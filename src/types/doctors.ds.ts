@@ -41,7 +41,7 @@ export interface SignupInterface {
     password: string,
     name: string
     role: string;
-    photo: File;
+    photo?: string;
     gender: string;
-
+    phone: string;
 }
