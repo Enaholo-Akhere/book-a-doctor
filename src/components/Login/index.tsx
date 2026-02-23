@@ -25,8 +25,7 @@ const LoginComp = () => {
 
   const submitHandler = (data: loginType) => {
     mutate(data, {
-      onSuccess: (res) => {
-        console.log('Login successful', res);
+      onSuccess: () => {
         Navigate('/');
       },
       onError: (err) => {
@@ -35,8 +34,6 @@ const LoginComp = () => {
         toast.error(errorData?.message || 'Login failed');
       },
     });
-
-    console.log(data);
   };
 
   return (
