@@ -1,15 +1,58 @@
 import { ReactNode } from 'react';
 
 
+interface qualifications {
+    degree: string;
+    startDate: Date;
+    endDate: Date;
+    university: string;
+    _id: string;
+}
+interface experiences {
+    position: string;
+    startDate: Date;
+    endDate: Date;
+    hospital: string;
+    _id: string;
+
+}
+
+interface timeSlot {
+    startingTime: Date;
+    endingTime: Date;
+    day: string;
+    _id: string;
+}
+
+export interface appointments {
+    ticketPrice: string;
+    createdAt: string;
+    user: { gender: string; name: string; email: string };
+    isPaid: boolean;
+    photo: { imageUrl: string };
+    _id: string;
+}
 export interface doctorsInterface {
-    id: string;
+    _id: string;
     name: string;
     specialization: string;
-    avgRating: number;
+    averageRating: number;
     totalRating: number;
-    photo: string;
-    totalPatients: number;
+    photo: { imageUrl: string, publicId: string };
+    totalPatients: number | null;
     hospital: string;
+    isApproved: 'approved' | 'pending';
+    gender: 'male' | 'female' | 'others';
+    bio: string;
+    about: string;
+    phone: string;
+    email: string;
+    ticketPrice: string;
+    appointments: appointments[];
+    qualifications: qualifications[];
+    experiences: experiences[];
+    timeSlots: timeSlot[];
+    reviews: ReviewInterface[]
 }
 
 export interface questionContent {
@@ -29,11 +72,17 @@ export interface QuickLinkInterface {
 }
 
 export interface ReviewInterface {
-    id: number;
-    name: string;
-    comment: string;
-    photo: string; // URL or local path to image
-    ratings: number; // 1 to 5
+    doctor: string;
+    user: {
+        name: string;
+        photo: {
+            imageUrl: string;
+        };
+    };
+    reviewText: string;
+    rating: number;
+    createdAt: string;
+    _id: string;
 };
 
 export interface SignupInterface {

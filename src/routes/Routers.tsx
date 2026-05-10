@@ -51,7 +51,7 @@ const Routers = () => {
       <Route path='/services' element={<Services />} />
       <Route path='/doctors' element={<Doctor />} />
       <Route path='/verify-email' element={<EmailVerification />} />
-      <Route path='/doctors/:id' element={<DoctorDetails />} />
+      <Route path='/doctor/:id' element={<DoctorDetails />} />
       <Route path='*' element={<NotFound />} />
     </Routes>
   );

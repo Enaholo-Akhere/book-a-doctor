@@ -6,8 +6,10 @@ import Faq from '@/components/Home/Faq';
 import Services from '../components/Services';
 import DoctorsHome from '../components/Doctors';
 import Testimonial from '../components/Testimonial';
+import { useGetAllDoctors } from '@/Hook/doctors';
 
 const Home = () => {
+  const { isLoading, isError, data, error } = useGetAllDoctors('');
   return (
     <>
       {/*======== hero section here ========*/}
@@ -36,6 +38,10 @@ const Home = () => {
         subtitle=' Our team of compassionate, skilled doctors is here to provide
             personalized, top-quality care every step of the way.'
         title='Our great doctors'
+        isLoading={isLoading}
+        isError={isError}
+        data={data}
+        error={error}
       />
 
       {/* ======== FAQ ======== */}

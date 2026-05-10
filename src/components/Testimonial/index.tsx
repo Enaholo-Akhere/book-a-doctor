@@ -5,7 +5,7 @@ const Testimonial = () => {
   const { pathname } = useLocation();
   const pn = pathname === '/doctors';
   return (
-    <section className={`${pn ? 'mt-[-150px]' : ''}`}>
+    <section className={`${pn ? 'lg:mt-[-150px] mt-[0px]' : ''}`}>
       <div className='container'>
         <div className='lg:w-[470px] mx-auto mb-[50px]'>
           <h2 className='heading text-center'>What our patients say</h2>

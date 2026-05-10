@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "baseUrl": "src", // Root folder for your aliases
     "paths": {
       "@/*": ["*"] // '@/' maps to 'src/*'

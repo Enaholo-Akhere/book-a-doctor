@@ -2,10 +2,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { profileMe, myBookings, editUser } from "@/services/user.service";
 import { QUERY_KEYS } from "@/constants/queryKeys";
 
-export const useProfileMe = () => {
+export const useProfileMe = (id: string) => {
     return useQuery({
         queryKey: [QUERY_KEYS.ME],
-        queryFn: profileMe,
+        queryFn: () => profileMe({ id }),
+        enabled: !!id,
         staleTime: 1000 * 60 * 5, // 5 mins
         retry: false, // auth endpoint
         refetchOnWindowFocus: false,
