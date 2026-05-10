@@ -1,3 +1,4 @@
+import { doctorsInterface } from '@/types/doctors.ds';
 import { create } from 'zustand';
 // import { devtools } from 'zustand/middleware';
 import { persist } from "zustand/middleware";
@@ -11,7 +12,9 @@ interface User {
         imageUrl: string;
         publicId: string;
     };
+    _id: string;
 }
+
 
 interface AuthState {
     user: User | null;
@@ -22,6 +25,7 @@ interface AuthState {
     logout: () => void;
     setToken: (token: string) => void;
     updateUser: (user: User) => void;
+    updateDoctor: (user: doctorsInterface) => void;
 };
 
 export const useAuthStore = create<AuthState>()(
@@ -43,11 +47,17 @@ export const useAuthStore = create<AuthState>()(
                     user: state.user,
                     isAuthenticated: true,
                 })),
-
             updateUser: (updatedUser: User) => {
                 set((prev) => ({
                     ...prev,
                     user: updatedUser,
+                    isAuthenticated: prev.isAuthenticated,
+                }));
+            },
+            updateDoctor: (updatedUser: doctorsInterface) => {
+                set((prev) => ({
+                    ...prev,
+                    user: { ...prev.user, ...updatedUser } as User,
                     isAuthenticated: prev.isAuthenticated,
                 }));
             },

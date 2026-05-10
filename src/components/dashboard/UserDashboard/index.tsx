@@ -5,9 +5,12 @@ import { useProfileMe } from '@/Hook/users';
 import Loading from '@/components/Loader';
 import Error from '@/components/Error';
 import { AxiosError } from 'axios';
+import { useAuthStore } from '@/store/authStore';
 
 const UserDashboard = () => {
-  const { data, isError, isLoading, error } = useProfileMe();
+  const user = useAuthStore((state) => state.user);
+
+  const { data, isError, isLoading, error } = useProfileMe(user?._id || '');
 
   const [tab, setTab] = useState<string>('bookings');
   const errMsg = error as AxiosError;

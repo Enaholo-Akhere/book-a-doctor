@@ -2,6 +2,7 @@ const Button = ({
   title,
   onClick,
   btnType,
+  disabled = false,
   bgColor = 'bg-primaryColor',
   txtColor = 'text-white',
   btnWidth = 'w-fit',
@@ -18,10 +19,12 @@ const Button = ({
   px?: string;
   py?: string;
   classNameProps?: string;
+  disabled?: boolean;
 }) => {
   return (
     <button
       onClick={onClick}
+      disabled={disabled}
       type={btnType}
       className={`${bgColor} ${txtColor} ${btnWidth} ${px} ${py} hover:cursor-pointer hover:bg-primaryColor2 ease-in-out font-[600] rounded-[52px] text-[12px] md:text-[16px] ${classNameProps} `}
     >

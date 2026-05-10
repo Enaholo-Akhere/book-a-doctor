@@ -69,10 +69,10 @@ const Header = ({
           {user?.photo.imageUrl && (
             <div className=''>
               <Link to='/'>
-                <figure className='w-[35px] h-35px rounded-full cursor-pointer'>
+                <figure className='w-[35px] h-[35px] rounded-full cursor-pointer'>
                   <img
                     src={user.photo.imageUrl}
-                    alt='medicare-user image'
+                    alt='CareConnect-user image'
                     className='rounded-full w-full h-full'
                   />
                 </figure>

@@ -1,7 +1,7 @@
 import { api } from "@/library/api/axios";
 
-export const profileMe = async () => {
-    const { data } = await api.get('/users/profile/me');
+export const profileMe = async ({ id }: { id: string }) => {
+    const { data } = await api.get(`/users/profile/me/${id}`);
 
     return data;
 };
@@ -20,3 +20,4 @@ export const editUser = async ({ id, formData }: { id: string, formData: FormDat
     });
     return data;
 };
+

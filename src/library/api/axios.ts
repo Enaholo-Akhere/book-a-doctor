@@ -71,13 +71,14 @@ api.interceptors.response.use(
 
             try {
                 const currentToken = useAuthStore.getState().token;
+                const id = useAuthStore.getState().user?._id;
                 if (!currentToken) {
                     console.warn("No token found in store, logging out.");
                     useAuthStore.getState().logout();
                     return Promise.reject(error);
                 }
 
-                const { data } = await refreshApi.post('/auth/refresh-token', null);
+                const { data } = await refreshApi.post(`/auth/refresh-token/${id}`, null);
 
                 const newToken = data.token;
                 useAuthStore.getState().setToken(newToken);
