@@ -20,8 +20,6 @@ const DoctorCard = ({
     experiences,
   } = doctor;
 
-  console.log('url', url.includes('/doctor/') ? true : false);
-
   return (
     <div className='p-3 lg:p-5 w-full'>
       <div>
@@ -43,7 +41,7 @@ const DoctorCard = ({
             <img src={starIcon} alt='doctors app' /> {averageRating}
           </span>
           <span className='text-[14px] leading-6 lg:text-[16px] lg:leading-7 font-[400] text-textColor '>
-            {totalRating}
+            ({totalRating})
           </span>
         </div>
       </div>

@@ -9,17 +9,20 @@ import { useParams } from 'react-router-dom';
 import Loading from '@/components/Loader';
 import Error from '@/components/Error';
 import { handleAxiosError } from '@/utils/axiosError';
+import { usePageTitle } from '@/Hook/title';
 
 const DoctorDetails = () => {
   const [tab, setTab] = useState<string>('about');
   const { id } = useParams();
   const { isLoading, data, isError, error } = useGetDoctorById(id || '');
 
+  usePageTitle('Doctor Details - CareConnect');
+
   const doctorData: doctorsInterface | undefined = data?.data;
 
   return (
     <section>
-      <div className='max-w-[1170px] px-5 mx-auto '>
+      <div className='max-w-[1170px] px-5 mx-auto  '>
         {isLoading && <Loading />}
         {isError && <Error errorMessage={handleAxiosError(error)} />}
         {!isLoading && !isError && doctorData && (

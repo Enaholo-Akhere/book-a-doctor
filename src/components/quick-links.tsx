@@ -26,11 +26,11 @@ export const quickLink01: QuickLinkInterface[] = [
 
 export const quickLinks03: QuickLinkInterface[] = [
   { path: '/', display: 'Donate' },
-  { path: '/contact-us', display: 'Contact Us' },
+  { path: '/contact', display: 'Contact Us' },
 ];
 
 export const quickLinks02: QuickLinkInterface[] = [
-  { path: '/find-a-doctor', display: 'Find a Doctor' },
+  { path: '/doctors', display: 'Find a Doctor' },
   { path: '/request-an-appointment', display: 'Request an Appointment' },
   { path: '/find-a-location', display: 'Find a Location' },
   { path: '/get-an-opinion', display: 'Get an Opinion' },

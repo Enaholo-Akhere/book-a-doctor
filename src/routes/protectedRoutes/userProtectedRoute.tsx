@@ -10,7 +10,7 @@ const UserProtectedRoute = ({
   const user = useAuthStore((state) => state.user);
   const token = useAuthStore((state) => state.token);
   const allowed = token && user?.role && isAllowed.includes(user.role);
-  return allowed ? <Outlet /> : <Navigate to='/dashboard' />;
+  return allowed ? <Outlet /> : <Navigate to='/login' />;
 };
 
 export default UserProtectedRoute;

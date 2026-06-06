@@ -25,8 +25,12 @@ const LoginComp = () => {
 
   const submitHandler = (data: loginType) => {
     mutate(data, {
-      onSuccess: () => {
-        Navigate('/');
+      onSuccess: (res) => {
+        const url =
+          res?.user?.role === 'doctor'
+            ? '/doctors/profile/me'
+            : '/users/profile/me';
+        Navigate(url);
       },
       onError: (err) => {
         const error = err as AxiosError;
@@ -37,8 +41,8 @@ const LoginComp = () => {
   };
 
   return (
-    <div className='px-5 lg:px-0'>
-      <div className='w-full max-w-[570px] mx-auto rounded-lg shadow-md md:p-10 '>
+    <div className='px-5'>
+      <div className='w-full max-w-[570px] mx-auto rounded-lg shadow-md md:p-10 p-5 '>
         <h3 className='text-headingColor text-[22px] leading-9 font-bold mb-10 '>
           Hello <span className='text-primaryColor '>Welcome </span>Back 🎉
         </h3>

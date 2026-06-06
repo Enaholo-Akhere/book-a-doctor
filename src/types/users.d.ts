@@ -1,3 +1,4 @@
+import { appointments } from '@/types/doctors.ds';
 export interface user {
     name: string;
     email: string;
@@ -7,4 +8,5 @@ export interface user {
     gender: string;
     role: string;
     _id: string;
+    appointments: appointments[];
 }
