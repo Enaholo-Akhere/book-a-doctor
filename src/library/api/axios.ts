@@ -16,6 +16,7 @@ const refreshApi = axios.create({
 })
 
 api.interceptors.request.use((config) => {
+    console.log('baseURL', baseUrl)
     const token = useAuthStore.getState().token
     if (token) {
         config.headers.authorization = `Bearer ${token}`
