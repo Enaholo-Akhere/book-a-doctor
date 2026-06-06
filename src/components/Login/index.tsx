@@ -6,9 +6,9 @@ import { useLogin } from '@/Hook/auth/userAuth';
 import toast from 'react-hot-toast';
 import HashLoader from 'react-spinners/HashLoader';
 import { useNavigate } from 'react-router-dom';
-import { AxiosError } from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useState } from 'react';
+import { handleAxiosError } from '@/utils/axiosError';
 
 const LoginComp = () => {
   const Navigate = useNavigate();
@@ -32,10 +32,8 @@ const LoginComp = () => {
             : '/users/profile/me';
         Navigate(url);
       },
-      onError: (err) => {
-        const error = err as AxiosError;
-        const errorData = error?.response?.data as { message?: string };
-        toast.error(errorData?.message || 'Login failed');
+      onError: (error) => {
+        toast.error(handleAxiosError(error));
       },
     });
   };
