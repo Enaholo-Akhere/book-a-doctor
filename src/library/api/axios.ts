@@ -6,12 +6,12 @@ const prodURL = import.meta.env.VITE_PROD_BASE_URL
 const baseUrl = import.meta.env.MODE === 'production' ? prodURL : devURL
 
 export const api = axios.create({
-    baseURL: prodURL,
+    baseURL: baseUrl,
     withCredentials: true,
 })
 
 const refreshApi = axios.create({
-    baseURL: prodURL,
+    baseURL: baseUrl,
     withCredentials: true,
 })
 
