@@ -1,13 +1,17 @@
 import axios, { InternalAxiosRequestConfig } from 'axios'
 import { useAuthStore } from '@/store/authStore'
 
+const devURL = import.meta.env.VITE_BASE_URL
+const prodURL = import.meta.env.VITE_PROD_BASE_URL
+const baseURL = import.meta.env.MODE === 'production' ? prodURL : devURL
+
 export const api = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL,
+    baseURL: baseURL,
     withCredentials: true,
 })
 
 const refreshApi = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL,
+    baseURL: baseURL,
     withCredentials: true,
 })
 
