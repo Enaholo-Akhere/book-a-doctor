@@ -121,11 +121,11 @@
   }
 
   .header {
-    @apply bg-[url('mask.png')] bg-no-repeat bg-center bg-cover w-full h-[80px] flex place-content-center leading-[50px];
+    @apply bg-[url('/mask.png')] bg-no-repeat bg-center bg-cover w-full h-[80px] flex place-content-center leading-[50px];
   }
 
   .hero__section {
-    @apply bg-[url('hero-bg.png')] bg-no-repeat bg-center bg-cover px-5;
+    @apply bg-[url('/hero-bg.png')] bg-no-repeat bg-center bg-cover px-5;
   }
 
   .form__label {
