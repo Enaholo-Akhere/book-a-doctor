@@ -3,19 +3,20 @@ import { useAuthStore } from '@/store/authStore'
 
 const devURL = import.meta.env.VITE_BASE_URL
 const prodURL = import.meta.env.VITE_PROD_BASE_URL
-const baseURL = import.meta.env.MODE === 'production' ? prodURL : devURL
+const baseUrl = import.meta.env.MODE === 'production' ? prodURL : devURL
 
 export const api = axios.create({
-    baseURL: baseURL,
+    baseURL: prodURL,
     withCredentials: true,
 })
 
 const refreshApi = axios.create({
-    baseURL: baseURL,
+    baseURL: prodURL,
     withCredentials: true,
 })
 
 api.interceptors.request.use((config) => {
+    console.log('baseURL', baseUrl)
     const token = useAuthStore.getState().token
     if (token) {
         config.headers.authorization = `Bearer ${token}`
