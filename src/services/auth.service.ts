@@ -20,3 +20,8 @@ export const verifyUser = async (payload: { token: string, id: string }) => {
     return data;
 };
 
+export const logoutUser = async () => {
+    const { data } = await api.put('/auth/logout');
+    return data;
+};
+

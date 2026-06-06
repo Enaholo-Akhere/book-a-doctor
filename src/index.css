@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300..700;1,300..700&family=Manrope:wght@200..800&display=swap');
 @import 'tailwindcss';
 
 @theme {
-  --color-primaryColor: #0067ff;
-  --color-primaryColor2: #0075ff;
+  --color-primaryColor: #0d8c81;
+  --color-primaryColor2: #109b8f;
   --color-yellowColor: #feb60d;
   --color-purpleColor: #9771ff;
   --color-irisBlueColor: #01b5c5;
@@ -32,7 +33,7 @@
 }
 
 .swiper-pagination-bullet-active {
-  background: #0067ff !important;
+  background: #0e867c !important;
   border: none !important;
 }
 
@@ -41,7 +42,7 @@
 }
 
 .swiper-slide.swiper-slide-next {
-  background: #0067ff;
+  background: #0e867c;
   border-radius: 12px;
   box-shadow: 0px 20px 70px rgba(0, 103, 255, 0.3);
 }
@@ -95,6 +96,7 @@
   }
   body {
     font-family: 'Manrope', sans-serif;
+    min-height: 100vh;
   }
 }
 @layer components {

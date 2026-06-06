@@ -4,7 +4,7 @@ import { QUERY_KEYS } from "@/constants/queryKeys";
 
 export const useProfileMe = (id: string) => {
     return useQuery({
-        queryKey: [QUERY_KEYS.ME],
+        queryKey: [QUERY_KEYS.ME, id],
         queryFn: () => profileMe({ id }),
         enabled: !!id,
         staleTime: 1000 * 60 * 5, // 5 mins

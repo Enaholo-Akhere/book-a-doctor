@@ -6,11 +6,33 @@ import Loading from '@/components/Loader';
 import Error from '@/components/Error';
 import { AxiosError } from 'axios';
 import { useAuthStore } from '@/store/authStore';
+import Button from '@/components/Button';
+import { useLogout } from '@/Hook/auth/userAuth';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { handleAxiosError } from '@/utils/axiosError';
 
 const UserDashboard = () => {
   const user = useAuthStore((state) => state.user);
+  const logoutUser = useAuthStore((state) => state.logout);
 
   const { data, isError, isLoading, error } = useProfileMe(user?._id || '');
+
+  const { mutate: logout, isPending } = useLogout();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    logout(undefined, {
+      onSuccess: (res) => {
+        toast.success(res?.message);
+        logoutUser();
+        navigate('/login');
+      },
+      onError: (err) => {
+        toast.error(handleAxiosError(err));
+      },
+    });
+  };
 
   const [tab, setTab] = useState<string>('bookings');
   const errMsg = error as AxiosError;
@@ -46,8 +68,11 @@ const UserDashboard = () => {
               </p>
             </div>
             <div className='mt-[50px] md:mt-[100px]'>
-              <button className='w-full bg-[#181A1E] p-3 text-[16px] leading-7 rounded-md text-white  '>
-                Logout
+              <button
+                onClick={handleLogout}
+                className='w-full bg-[#181A1E] p-3 text-[16px] leading-7 rounded-md text-white  '
+              >
+                {isPending ? 'Logging out...' : 'Logout'}
               </button>
               <button className='w-full bg-red-600 mt-4 p-3 text-[16px] leading-7 rounded-md text-white '>
                 Delete account
@@ -55,21 +80,24 @@ const UserDashboard = () => {
             </div>
           </div>
           <div className='md:col-span-2 md:px-[30px] '>
-            <div className='px-8'>
-              <button
+            <div className='px-8 flex gap-2 justify-center'>
+              <Button
+                title='My Bookings'
                 onClick={() => setTab('bookings')}
-                className={`${tab === 'bookings' && 'bg-primaryColor text-white font-normal'} p-2 mr-5 px-5 rounded-md text-headingColor font-semibold text-[16px] leading- border border-solid border-primaryColor`}
-              >
-                My Bookings
-              </button>
-              <button
+                txtColor='gray-800'
+                bgColor={`${tab === 'bookings' && 'bg-primaryColor text-white '}`}
+                classNameProps={`font-normal p-2 mr-5 px-5 rounded-md text-headingColor font-semibold text-[16px] leading- border border-solid border-primaryColor`}
+              />
+              <Button
+                title='Profile Settings'
+                txtColor='gray-800'
                 onClick={() => setTab('settings')}
-                className={`${tab === 'settings' && 'bg-primaryColor text-white font-normal'} py-2 px-5 rounded-md text-headingColor font-semibold text-[16px] leading- border border-solid border-primaryColor`}
-              >
-                Profile Settings
-              </button>
+                bgColor={`${tab === 'settings' && 'bg-primaryColor text-white '}`}
+                classNameProps={`font-normal p-2 mr-5 px-5 rounded-md text-headingColor font-semibold text-[16px] leading- border border-solid border-primaryColor`}
+              />
             </div>
-            {tab === 'bookings' && <MyBookings />}
+
+            {tab === 'bookings' && <MyBookings user={data.data} />}
             {tab === 'settings' && <ProfileSettings user={data.data} />}
           </div>
         </div>

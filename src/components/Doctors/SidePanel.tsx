@@ -1,8 +1,41 @@
 import { doctorsInterface } from '@/types/doctors.ds';
 import Button from '../Button';
 import { formatTime } from '@/utils/formatDate';
+import { useBookings } from '@/Hook/booking';
+import { toast } from 'react-hot-toast';
+import { handleAxiosError } from '@/utils/axiosError';
+import { useAuthStore } from '@/store/authStore';
+import { useNavigate } from 'react-router-dom';
 
 const SidePanel = ({ data }: { data: doctorsInterface | undefined }) => {
+  const { mutate, isPending } = useBookings();
+  const user = useAuthStore((state) => state.user);
+  const navigate = useNavigate();
+
+  const userSet = new Set(user?.appointments);
+
+  const disabledButton = data?.appointments?.some((app) => userSet.has(app));
+
+  const handleBooking = () => {
+    mutate(
+      { doctorId: data?._id ? data._id : '' },
+      {
+        onSuccess: (data) => {
+          if (data?.url) {
+            window.location.href = data.url;
+          } else {
+            toast.error('Failed to create booking session.');
+          }
+        },
+        onError: (error) => {
+          toast.error(handleAxiosError(error));
+        },
+      }
+    );
+  };
+
+  const handleBookingFN = () => (user ? handleBooking() : navigate('/login'));
+
   return (
     <div className='shadow-xl p-3 lg:p-5 rounded-md '>
       <div className='flex items-center justify-between'>
@@ -33,8 +66,17 @@ const SidePanel = ({ data }: { data: doctorsInterface | undefined }) => {
         </ul>
       </div>
       <Button
-        title='Book Appointment'
-        classNameProps='btn px-2 w-full rounded-md py-4'
+        title={
+          isPending
+            ? 'Processing...'
+            : disabledButton
+              ? 'Already Booked!'
+              : 'Book Appointment'
+        }
+        classNameProps='btn px-2 w-full rounded-md py-4 '
+        onClick={handleBookingFN}
+        bgColor={`${isPending || disabledButton ? 'bg-gray-500 ' : 'bg-primaryColor'}`}
+        disabled={isPending || disabledButton}
       />
     </div>
   );

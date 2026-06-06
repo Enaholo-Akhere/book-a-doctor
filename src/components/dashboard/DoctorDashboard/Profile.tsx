@@ -18,8 +18,6 @@ const Profile = ({ data: userData }: { data: doctorsInterface }) => {
   const { mutate, isPending } = useEditDoctor();
   const updateDoctor = useAuthStore((state) => state.updateDoctor);
 
-  const qualif = userData?.qualifications;
-
   const {
     register,
     handleSubmit,

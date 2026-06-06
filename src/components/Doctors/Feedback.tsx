@@ -3,10 +3,19 @@ import { useState } from 'react';
 import { AiFillStar } from 'react-icons/ai';
 import FeedbackForm from './FeedbackForm';
 import { doctorsInterface } from '@/types/doctors.ds';
+import Button from '../Button';
+import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '@/store/authStore';
 
 const Feedback = ({ doctorData }: { doctorData: doctorsInterface }) => {
   const { totalRating, reviews, _id: doctorId } = doctorData;
   const [showFeedbackForm, setShowFeedbackForm] = useState<boolean>(false);
+  const user = useAuthStore((state) => state.user);
+
+  const navigate = useNavigate();
+
+  const handleFeedBack = () =>
+    user ? setShowFeedbackForm(true) : navigate('/login');
 
   return (
     <div>
@@ -46,12 +55,7 @@ const Feedback = ({ doctorData }: { doctorData: doctorsInterface }) => {
       </div>
       {!showFeedbackForm && (
         <div className='text-center'>
-          <button
-            onClick={() => setShowFeedbackForm(true)}
-            className='btn cursor-pointer py-4'
-          >
-            Give Feedback
-          </button>
+          <Button title='Give Feedback' onClick={handleFeedBack} />
         </div>
       )}
       {showFeedbackForm && <FeedbackForm doctorId={doctorId} />}

@@ -24,13 +24,26 @@ interface timeSlot {
     _id: string;
 }
 
+interface doctor {
+    name: string;
+    photo: { imageUrl: string };
+    specialization: string;
+    averageRating: number;
+    _id: string;
+    timeSlots: timeSlot[];
+
+}
 export interface appointments {
     ticketPrice: string;
     createdAt: string;
-    user: { gender: string; name: string; email: string };
+    updatedAt: string;
+    user: { name: string; email: string; photo: { imageUrl: string }, _id: string };
+    doctor: doctor;
     isPaid: boolean;
     photo: { imageUrl: string };
     _id: string;
+    status: 'approved' | 'pending' | 'cancelled';
+
 }
 export interface doctorsInterface {
     _id: string;

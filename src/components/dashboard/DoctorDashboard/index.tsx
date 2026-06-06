@@ -21,8 +21,6 @@ const DoctorDashboard = () => {
     error,
   } = useProfileMeDoctor(user?._id || '');
 
-  console.log('error', error);
-
   const data: doctorsInterface = userData?.data;
 
   const [tabs, setTabs] = useState('overview');

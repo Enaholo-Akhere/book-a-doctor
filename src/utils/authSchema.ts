@@ -49,14 +49,30 @@ const editDoctorSchema = z.object({
             endDate: z.string().min(1, 'End date is required'),
             degree: z.string().min(1, 'Degree is required'),
             university: z.string().min(1, 'University is required'),
-        })
+        }).refine(
+            (data) => new Date(data.startDate) <= new Date(data.endDate),
+            {
+                message: 'Start date cannot be after end date',
+                path: ['startDate'],
+            }
+        )
     ),
     timeSlots: z.array(
         z.object({
             startingTime: z.string().min(1, 'Starting time is required'),
             endingTime: z.string().min(1, 'Ending time is required'),
             day: z.string().min(1, 'Day is required'),
-        })
+        }).refine(
+            (data) => {
+                const [startHour, startMin] = data.startingTime.split(':').map(Number);
+                const [endHour, endMin] = data.endingTime.split(':').map(Number);
+                return startHour * 60 + startMin < endHour * 60 + endMin;
+            },
+            {
+                message: 'Starting time must be before ending time',
+                path: ['startingTime'],
+            }
+        )
     ),
     experiences: z.array(
         z.object({
@@ -64,7 +80,13 @@ const editDoctorSchema = z.object({
             endDate: z.string().min(1, 'End date is required'),
             position: z.string().min(1, 'Position is required'),
             hospital: z.string().min(1, 'Hospital is required'),
-        })
+        }).refine(
+            (data) => new Date(data.startDate) <= new Date(data.endDate),
+            {
+                message: 'Start date cannot be after end date',
+                path: ['startDate'],
+            }
+        )
     ),
     photo: z
         .any().optional()

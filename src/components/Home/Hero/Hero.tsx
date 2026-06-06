@@ -2,6 +2,7 @@ import Button from '@/components/Button';
 import heroImage from '@/assets/images/hero-img01.png';
 import heroImage2 from '@/assets/images/hero-img02.png';
 import heroImage3 from '@/assets/images/hero-img03.png';
+import StartItem from '@/components/StartItem';
 
 const Hero = () => {
   return (
@@ -31,21 +32,21 @@ const Hero = () => {
             <div className='mt-[30px] lg:mt-[40px] flex flex-col lg:flex-row lg:items-center gap-5 lg:gap-[30px]'>
               <div>
                 <h2 className='text-[36px] leading-[56px] lg:text-[44px] lg:leading-[54px] font-[700] text-headingColor'>
-                  30+
+                  <StartItem target={30} suffix='+' />
                 </h2>
                 <span className='w-[100px] h-2 bg-yellowColor rounded-full block mt-[-16px]'></span>
                 <p className='text__para'>Years of Experience</p>
               </div>
               <div>
                 <h2 className='text-[36px] leading-[56px] lg:text-[44px] lg:leading-[54px] font-[700] text-headingColor'>
-                  15+
+                  <StartItem target={15} suffix='+' />
                 </h2>
                 <span className='w-[100px] h-2 bg-purpleColor rounded-full block mt-[-16px]'></span>
                 <p className='text__para'>Clinic Location</p>
               </div>{' '}
               <div>
                 <h2 className='text-[36px] leading-[56px] lg:text-[44px] lg:leading-[54px] font-[700] text-headingColor'>
-                  100%
+                  <StartItem target={100} suffix='%' />
                 </h2>
                 <span className='w-[100px] h-2 bg-irisBlueColor rounded-full block mt-[-16px]'></span>
                 <p className='text__para'>Patient Satisfaction</p>

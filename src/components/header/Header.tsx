@@ -1,9 +1,10 @@
-import logo from '@/assets/images/logo.png';
+// import logo from '@/assets/images/logo.png';
 import { BiMenu } from 'react-icons/bi';
 import { NavLink, Link } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import Button from '@/components/Button';
 import { useAuthStore } from '@/store/authStore';
+import logo1 from '/public/CareConnect-logo.png';
 
 const Header = ({
   navLink,
@@ -13,6 +14,8 @@ const Header = ({
   toggleMenu: () => void;
 }) => {
   const user = useAuthStore((state) => state.user);
+
+  const role = user?.role === 'patient' ? 'users' : 'dashboard';
 
   const headerRef = useRef<HTMLDivElement | null>(null);
 
@@ -44,7 +47,9 @@ const Header = ({
       <div className='container flex justify-between items-center m-auto'>
         <div className=''>
           <NavLink to='/'>
-            <img src={logo} alt='' className='w-full' />
+            <div className='w-[150px] h-full'>
+              <img src={logo1} alt='' className='w-[100%] h-[100%]' />
+            </div>
           </NavLink>
         </div>
         <div className='hidden md:block' onClick={toggleMenu}>
@@ -68,7 +73,7 @@ const Header = ({
         <div className='flex items-center gap-4'>
           {user?.photo.imageUrl && (
             <div className=''>
-              <Link to='/'>
+              <Link to={`/${role}/profile/me`}>
                 <figure className='w-[35px] h-[35px] rounded-full cursor-pointer'>
                   <img
                     src={user.photo.imageUrl}

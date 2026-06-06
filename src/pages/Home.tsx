@@ -7,6 +7,7 @@ import Services from '../components/Services';
 import DoctorsHome from '../components/Doctors';
 import Testimonial from '../components/Testimonial';
 import { useGetAllDoctors } from '@/Hook/doctors';
+import { AxiosError } from 'axios';
 
 const Home = () => {
   const { isLoading, isError, data, error } = useGetAllDoctors('');
@@ -41,7 +42,7 @@ const Home = () => {
         isLoading={isLoading}
         isError={isError}
         data={data}
-        error={error}
+        error={error as AxiosError}
       />
 
       {/* ======== FAQ ======== */}
