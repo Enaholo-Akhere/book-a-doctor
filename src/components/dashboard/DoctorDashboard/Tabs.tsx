@@ -1,4 +1,3 @@
-// import { BiMenu } from 'react-icons/bi';
 import { useLogout } from '@/Hook/auth/userAuth';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -34,8 +33,6 @@ const Tabs = ({ tab, setTab }: TabsProps) => {
   return (
     <div className=''>
       <span className='lg:hidden '>
-        {/* <BiMenu className='w-6 h-6 cursor-pointer' /> */}
-
         {isMenuOpen ? (
           <FaArrowLeftLong
             className='w-6 h-6 cursor-pointer'

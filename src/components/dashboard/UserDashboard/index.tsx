@@ -11,10 +11,16 @@ import { useLogout } from '@/Hook/auth/userAuth';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { handleAxiosError } from '@/utils/axiosError';
+import { useCutTitle } from '@/Hook/textCut';
 
 const UserDashboard = () => {
   const user = useAuthStore((state) => state.user);
   const logoutUser = useAuthStore((state) => state.logout);
+  const profileTitle = useCutTitle({
+    text1: 'Settings',
+    text2: 'Profile Settings',
+  });
+  const bookingTitle = useCutTitle({ text1: 'Bookings', text2: 'My Bookings' });
 
   const { data, isError, isLoading, error } = useProfileMe(user?._id || '');
 
@@ -82,14 +88,14 @@ const UserDashboard = () => {
           <div className='md:col-span-2 md:px-[30px] '>
             <div className='px-8 flex gap-2 justify-center'>
               <Button
-                title='My Bookings'
+                title={bookingTitle}
                 onClick={() => setTab('bookings')}
                 txtColor='gray-800'
                 bgColor={`${tab === 'bookings' && 'bg-primaryColor text-white '}`}
                 classNameProps={`font-normal p-2 mr-5 px-5 rounded-md text-headingColor font-semibold text-[16px] leading- border border-solid border-primaryColor`}
               />
               <Button
-                title='Profile Settings'
+                title={profileTitle}
                 txtColor='gray-800'
                 onClick={() => setTab('settings')}
                 bgColor={`${tab === 'settings' && 'bg-primaryColor text-white '}`}
