@@ -2,7 +2,6 @@ import {
   ArrowLeft,
   Calendar,
   CreditCard,
-  // RefreshCw,
   ShieldCheck,
   Star,
 } from 'lucide-react';

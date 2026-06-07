@@ -83,11 +83,8 @@ const ProfileSettings = ({ user }: { user: user }) => {
   return (
     <div className='px-5 lg:px-0 mt-5'>
       <div className='w-full mx-auto rounded-lg shadow-md md:py-5'>
-        {/* <div className='grid grid-cols-1 lg:grid-cols-2 px-3'> */}
-        {/* Form */}
         <div className='rounded-l-lg py-10 lg:mt-[-40px]'>
           <form className='py-4 md:py-0' onSubmit={handleSubmit(submitHandler)}>
-            {/* Name */}
             <div className='mb-3'>
               <input
                 type='text'
