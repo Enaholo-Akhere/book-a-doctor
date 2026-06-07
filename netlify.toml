@@ -1,6 +1,4 @@
-[[
-    redirects
-]]
+[[redirects]]
 
 from = "/api/v1/*"
 to = "https://doctor-webapp-backend-zxn3.onrender.com/api/v1/:splat"
