@@ -53,8 +53,9 @@ api.interceptors.response.use(
         const originalRequest = error.config as AxiosRequestWithRetry;
         if (!originalRequest) return Promise.reject(error);
 
+        // Only logout if refresh token route itself fails
         if (originalRequest.url?.includes('/auth/refresh-token')) {
-            useAuthStore.getState().logout();
+            // ← don't logout here, just reject
             return Promise.reject(error);
         }
 
@@ -74,25 +75,16 @@ api.interceptors.response.use(
             isRefreshing = true;
 
             try {
-                const currentToken = useAuthStore.getState().token;
                 const id = useAuthStore.getState().user?._id;
-                if (!currentToken) {
-                    console.warn("No token found in store, logging out.");
-                    useAuthStore.getState().logout();
-                    return Promise.reject(error);
-                }
-
                 const { data } = await refreshApi.post(`/auth/refresh-token/${id}`, null);
 
                 const newToken = data.token;
                 useAuthStore.getState().setToken(newToken);
-
                 originalRequest.headers['authorization'] = `Bearer ${newToken}`;
-
                 processQueue(null, newToken);
-
                 return api(originalRequest);
             } catch (err) {
+                // Only logout here — both tokens are expired
                 processQueue(err, null);
                 useAuthStore.getState().logout();
                 return Promise.reject(err);
@@ -104,3 +96,61 @@ api.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
+// api.interceptors.response.use(
+//     (res) => res,
+//     async (error) => {
+//         const originalRequest = error.config as AxiosRequestWithRetry;
+//         if (!originalRequest) return Promise.reject(error);
+
+//         if (originalRequest.url?.includes('/auth/refresh-token')) {
+//             useAuthStore.getState().logout();
+//             return Promise.reject(error);
+//         }
+
+//         if (error.response?.status === 401 && !originalRequest._retry) {
+//             if (isRefreshing) {
+//                 return new Promise((resolve, reject) => {
+//                     failedQueue.push({ resolve, reject });
+//                 })
+//                     .then((token) => {
+//                         originalRequest.headers['Authorization'] = `Bearer ${token}`;
+//                         return api(originalRequest);
+//                     })
+//                     .catch((err) => Promise.reject(err));
+//             }
+
+//             originalRequest._retry = true;
+//             isRefreshing = true;
+
+//             try {
+//                 const currentToken = useAuthStore.getState().token;
+//                 const id = useAuthStore.getState().user?._id;
+//                 if (!currentToken) {
+//                     console.warn("No token found in store, logging out.");
+//                     useAuthStore.getState().logout();
+//                     return Promise.reject(error);
+//                 }
+
+//                 const { data } = await refreshApi.post(`/auth/refresh-token/${id}`, null);
+
+//                 const newToken = data.token;
+//                 useAuthStore.getState().setToken(newToken);
+
+//                 originalRequest.headers['authorization'] = `Bearer ${newToken}`;
+
+//                 processQueue(null, newToken);
+
+//                 return api(originalRequest);
+//             } catch (err) {
+//                 processQueue(err, null);
+//                 useAuthStore.getState().logout();
+//                 return Promise.reject(err);
+//             } finally {
+//                 isRefreshing = false;
+//             }
+//         }
+
+//         return Promise.reject(error);
+//     }
+// );
