@@ -4,6 +4,7 @@ import { useAuthStore } from '@/store/authStore'
 // const devURL = import.meta.env.VITE_BASE_URL
 const prodURL = import.meta.env.VITE_PROD_BASE_URL
 // const baseUrl = import.meta.env.MODE === 'production' ? prodURL : devURL
+console.log('prodUrl', prodURL);
 
 export const api = axios.create({
     baseURL: prodURL,
