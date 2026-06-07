@@ -23,7 +23,6 @@ api.interceptors.request.use((config) => {
     return config
 })
 
-let isRefreshing = false
 
 interface FailedRequest {
     resolve: (token: string | null) => void;
@@ -47,44 +46,44 @@ interface AxiosRequestWithRetry extends InternalAxiosRequestConfig {
     _retry?: boolean
 }
 
+let isRefreshing = false;
+
+
 api.interceptors.response.use(
     (res) => res,
     async (error) => {
+        console.log('🔴 Interceptor hit:', error.response?.status, error.config?.url);
         const originalRequest = error.config as AxiosRequestWithRetry;
         if (!originalRequest) return Promise.reject(error);
 
         // Only logout if refresh token route itself fails
         if (originalRequest.url?.includes('/auth/refresh-token')) {
-            // ← don't logout here, just reject
+            console.log('🔴 Refresh route failed, rejecting...');
             return Promise.reject(error);
         }
-
+        if (isRefreshing) {
+            console.log('🟡 Refresh already in progress, queuing request...');
+        }
         if (error.response?.status === 401 && !originalRequest._retry) {
-            if (isRefreshing) {
-                return new Promise((resolve, reject) => {
-                    failedQueue.push({ resolve, reject });
-                })
-                    .then((token) => {
-                        originalRequest.headers['Authorization'] = `Bearer ${token}`;
-                        return api(originalRequest);
-                    })
-                    .catch((err) => Promise.reject(err));
-            }
+            console.log('🟡 401 caught, attempting refresh...');
 
             originalRequest._retry = true;
             isRefreshing = true;
 
             try {
                 const id = useAuthStore.getState().user?._id;
+                console.log('🟡 Refreshing for user id:', id);
+
                 const { data } = await refreshApi.post(`/auth/refresh-token/${id}`, null);
+                console.log('🟢 Refresh successful, new token:', data.token?.substring(0, 20));
 
                 const newToken = data.token;
                 useAuthStore.getState().setToken(newToken);
                 originalRequest.headers['authorization'] = `Bearer ${newToken}`;
                 processQueue(null, newToken);
                 return api(originalRequest);
-            } catch (err) {
-                // Only logout here — both tokens are expired
+            } catch (err: any) {
+                console.log('🔴 Refresh failed:', err.response?.status, err.response?.data);
                 processQueue(err, null);
                 useAuthStore.getState().logout();
                 return Promise.reject(err);
@@ -93,6 +92,7 @@ api.interceptors.response.use(
             }
         }
 
+        console.log('🔴 Not a 401, skipping refresh. Status:', error.response?.status);
         return Promise.reject(error);
     }
 );
