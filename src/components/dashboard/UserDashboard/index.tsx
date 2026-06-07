@@ -17,7 +17,7 @@ const UserDashboard = () => {
   const user = useAuthStore((state) => state.user);
   const logoutUser = useAuthStore((state) => state.logout);
   const profileTitle = useCutTitle({
-    text1: 'Profile',
+    text1: 'Settings',
     text2: 'Profile Settings',
   });
   const bookingTitle = useCutTitle({ text1: 'Bookings', text2: 'My Bookings' });

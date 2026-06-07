@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useVerifyEmail } from '@/Hook/auth/userAuth';
 import { toast } from 'react-hot-toast';
 import { useEffect, useState } from 'react';
-import { AxiosError } from 'axios';
+import { handleAxiosError } from '@/utils/axiosError';
 
 const EmailVerify = () => {
   const Navigate = useNavigate();
@@ -24,9 +24,7 @@ const EmailVerify = () => {
           }, 2000);
         },
         onError: (err) => {
-          const error = err as AxiosError;
-          const errorData = error?.response?.data as { message?: string };
-          setErrorMessage(errorData?.message || 'Email verification failed');
+          setErrorMessage(handleAxiosError(err) || 'Email verification failed');
         },
       }
     );
