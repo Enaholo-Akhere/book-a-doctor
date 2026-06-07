@@ -16,7 +16,6 @@ const refreshApi = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-    console.log('baseUrl', prodURL)
     const token = useAuthStore.getState().token
     if (token) {
         config.headers.authorization = `Bearer ${token}`
@@ -57,6 +56,7 @@ api.interceptors.response.use(
         const originalRequest = error.config as AxiosRequestWithRetry;
         if (!originalRequest) return Promise.reject(error);
 
+        // Only logout if refresh token route itself fails
         if (originalRequest.url?.includes('/auth/refresh-token')) {
             console.log('🔴 Refresh route failed, rejecting...');
             return Promise.reject(error);
