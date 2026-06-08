@@ -73,6 +73,14 @@ const LoginComp = () => {
                 {showPassword ? <FaEye /> : <FaEyeSlash />}
               </button>
             </div>
+            <span>
+              <Link
+                to='/forgot-password'
+                className='text-primaryColor font-medium ml-1 text-sm '
+              >
+                Forgot Password?
+              </Link>
+            </span>
           </div>
           <div className='mt-7'>
             <button
