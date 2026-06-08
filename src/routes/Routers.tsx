@@ -8,7 +8,9 @@ const Contact = lazy(() => import('@/pages/Contact'));
 const Services = lazy(() => import('@/pages/Services'));
 const Doctor = lazy(() => import('@/pages/doctors/Doctors'));
 const DoctorDetails = lazy(() => import('@/pages/doctors/DoctorDetails'));
+const ForgotPassword = lazy(() => import('@/pages/ForgotPassword'));
 const EmailVerification = lazy(() => import('@/pages/emailVerification'));
+const SetPassword = lazy(() => import('@/pages/SetPassword'));
 // const DashboardProtectedRoutes = lazy(
 //   () => import('@/routes/protectedRoutes/dashboardProtecedRoutes')
 // );
@@ -56,6 +58,8 @@ const Routers = () => {
       <Route path='/doctors' element={<Doctor />} />
       <Route path='/verify-email' element={<EmailVerification />} />
       <Route path='/doctor/:id' element={<DoctorDetails />} />
+      <Route path='/forgot-password' element={<ForgotPassword />} />
+      <Route path='/reset-password/' element={<SetPassword />} />
       <Route path='*' element={<NotFound />} />
     </Routes>
   );

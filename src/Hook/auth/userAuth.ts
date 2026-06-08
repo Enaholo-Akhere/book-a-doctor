@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { registerUser, loginUser, verifyUser, logoutUser } from "@/services/auth.service";
+import { registerUser, loginUser, verifyUser, logoutUser, forgotPassword, setPassword } from "@/services/auth.service";
 import { useAuthStore } from "@/store/authStore";
 
 export const useRegister = () => {
@@ -16,6 +16,17 @@ export const useLogin = () => {
         onSuccess: (data) => {
             setAuth(data.data, data.token);
         },
+    });
+}
+
+export const useForgotPassword = () => {
+    return useMutation({
+        mutationFn: forgotPassword,
+    });
+}
+export const useSetPassword = () => {
+    return useMutation({
+        mutationFn: setPassword,
     });
 }
 

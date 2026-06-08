@@ -98,9 +98,24 @@ const loginSchema = z.object({
     password: z.string().min(8, 'password length too short'),
 }).required()
 
-type registrationType = z.infer<typeof registrationSchema>
-type editRegistrationType = z.infer<typeof editRegistrationSchema>
-type loginType = z.infer<typeof loginSchema>
-type editDoctorType = z.infer<typeof editDoctorSchema>
-type feedbackType = z.infer<typeof feedbackSchema>
-export { feedbackSchema, feedbackType, registrationSchema, registrationType, loginSchema, loginType, editRegistrationSchema, editRegistrationType, editDoctorSchema, editDoctorType }
+const setNewPasswordSchema = z.object({
+    password: z.string().min(8, 'password length too short'),
+    confirmPassword: z.string().min(8, 'password length too short'),
+}).refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+})
+
+const forgotPasswordSchema = z.object({
+    email: z.string().email('invalid email address'),
+}).required()
+
+export type setNewPasswordType = z.infer<typeof setNewPasswordSchema>
+export type forgotPasswordType = z.infer<typeof forgotPasswordSchema>
+export type registrationType = z.infer<typeof registrationSchema>
+export type editRegistrationType = z.infer<typeof editRegistrationSchema>
+export type loginType = z.infer<typeof loginSchema>
+export type editDoctorType = z.infer<typeof editDoctorSchema>
+export type feedbackType = z.infer<typeof feedbackSchema>
+
+export { setNewPasswordSchema, feedbackSchema, registrationSchema, loginSchema, editRegistrationSchema, editDoctorSchema, forgotPasswordSchema }
