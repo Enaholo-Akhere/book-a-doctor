@@ -124,7 +124,6 @@ const BookingDetails = ({
   onBack,
   tabState,
 }: BookingDetailsProps) => {
-  console.log('Rendering BookingDetails with appointment:', appointment);
   const { _id, doctor, user, isPaid, ticketPrice, status } = appointment;
 
   return (

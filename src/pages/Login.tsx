@@ -1,5 +1,5 @@
 import LoginComp from '@/components/Login';
-import { usePageTitle } from '@/Hook/title';
+import { usePageTitle } from '@/Hook/useTitle';
 
 const Login = () => {
   usePageTitle('Login - CareConnect');

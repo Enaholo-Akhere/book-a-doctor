@@ -1,5 +1,5 @@
 import ContactComp from '@/components/Contact';
-import { usePageTitle } from '@/Hook/title';
+import { usePageTitle } from '@/Hook/useTitle';
 
 const Contact = () => {
   usePageTitle('Contact - CareConnect');

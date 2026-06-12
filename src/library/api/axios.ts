@@ -1,7 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from 'axios'
 import { useAuthStore } from '@/store/authStore'
 
-// const devURL = import.meta.env.VITE_BASE_URL
 const prodURL = import.meta.env.VITE_PROD_BASE_URL
 const devURL = import.meta.env.VITE_DEV_BASE_URL
 const baseUrl = import.meta.env.MODE === 'production' ? prodURL : devURL
@@ -74,10 +73,10 @@ api.interceptors.response.use(
 
             try {
                 const id = useAuthStore.getState().user?._id;
-                console.log('🟡 Refreshing for user id:', id);
+                console.log('🟡 Refreshing for user');
 
                 const { data } = await refreshApi.post(`/auth/refresh-token/${id}`, null);
-                console.log('🟢 Refresh successful, new token:', data.token?.substring(0, 20));
+                console.log('🟢 Refresh successful, new token:');
 
                 const newToken = data.token;
                 useAuthStore.getState().setToken(newToken);

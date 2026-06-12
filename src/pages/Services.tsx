@@ -1,5 +1,5 @@
 import ServicesComp from '../components/Services';
-import { usePageTitle } from '@/Hook/title';
+import { usePageTitle } from '@/Hook/useTitle';
 
 const Services = () => {
   usePageTitle('Services - CareConnect');

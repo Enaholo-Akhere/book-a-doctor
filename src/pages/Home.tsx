@@ -6,7 +6,7 @@ import Faq from '@/components/Home/Faq';
 import Services from '../components/Services';
 import DoctorsHome from '../components/Doctors';
 import Testimonial from '../components/Testimonial';
-import { useGetAllDoctors } from '@/Hook/doctors';
+import { useGetAllDoctors } from '@/Hook/useDoctors';
 import { AxiosError } from 'axios';
 
 const Home = () => {

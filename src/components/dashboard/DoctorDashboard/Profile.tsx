@@ -9,7 +9,7 @@ import HashLoader from 'react-spinners/HashLoader';
 import { queryClient } from '@/library/provider/reactQuery';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { doctorsInterface } from '@/types/doctors.ds';
-import { useEditDoctor } from '@/Hook/doctors';
+import { useEditDoctor } from '@/Hook/useDoctors';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { useAuthStore } from '@/store/authStore';
 

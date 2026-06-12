@@ -4,12 +4,12 @@ import Feedback from '../../components/Doctors/Feedback';
 import SidePanel from '../../components/Doctors/SidePanel';
 import { useState } from 'react';
 import { doctorsInterface } from '@/types/doctors.ds';
-import { useGetDoctorById } from '@/Hook/doctors';
+import { useGetDoctorById } from '@/Hook/useDoctors';
 import { useParams } from 'react-router-dom';
 import Loading from '@/components/Loader';
 import Error from '@/components/Error';
 import { handleAxiosError } from '@/utils/axiosError';
-import { usePageTitle } from '@/Hook/title';
+import { usePageTitle } from '@/Hook/useTitle';
 
 const DoctorDetails = () => {
   const [tab, setTab] = useState<string>('about');

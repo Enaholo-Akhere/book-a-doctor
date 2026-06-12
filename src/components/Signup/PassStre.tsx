@@ -1,4 +1,4 @@
-import { usePasswordStrength } from '@/Hook/passwordStrength';
+import { usePasswordStrength } from '@/Hook/usePasswordStrength';
 import CheckStrength from './CheckStrength';
 
 const PassStrength = ({ password }: { password: string }) => {

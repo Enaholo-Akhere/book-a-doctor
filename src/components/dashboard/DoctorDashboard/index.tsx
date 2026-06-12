@@ -1,6 +1,6 @@
 import Error from '@/components/Error';
 import Loading from '@/components/Loader';
-import { useProfileMeDoctor } from '@/Hook/doctors';
+import { useProfileMeDoctor } from '@/Hook/useDoctors';
 import Tabs from './Tabs';
 import { useState } from 'react';
 import { doctorsInterface } from '@/types/doctors.ds';

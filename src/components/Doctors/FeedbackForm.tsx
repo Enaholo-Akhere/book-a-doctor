@@ -3,7 +3,7 @@ import { AiFillStar } from 'react-icons/ai';
 import Button from '../Button';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useReviews } from '@/Hook/reviews';
+import { useReviews } from '@/Hook/useReviews';
 import toast from 'react-hot-toast';
 import { feedbackSchema, feedbackType } from '@/utils/authSchema';
 import { handleAxiosError } from '@/utils/axiosError';

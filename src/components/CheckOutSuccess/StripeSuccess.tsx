@@ -1,4 +1,4 @@
-import { useBookingSession } from '@/Hook/booking';
+import { useBookingSession } from '@/Hook/useDooking';
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 

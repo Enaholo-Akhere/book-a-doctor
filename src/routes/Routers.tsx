@@ -31,8 +31,12 @@ const DoctorProtectedRoute = lazy(
   () => import('@/routes/protectedRoutes/doctorProtectedRoute')
 );
 
-const CheckoutSuccess = lazy(
-  () => import('@/components/Doctors/CheckoutSuccess')
+const StripeCheckoutSuccess = lazy(
+  () => import('@/components/CheckOutSuccess/StripeSuccess')
+);
+
+const FlutterwaveCheckoutSuccess = lazy(
+  () => import('@/components/CheckOutSuccess/FlutterwaveSuccess')
 );
 
 const Routers = () => {
@@ -52,7 +56,11 @@ const Routers = () => {
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
       </Route>
-      <Route path='/payment-success' element={<CheckoutSuccess />} />
+      <Route path='/payment-success-st' element={<StripeCheckoutSuccess />} />
+      <Route
+        path='/payment-success-fl'
+        element={<FlutterwaveCheckoutSuccess />}
+      />
       <Route path='/contact' element={<Contact />} />
       <Route path='/services' element={<Services />} />
       <Route path='/doctors' element={<Doctor />} />
