@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import MyBookings from './MyBookings';
 import ProfileSettings from './ProfileSettings';
-import { useProfileMe } from '@/Hook/users';
+import { useProfileMe } from '@/Hook/useUsers';
 import Loading from '@/components/Loader';
 import Error from '@/components/Error';
 import { AxiosError } from 'axios';
@@ -11,7 +11,7 @@ import { useLogout } from '@/Hook/auth/userAuth';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { handleAxiosError } from '@/utils/axiosError';
-import { useCutTitle } from '@/Hook/textCut';
+import { useCutTitle } from '@/Hook/useTextCut';
 
 const UserDashboard = () => {
   const user = useAuthStore((state) => state.user);

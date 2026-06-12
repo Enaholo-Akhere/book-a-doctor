@@ -1,5 +1,5 @@
 import ForgotPasswordComp from '@/components/ForgotPassword';
-import { usePageTitle } from '@/Hook/title';
+import { usePageTitle } from '@/Hook/useTitle';
 
 const ForgotPassword = () => {
   usePageTitle('Forgot Password - CareConnect');

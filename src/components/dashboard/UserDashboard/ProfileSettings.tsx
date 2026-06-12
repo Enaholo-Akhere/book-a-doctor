@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import HashLoader from 'react-spinners/HashLoader';
-import { useEditUser } from '@/Hook/users';
+import { useEditUser } from '@/Hook/useUsers';
 import { queryClient } from '@/library/provider/reactQuery';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { user } from '@/types/users';

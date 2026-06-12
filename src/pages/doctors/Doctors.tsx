@@ -1,10 +1,10 @@
-import { useGetAllDoctors } from '@/Hook/doctors';
+import { useGetAllDoctors } from '@/Hook/useDoctors';
 import DoctorsComp from '../../components/Doctors';
 import Testimonial from '@/components/Testimonial';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
-import { usePageTitle } from '@/Hook/title';
+import { usePageTitle } from '@/Hook/useTitle';
 
 const Doctors = () => {
   const { register, watch } = useForm({

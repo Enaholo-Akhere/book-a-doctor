@@ -1,22 +1,29 @@
 import { doctorsInterface } from '@/types/doctors.ds';
 import Button from '../Button';
 import { formatTime } from '@/utils/formatDate';
-import { useBookings } from '@/Hook/booking';
+import { useBookingsFlutterwave, useBookingsStripe } from '@/Hook/useDooking';
 import { toast } from 'react-hot-toast';
 import { handleAxiosError } from '@/utils/axiosError';
 import { useAuthStore } from '@/store/authStore';
 import { useNavigate } from 'react-router-dom';
+import { useDollarRate } from '@/Hook/useDollarRate';
 
 const SidePanel = ({ data }: { data: doctorsInterface | undefined }) => {
-  const { mutate, isPending } = useBookings();
+  const { mutate, isPending: sIsPending } = useBookingsStripe();
+  const { mutate: fMutate, isPending: fIsPending } = useBookingsFlutterwave();
+
+  const isPending = sIsPending || fIsPending;
+
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
+
+  const dollarRate = useDollarRate(data?.ticketPrice ?? 0);
 
   const userSet = new Set(user?.appointments);
 
   const disabledButton = data?.appointments?.some((app) => userSet.has(app));
 
-  const handleBooking = () => {
+  const handleBookingStripe = () => {
     mutate(
       { doctorId: data?._id ? data._id : '' },
       {
@@ -34,7 +41,33 @@ const SidePanel = ({ data }: { data: doctorsInterface | undefined }) => {
     );
   };
 
-  const handleBookingFN = () => (user ? handleBooking() : navigate('/login'));
+  const handleBookingFlutterwave = () => {
+    if (data) {
+      fMutate(
+        { email: data.email, amount: dollarRate, name: data.name },
+        {
+          onSuccess: (data) => {
+            console.log('data from flutterwave', data.data.link);
+            if (data.data.link) {
+              window.location.href = data.data.link;
+            } else {
+              toast.error('Failed to create booking session.');
+            }
+          },
+          onError: (error) => {
+            toast.error(handleAxiosError(error));
+          },
+        }
+      );
+    } else {
+      toast.error('Doctor info not found');
+    }
+  };
+
+  // const handleBookingFN = () => (user ? handleBookingStripe() : navigate('/login'));
+
+  const handleBookingFNFlutterwave = () =>
+    user ? handleBookingFlutterwave() : navigate('/login');
 
   return (
     <div className='shadow-xl p-3 lg:p-5 rounded-md '>
@@ -74,7 +107,7 @@ const SidePanel = ({ data }: { data: doctorsInterface | undefined }) => {
               : 'Book Appointment'
         }
         classNameProps='btn px-2 w-full rounded-md py-4 '
-        onClick={handleBookingFN}
+        onClick={handleBookingFNFlutterwave}
         bgColor={`${isPending || disabledButton ? 'bg-gray-500 ' : 'bg-primaryColor'}`}
         disabled={isPending || disabledButton}
       />
