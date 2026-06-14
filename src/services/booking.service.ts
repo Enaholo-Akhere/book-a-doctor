@@ -5,11 +5,21 @@ export const stripeBookingHandler = async ({ doctorId }: { doctorId: string }) =
     return data;
 };
 
-export const getBookingBySession = async (sessionId: string) => {
+export const getBookingBySessionStripe = async (sessionId: string) => {
     const { data } = await api.get(
         `/bookings/session/${sessionId}`,
     );
     return data.booking;
+};
+
+export const getBookingByTransactionFlutterwave = async (transactionId: string) => {
+    if (transactionId) {
+        const { data } = await api.get(
+            `/bookings/flutterwave/verify/?transactionId=${transactionId}`,
+        );
+        return data.data;
+    }
+
 };
 
 export const flutterwaveBookingHandler = async ({ amount, name, email }: { amount: string, name: string, email: string }) => {
