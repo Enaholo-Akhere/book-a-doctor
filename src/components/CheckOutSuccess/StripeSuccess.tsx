@@ -1,4 +1,4 @@
-import { useBookingSession } from '@/Hook/useDooking';
+import { useBookingSessionStripe } from '@/Hook/useBooking';
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 
@@ -93,7 +93,11 @@ const CheckoutSuccess = () => {
   const navigate = useNavigate();
   const sessionId = params.get('session_id');
 
-  const { data: booking, isLoading, isError } = useBookingSession(sessionId);
+  const {
+    data: booking,
+    isLoading,
+    isError,
+  } = useBookingSessionStripe(sessionId);
 
   useEffect(() => {
     const t1 = setTimeout(() => setRingExpand(true), 100);

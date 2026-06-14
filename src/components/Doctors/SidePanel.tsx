@@ -1,7 +1,7 @@
 import { doctorsInterface } from '@/types/doctors.ds';
 import Button from '../Button';
 import { formatTime } from '@/utils/formatDate';
-import { useBookingsFlutterwave, useBookingsStripe } from '@/Hook/useDooking';
+import { useBookingsFlutterwave, useBookingsStripe } from '@/Hook/useBooking';
 import { toast } from 'react-hot-toast';
 import { handleAxiosError } from '@/utils/axiosError';
 import { useAuthStore } from '@/store/authStore';
