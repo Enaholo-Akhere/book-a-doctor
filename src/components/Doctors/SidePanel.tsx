@@ -6,18 +6,23 @@ import { toast } from 'react-hot-toast';
 import { handleAxiosError } from '@/utils/axiosError';
 import { useAuthStore } from '@/store/authStore';
 import { useNavigate } from 'react-router-dom';
-import { useDollarRate } from '@/Hook/useDollarRate';
+// import { useDollarRate } from '@/Hook/useDollarRate';
 
 const SidePanel = ({ data }: { data: doctorsInterface | undefined }) => {
   const { mutate, isPending: sIsPending } = useBookingsStripe();
   const { mutate: fMutate, isPending: fIsPending } = useBookingsFlutterwave();
+  const geolocation = useAuthStore((state) => state.geolocation);
+  console.log('geolocation data from useAuth sTATE', geolocation);
 
   const isPending = sIsPending || fIsPending;
 
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
 
-  const dollarRate = useDollarRate(data?.ticketPrice ?? 0);
+  // const dollarRate = useDollarRate(data?.ticketPrice ?? 0);
+
+  // Ensure numeric arithmetic by coercing possible string values to numbers
+  const tPrice = Number(data?.ticketPrice) * Number(geolocation?.exchangeRate);
 
   const userSet = new Set(user?.appointments);
 
@@ -47,7 +52,7 @@ const SidePanel = ({ data }: { data: doctorsInterface | undefined }) => {
       fMutate(
         {
           email: data.email,
-          amount: dollarRate,
+          amount: tPrice.toString(),
           name: data.name,
           doctorId: data._id,
         },
@@ -80,7 +85,7 @@ const SidePanel = ({ data }: { data: doctorsInterface | undefined }) => {
       <div className='flex items-center justify-between'>
         <p className='text__para mt-0 font-semibold'>Ticket Price</p>
         <span className='text-[16px] leading-7 lg:text-[22px] lg:leading-8 text-headingColor font-bold '>
-          {data?.ticketPrice} USD
+          {tPrice} {geolocation?.currency}
         </span>
       </div>
       <div className='mt-[30px] '>

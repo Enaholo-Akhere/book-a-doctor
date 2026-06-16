@@ -16,17 +16,26 @@ interface User {
     _id: string;
 }
 
+interface geolocationInterface {
+    provider: string;
+    currency: string;
+    ip: string;
+    exchangeRate: number;
+    countryCode: string
+}
 
 interface AuthState {
     user: User | null;
     token: string | null;
     isAuthenticated: boolean;
+    geolocation?: geolocationInterface | null;
 
     setAuth: (user: User, token: string) => void;
     logout: () => void;
     setToken: (token: string) => void;
     updateUser: (user: User) => void;
     updateDoctor: (user: doctorsInterface) => void;
+    setGeolocation: (geolocation: geolocationInterface) => void;
 };
 
 export const useAuthStore = create<AuthState>()(
@@ -35,12 +44,17 @@ export const useAuthStore = create<AuthState>()(
             user: null,
             token: null,
             isAuthenticated: false,
+            geolocation: null,
 
             setAuth: (user: User, token: string) =>
                 set({
                     user,
                     token,
                     isAuthenticated: true,
+                }),
+            setGeolocation: (geolocation: geolocationInterface) =>
+                set({
+                    geolocation,
                 }),
             setToken: (token: string) =>
                 set((state) => ({
