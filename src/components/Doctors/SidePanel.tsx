@@ -43,13 +43,19 @@ const SidePanel = ({ data }: { data: doctorsInterface | undefined }) => {
 
   const handleBookingFlutterwave = () => {
     if (data) {
+      console.log('doctor id', data._id);
       fMutate(
-        { email: data.email, amount: dollarRate, name: data.name },
         {
-          onSuccess: (data) => {
-            console.log('data from flutterwave', data.data.link);
-            if (data.data.link) {
-              window.location.href = data.data.link;
+          email: data.email,
+          amount: dollarRate,
+          name: data.name,
+          doctorId: data._id,
+        },
+        {
+          onSuccess: (resp) => {
+            console.log('data from flutterwave', resp.data);
+            if (resp.data.link) {
+              window.location.href = resp.data.link;
             } else {
               toast.error('Failed to create booking session.');
             }

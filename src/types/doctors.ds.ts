@@ -43,6 +43,7 @@ export interface appointments {
     photo: { imageUrl: string };
     _id: string;
     status: 'approved' | 'pending' | 'cancelled';
+    paymentPlatform: string;
 
 }
 export interface doctorsInterface {
