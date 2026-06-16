@@ -1,6 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import { useBookingTransactionFlutterwave } from '@/Hook/useBooking';
 import Loading from '../Loader';
+import Button from '../Button';
 
 const PaymentSuccessPage = () => {
   const [searchParams] = useSearchParams();
@@ -63,13 +64,14 @@ const PaymentSuccessPage = () => {
             }
           />
         </div>
-
-        <button
-          onClick={() => (window.location.href = '/bookings')}
-          className='w-full mt-6 bg-gray-900 text-white font-medium py-2.5 rounded-lg'
-        >
-          Go to my bookings
-        </button>
+        <Button
+          title='Go to my bookings'
+          onClick={() => (window.location.href = '/users/profile/me')}
+          bgColor='bg-gray-900'
+          txtColor='text-white'
+          bgHover='hover:bg-gray-600'
+          classNameProps='w-full mt-6 font-medium py-2.5 rounded-lg  '
+        />
       </div>
     );
   }
