@@ -124,7 +124,8 @@ const BookingDetails = ({
   onBack,
   tabState,
 }: BookingDetailsProps) => {
-  const { _id, doctor, user, isPaid, ticketPrice, status } = appointment;
+  const { _id, doctor, user, isPaid, ticketPrice, status, paymentPlatform } =
+    appointment;
 
   return (
     <div className='w-full mx-auto px-5'>
@@ -242,7 +243,7 @@ const BookingDetails = ({
             </p>
             <span className='inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200'>
               <CreditCard size={11} />
-              Stripe
+              {paymentPlatform === 'flw' ? 'Flutterwave' : 'Stripe'}
             </span>
           </div>
         </div>

@@ -12,17 +12,17 @@ export const getBookingBySessionStripe = async (sessionId: string) => {
     return data.booking;
 };
 
-export const getBookingByTransactionFlutterwave = async (transactionId: string) => {
+export const getBookingByTransactionFlutterwave = async (transactionId: string, doctorId: string) => {
     if (transactionId) {
         const { data } = await api.get(
-            `/bookings/flutterwave/verify/?transactionId=${transactionId}`,
+            `/bookings/flutterwave/verify/${doctorId}/?transactionId=${transactionId}`,
         );
         return data.data;
     }
 
 };
 
-export const flutterwaveBookingHandler = async ({ amount, name, email }: { amount: string, name: string, email: string }) => {
-    const { data } = await api.post('/bookings/flutterwave', { amount, email, name });
-    return data;
+export const flutterwaveBookingHandler = async ({ amount, name, email, doctorId }: { doctorId: string; amount: string, name: string, email: string }) => {
+    const { data } = await api.post(`/bookings/flutterwave/${doctorId}`, { amount, email, name });
+    return data.data;
 };

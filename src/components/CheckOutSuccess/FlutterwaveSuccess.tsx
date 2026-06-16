@@ -4,9 +4,12 @@ import Loading from '../Loader';
 
 const PaymentSuccessPage = () => {
   const [searchParams] = useSearchParams();
-  const transactionId = searchParams.get('transaction_id');
-  const { isLoading, data, isError } =
-    useBookingTransactionFlutterwave(transactionId);
+  const transactionId = searchParams.get('transaction_id') || '';
+  const doctorId = searchParams.get('doctorId') || '';
+  const { isLoading, data, isError } = useBookingTransactionFlutterwave(
+    transactionId,
+    doctorId
+  );
 
   if (isLoading) {
     return (
