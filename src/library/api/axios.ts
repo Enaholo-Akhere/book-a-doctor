@@ -1,10 +1,9 @@
-import axios, { InternalAxiosRequestConfig } from 'axios'
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios'
 import { useAuthStore } from '@/store/authStore'
 
 const prodURL = import.meta.env.VITE_PROD_BASE_URL
 const devURL = import.meta.env.VITE_DEV_BASE_URL
 const baseUrl = import.meta.env.MODE === 'production' ? prodURL : devURL
-console.log('prodUrl', baseUrl);
 
 export const api = axios.create({
     baseURL: baseUrl,
@@ -83,8 +82,9 @@ api.interceptors.response.use(
                 originalRequest.headers['authorization'] = `Bearer ${newToken}`;
                 processQueue(null, newToken);
                 return api(originalRequest);
-            } catch (err: any) {
-                console.log('🔴 Refresh failed:', err.response?.status, err.response?.data);
+            } catch (err: unknown) {
+                const axiosError = err as AxiosError;
+                console.log('🔴 Refresh failed:', axiosError.response?.status, axiosError.response?.data);
                 processQueue(err, null);
                 useAuthStore.getState().logout();
                 return Promise.reject(err);
