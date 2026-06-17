@@ -28,22 +28,22 @@ const SidePanel = ({ data }: { data: doctorsInterface }) => {
   useEffect(() => {
     setIsLoading(true);
     if (geolocation) {
+      const tPrice = data.ticketPrice * geolocation.exchangeRate;
+      setPrice(tPrice);
       console.log(
         'exch rate:',
         geolocation.exchangeRate,
         'code:',
         geolocation.countryCode,
         'currency:',
-        geolocation.currency
+        geolocation.currency,
+        'price:',
+        tPrice
       );
-      const tPrice = data.ticketPrice * geolocation.exchangeRate;
-      setPrice(tPrice);
     }
 
     setIsLoading(false);
   }, [data.ticketPrice, geolocation]);
-
-  console.log('price:', price, 'isLoading:', isLoading);
 
   const userSet = new Set(user?.appointments);
 
