@@ -1,4 +1,4 @@
-import useCountUp from '@/Hook/auth/useCountUp';
+import useCountUp from '@/Hook/useCountUp';
 
 const StatItem = ({
   target,
