@@ -61,7 +61,7 @@ export interface doctorsInterface {
     about: string;
     phone: string;
     email: string;
-    ticketPrice: string;
+    ticketPrice: number;
     appointments: appointments[];
     qualifications: qualifications[];
     experiences: experiences[];
