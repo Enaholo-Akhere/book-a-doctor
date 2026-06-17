@@ -8,7 +8,6 @@ import { useAuthStore } from '@/store/authStore';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Loading from '../Loader';
-// import { useDollarRate } from '@/Hook/useDollarRate';
 
 const SidePanel = ({ data }: { data: doctorsInterface }) => {
   const { mutate, isPending: sIsPending } = useBookingsStripe();
@@ -22,8 +21,6 @@ const SidePanel = ({ data }: { data: doctorsInterface }) => {
 
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
-
-  // const dollarRate = useDollarRate(data?.ticketPrice ?? 0);
 
   useEffect(() => {
     setIsLoading(true);
