@@ -22,7 +22,7 @@ export const getBookingByTransactionFlutterwave = async (transactionId: string, 
 
 };
 
-export const flutterwaveBookingHandler = async ({ amount, name, email, doctorId }: { doctorId: string; amount: string, name: string, email: string }) => {
+export const flutterwaveBookingHandler = async ({ amount, name, email, doctorId }: { doctorId: string; amount: number, name: string, email: string }) => {
     const { data } = await api.post(`/bookings/flutterwave/${doctorId}`, { amount, email, name });
     return data.data;
 };
