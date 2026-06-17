@@ -8,6 +8,7 @@ import { useAuthStore } from '@/store/authStore';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Loading from '../Loader';
+import { formatCurrency } from '@/utils/formartCurrency';
 
 const SidePanel = ({ data }: { data: doctorsInterface }) => {
   const { mutate, isPending: sIsPending } = useBookingsStripe();
@@ -105,7 +106,8 @@ const SidePanel = ({ data }: { data: doctorsInterface }) => {
           <div className='flex items-center justify-between'>
             <p className='text__para mt-0 font-semibold'>Ticket Price</p>
             <span className='text-[16px] leading-7 lg:text-[22px] lg:leading-8 text-headingColor font-bold '>
-              {price} {geolocation?.currency}
+              {formatCurrency(price, geolocation.currency)}{' '}
+              {geolocation?.currency}
             </span>
           </div>
           <div className='mt-[30px] '>
