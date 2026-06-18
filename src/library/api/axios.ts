@@ -75,30 +75,7 @@
 //                 const id = useAuthStore.getState().user?._id;
 //                 console.log('🟡 Refreshing for user');
 
-//                 const { data } = await refreshApi.post(`/auth/refresh-token/${id}`, null);
-//                 console.log('🟢 Refresh successful, new token:', data);
-
-//                 const newToken = data.token;
-//                 useAuthStore.getState().setToken(newToken);
-//                 originalRequest.headers['authorization'] = `Bearer ${newToken}`;
-//                 processQueue(null, newToken);
-//                 return api(originalRequest);
-//             } catch (err: any) {
-//                 console.log('🔴 Refresh failed:', err.response?.status, err.response?.data);
-//                 processQueue(err, null);
-//                 useAuthStore.getState().logout();
-//                 return Promise.reject(err);
-//             } finally {
-//                 isRefreshing = false;
-//             }
-//         }
-
-//         console.log('🔴 Not a 401, skipping refresh. Status:', error.response?.status);
-//         return Promise.reject(error);
-//     }
-// );
-
-// src/api/axios.ts
+//                 const { data } = await refreshApi.po
 
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { useAuthStore } from '@/store/authStore';
