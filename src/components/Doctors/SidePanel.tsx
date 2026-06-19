@@ -14,7 +14,6 @@ const SidePanel = ({ data }: { data: doctorsInterface }) => {
   const { mutate, isPending: sIsPending } = useBookingsStripe();
   const { mutate: fMutate, isPending: fIsPending } = useBookingsFlutterwave();
   const geolocation = useAuthStore((state) => state.geolocation);
-  console.log('geolocation data from useAuth sTATE', geolocation);
 
   const isPending = sIsPending || fIsPending;
 
@@ -46,7 +45,6 @@ const SidePanel = ({ data }: { data: doctorsInterface }) => {
 
   const handleBookingFlutterwave = () => {
     if (data) {
-      console.log('doctor id', data._id);
       fMutate(
         {
           email: data.email,
@@ -56,7 +54,6 @@ const SidePanel = ({ data }: { data: doctorsInterface }) => {
         },
         {
           onSuccess: (resp) => {
-            console.log('data from flutterwave', resp.data);
             if (resp.data.link) {
               window.location.href = resp.data.link;
             } else {

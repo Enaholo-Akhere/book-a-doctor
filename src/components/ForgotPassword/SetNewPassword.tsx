@@ -16,8 +16,7 @@ const SetNewPasswordComp = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
   const id = searchParams.get('id');
-  console.log('id', id);
-  console.log('token', token);
+
   const [showCheckPassword, setShowCheckPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -42,7 +41,6 @@ const SetNewPasswordComp = () => {
       { password: data.password, token, id },
       {
         onSuccess: (res) => {
-          console.log(res);
           toast.success(res.message);
           navigate('/login');
         },

@@ -28,7 +28,6 @@ export const forgotPassword = async (payload: forgotPasswordType) => {
 };
 
 export const setPassword = async (payload: setPasswordPayload) => {
-    console.log('payload', payload);
     const { data } = await api.post(`/auth/set-password/?id=${payload.id}&token=${payload.token}`, { password: payload.password });
     return data;
 };
