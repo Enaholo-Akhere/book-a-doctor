@@ -18,7 +18,9 @@ const SidePanel = ({ data }: { data: doctorsInterface }) => {
   const isPending = sIsPending || fIsPending;
 
   const user = useAuthStore((state) => state.user);
+
   const navigate = useNavigate();
+
   const { price, isLoading } = useAmount(data.ticketPrice);
 
   const userSet = new Set(user?.appointments);
@@ -70,7 +72,8 @@ const SidePanel = ({ data }: { data: doctorsInterface }) => {
     }
   };
 
-  // const handleBookingFN = () => (user ? handleBookingStripe() : navigate('/login'));
+  const handleBookingFNStripe = () =>
+    user ? handleBookingStripe() : navigate('/login');
 
   const handleBookingFNFlutterwave = () =>
     user ? handleBookingFlutterwave() : navigate('/login');
@@ -115,7 +118,11 @@ const SidePanel = ({ data }: { data: doctorsInterface }) => {
                   : 'Book Appointment'
             }
             classNameProps='btn px-2 w-full rounded-md py-4 '
-            onClick={handleBookingFNFlutterwave}
+            onClick={
+              geolocation?.provider === 'stp'
+                ? handleBookingFNStripe
+                : handleBookingFNFlutterwave
+            }
             bgColor={`${isPending || disabledButton ? 'bg-gray-500 ' : 'bg-primaryColor'}`}
             disabled={isPending || disabledButton}
           />
