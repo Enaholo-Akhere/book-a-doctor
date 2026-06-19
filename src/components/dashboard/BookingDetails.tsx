@@ -7,6 +7,9 @@ import {
 } from 'lucide-react';
 import { appointments } from '@/types/doctors.ds';
 import { formatTime } from '@/utils/formatDate';
+import { useAmount } from '@/Hook/useAmount';
+import { formatCurrency } from '@/utils/formartCurrency';
+import { useAuthStore } from '@/store/authStore';
 
 interface BookingDetailsProps {
   appointment: appointments;
@@ -127,6 +130,9 @@ const BookingDetails = ({
   const { _id, doctor, user, isPaid, ticketPrice, status, paymentPlatform } =
     appointment;
 
+  const { price } = useAmount(Number(ticketPrice));
+  const geolocation = useAuthStore((state) => state.geolocation);
+
   return (
     <div className='w-full mx-auto px-5'>
       {/* Back button */}
@@ -234,7 +240,7 @@ const BookingDetails = ({
               Ticket price
             </p>
             <p className='text-2xl font-semibold text-gray-900'>
-              ${ticketPrice}
+              {formatCurrency(price, geolocation?.currency ?? 'USD')}
             </p>
           </div>
           <div className='text-right'>

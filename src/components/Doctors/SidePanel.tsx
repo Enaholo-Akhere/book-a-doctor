@@ -6,42 +6,21 @@ import { toast } from 'react-hot-toast';
 import { handleAxiosError } from '@/utils/axiosError';
 import { useAuthStore } from '@/store/authStore';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import Loading from '../Loader';
 import { formatCurrency } from '@/utils/formartCurrency';
+import { useAmount } from '@/Hook/useAmount';
 
 const SidePanel = ({ data }: { data: doctorsInterface }) => {
   const { mutate, isPending: sIsPending } = useBookingsStripe();
   const { mutate: fMutate, isPending: fIsPending } = useBookingsFlutterwave();
   const geolocation = useAuthStore((state) => state.geolocation);
   console.log('geolocation data from useAuth sTATE', geolocation);
-  const [price, setPrice] = useState<number>(1);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const isPending = sIsPending || fIsPending;
 
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setIsLoading(true);
-    if (geolocation) {
-      const tPrice = data.ticketPrice * geolocation.exchangeRate;
-      setPrice(tPrice);
-      console.log(
-        'exch rate:',
-        geolocation.exchangeRate,
-        'code:',
-        geolocation.countryCode,
-        'currency:',
-        geolocation.currency,
-        'price:',
-        tPrice
-      );
-    }
-
-    setIsLoading(false);
-  }, [data.ticketPrice, geolocation]);
+  const { price, isLoading } = useAmount(data.ticketPrice);
 
   const userSet = new Set(user?.appointments);
 

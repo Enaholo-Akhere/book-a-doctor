@@ -16,7 +16,7 @@ interface User {
     _id: string;
 }
 
-interface geolocationInterface {
+export interface geolocationInterface {
     provider: string;
     currency: string;
     ip: string;
