@@ -14,7 +14,6 @@ const SidePanel = ({ data }: { data: doctorsInterface }) => {
   const { mutate, isPending: sIsPending } = useBookingsStripe();
   const { mutate: fMutate, isPending: fIsPending } = useBookingsFlutterwave();
   const geolocation = useAuthStore((state) => state.geolocation);
-  console.log('geolocation data from useAuth sTATE', geolocation);
 
   const isPending = sIsPending || fIsPending;
 
