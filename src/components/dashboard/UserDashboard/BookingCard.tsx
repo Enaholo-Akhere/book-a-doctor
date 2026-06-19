@@ -1,6 +1,9 @@
 import { Calendar, ShieldCheck, CheckCircle, ArrowRight } from 'lucide-react';
 import { appointments } from '@/types/doctors.ds';
 import { formatDate } from '@/utils/formatDate';
+import { useAmount } from '@/Hook/useAmount';
+import { useAuthStore } from '@/store/authStore';
+import { formatCurrency } from '@/utils/formartCurrency';
 
 interface BookingCardProps {
   appointment: appointments;
@@ -69,6 +72,9 @@ export default function BookingCard({
     setBookingDetails(appointment);
   };
 
+  const { price } = useAmount(Number(ticketPrice));
+  const geolocation = useAuthStore((state) => state.geolocation);
+
   return (
     <div className='bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-gray-200 transition-all duration-200 p-5'>
       {/* Doctor row */}
@@ -111,7 +117,9 @@ export default function BookingCard({
           <p className='text-[11px] font-medium text-gray-400 uppercase tracking-widest mb-0.5'>
             Ticket price
           </p>
-          <p className='text-2xl font-semibold text-gray-900'>${ticketPrice}</p>
+          <p className='text-2xl font-semibold text-gray-900'>
+            {formatCurrency(price, geolocation?.currency ?? 'USD')}
+          </p>
         </div>
         <div className='text-right'>
           <p className='text-[11px] font-medium text-gray-400 uppercase tracking-widest mb-0.5'>

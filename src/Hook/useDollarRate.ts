@@ -7,7 +7,8 @@ const getUsdToNgnRate = async (): Promise<number> => {
 };
 
 export const useDollarRate = (amount: number | string) => {
-  const [dollarRate, setDollarRate] = useState<number>(0.00)
+  const [dollarRate, setDollarRate] = useState<number>(0.00);
+
   useEffect(() => {
     async function fetchRate() {
       const rate = await getUsdToNgnRate();
