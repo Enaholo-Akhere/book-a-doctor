@@ -47,6 +47,29 @@ api.interceptors.response.use((response) => response, async (error: AxiosError) 
     const originalRequest = error.config as AxiosRequestWithRetry;
     if (!originalRequest) return Promise.reject(error);
 
+        return Promise.reject(error);
+    };
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+
+        try {
+            const id = useAuthStore.getState().user?._id;
+            console.log('🟡 Refreshing for user');
+
+            const { data } = await refreshApi.post(`/auth/refresh-token/${id}`, null);
+            console.log('🟢 Refresh successful, new token:', data);
+
+            const newToken = data.token;
+            useAuthStore.getState().setToken(newToken);
+
+
+            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+
+            return api(originalRequest);
+        } catch (error) {
+            console.log('error', error);
+            useAuthStore.getState().logout();
 
     if (error.response?.status === 401 && !originalRequest._retry) {
 
