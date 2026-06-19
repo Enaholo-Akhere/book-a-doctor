@@ -79,9 +79,9 @@ api.interceptors.response.use((response) => response, async (error: AxiosError) 
             processQueue(error, null);
 
 
-            // useAuthStore.getState().logout();
+            useAuthStore.getState().logout();
 
-            // window.location.href = "/login";
+            window.location.href = "/login";
 
             return Promise.reject(error);
         } finally {
@@ -95,15 +95,15 @@ api.interceptors.response.use((response) => response, async (error: AxiosError) 
 
             console.log('i got here line 97')
 
-            // useAuthStore.getState().logout();
-            // window.location.href = '/login';
+            useAuthStore.getState().logout();
+            window.location.href = '/login';
         } else {
 
             console.log('i got here line 96')
 
-            // await refreshApi.put('/auth/logout');
-            // useAuthStore.getState().logout();
-            // window.location.href = '/login';
+            await refreshApi.put('/auth/logout');
+            useAuthStore.getState().logout();
+            window.location.href = '/login';
         }
 
 
