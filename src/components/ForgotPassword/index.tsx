@@ -20,7 +20,6 @@ const ForgotPasswordComp = () => {
   const submitHandler = (data: forgotPasswordType) => {
     mutate(data, {
       onSuccess: (res) => {
-        console.log(res);
         toast.success(res.message);
       },
       onError: (error) => {

@@ -28,7 +28,6 @@ const AppointmentsTable = ({
   );
 
   const handleBookingDetails = (a: appointments) => {
-    console.log('Viewing details for appointment:', a);
     setShowTable('bookings');
     setSelectedAppointment(a);
   };
