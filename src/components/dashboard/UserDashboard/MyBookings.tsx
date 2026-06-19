@@ -39,7 +39,7 @@ const MyBookings = ({ user }: { user: user }) => {
             />
           )}
           {viewingAppointment === 'bookings' && (
-            <div className='grid md:grid-cols-2 gap-5 mt-5 rounded-lg p-5'>
+            <div className='grid lg:grid-cols-2 gap-5 mt-5 rounded-lg p-5'>
               {user.appointments.map((appointment) => (
                 <div key={appointment._id}>
                   <BookingCard
