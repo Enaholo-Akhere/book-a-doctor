@@ -2,7 +2,6 @@ import { Calendar, ShieldCheck, CheckCircle, ArrowRight } from 'lucide-react';
 import { appointments } from '@/types/doctors.ds';
 import { formatDate } from '@/utils/formatDate';
 import { useAmount } from '@/Hook/useAmount';
-import { useAuthStore } from '@/store/authStore';
 import { formatCurrency } from '@/utils/formartCurrency';
 
 interface BookingCardProps {
@@ -65,15 +64,14 @@ export default function BookingCard({
   onViewDetails,
   setBookingDetails,
 }: BookingCardProps) {
-  const { doctor, isPaid, ticketPrice, createdAt, status } = appointment;
+  const { doctor, isPaid, paymentDetail, createdAt, status } = appointment;
 
   const handleBookingDetails = () => {
     onViewDetails('details');
     setBookingDetails(appointment);
   };
 
-  const { price } = useAmount(Number(ticketPrice));
-  const geolocation = useAuthStore((state) => state.geolocation);
+  const { price } = useAmount(paymentDetail?.amountPaid);
 
   return (
     <div className='bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-gray-200 transition-all duration-200 p-5'>
@@ -118,7 +116,7 @@ export default function BookingCard({
             Ticket price
           </p>
           <p className='text-2xl font-semibold text-gray-900'>
-            {formatCurrency(price, geolocation?.currency ?? 'USD')}
+            {formatCurrency(price, paymentDetail?.customerCurrency ?? 'USD')}
           </p>
         </div>
         <div className='text-right'>

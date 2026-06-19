@@ -33,6 +33,15 @@ interface doctor {
     timeSlots: timeSlot[];
 
 }
+
+export interface paymentDetailInterface {
+    baseAmount: number;
+    baseCurrency: string;
+    customerCurrency: string;
+    exchangeRate: number;
+    ipAddress: string;
+    amountPaid: number
+}
 export interface appointments {
     ticketPrice: string;
     createdAt: string;
@@ -44,6 +53,7 @@ export interface appointments {
     _id: string;
     status: 'approved' | 'pending' | 'cancelled';
     paymentPlatform: string;
+    paymentDetail: paymentDetailInterface
 
 }
 export interface doctorsInterface {

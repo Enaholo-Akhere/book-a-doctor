@@ -9,7 +9,6 @@ import { appointments } from '@/types/doctors.ds';
 import { formatTime } from '@/utils/formatDate';
 import { useAmount } from '@/Hook/useAmount';
 import { formatCurrency } from '@/utils/formartCurrency';
-import { useAuthStore } from '@/store/authStore';
 
 interface BookingDetailsProps {
   appointment: appointments;
@@ -127,11 +126,10 @@ const BookingDetails = ({
   onBack,
   tabState,
 }: BookingDetailsProps) => {
-  const { _id, doctor, user, isPaid, ticketPrice, status, paymentPlatform } =
+  const { _id, doctor, user, isPaid, status, paymentPlatform, paymentDetail } =
     appointment;
 
-  const { price } = useAmount(Number(ticketPrice));
-  const geolocation = useAuthStore((state) => state.geolocation);
+  const { price } = useAmount(paymentDetail?.amountPaid);
 
   return (
     <div className='w-full mx-auto px-5'>
@@ -240,7 +238,7 @@ const BookingDetails = ({
               Ticket price
             </p>
             <p className='text-2xl font-semibold text-gray-900'>
-              {formatCurrency(price, geolocation?.currency ?? 'USD')}
+              {formatCurrency(price, paymentDetail?.customerCurrency ?? 'USD')}
             </p>
           </div>
           <div className='text-right'>

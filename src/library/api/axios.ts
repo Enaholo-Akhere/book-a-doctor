@@ -73,12 +73,15 @@ api.interceptors.response.use((response) => response, async (error: AxiosError) 
             processQueue(null, newToken);
             return api(originalRequest);
         } catch (error) {
+
+            console.log('i got here line 77', error)
+
             processQueue(error, null);
 
 
-            useAuthStore.getState().logout();
+            // useAuthStore.getState().logout();
 
-            window.location.href = "/login";
+            // window.location.href = "/login";
 
             return Promise.reject(error);
         } finally {
@@ -89,13 +92,18 @@ api.interceptors.response.use((response) => response, async (error: AxiosError) 
     if (error.response?.status === 403) {
 
         if (handleAxiosError(error) === "Cannot verify user") {
-            useAuthStore.getState().logout();
-            window.location.href = '/login';
+
+            console.log('i got here line 97')
+
+            // useAuthStore.getState().logout();
+            // window.location.href = '/login';
         } else {
 
-            await refreshApi.put('/auth/logout');
-            useAuthStore.getState().logout();
-            window.location.href = '/login';
+            console.log('i got here line 96')
+
+            // await refreshApi.put('/auth/logout');
+            // useAuthStore.getState().logout();
+            // window.location.href = '/login';
         }
 
 
