@@ -31,7 +31,7 @@ const ParallaxSection = () => {
           inset: 0,
           y,
           height: '160%',
-          top: '-30%',
+          top: '-20%',
         }}
       >
         <img
