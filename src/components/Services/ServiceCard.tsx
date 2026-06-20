@@ -1,18 +1,9 @@
+import { Service } from '@/assets/data/services';
 import { BsArrowRight } from 'react-icons/bs';
 import { Link, useLocation } from 'react-router-dom';
 
-interface ServiceCardProps {
-  item: {
-    name: string;
-    desc: string;
-    bgColor: string;
-    textColor: string;
-  };
-  index: number;
-}
-
-const ServiceCard = ({ item, index }: ServiceCardProps) => {
-  const { name, desc, bgColor, textColor } = item;
+const ServiceCard = ({ item }: { item: Service }) => {
+  const { name, desc, bgColor, textColor, id } = item;
   const { pathname } = useLocation();
   const pn = pathname === '/services';
   return (
@@ -20,6 +11,8 @@ const ServiceCard = ({ item, index }: ServiceCardProps) => {
       className={`${
         pn ? 'py-[0px]' : 'py-[30px]'
       } px-3 lg:px-5 flex flex-col justify-between gap-2`}
+      data-aos='fade-up'
+      data-aos-delay={200 * item.id}
     >
       <h2 className='text-[26px] leading-9 text-headingColor font-[700] '>
         {name}
@@ -42,7 +35,7 @@ const ServiceCard = ({ item, index }: ServiceCardProps) => {
             borderRadius: '6px 0 0 6px',
           }}
         >
-          {index + 1}
+          {id}
         </span>
       </div>
     </div>

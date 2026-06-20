@@ -12,8 +12,8 @@ const ServiceList = () => {
         pn ? 'mt-[0px] lg:mt-[0px]' : 'mt-[30px] lg:mt-[55px]'
       } `}
     >
-      {services.map((item, index) => (
-        <ServiceCard item={item} index={index} key={index} />
+      {services.map((item) => (
+        <ServiceCard item={item} key={item.id} />
       ))}
     </div>
   );
