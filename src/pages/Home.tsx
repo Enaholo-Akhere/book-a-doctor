@@ -9,17 +9,21 @@ import Testimonial from '../components/Testimonial';
 import { useGetAllDoctors } from '@/Hook/useDoctors';
 import { AxiosError } from 'axios';
 import FadeInSection from '@/components/Motions/motion';
+import ParallaxSection from '@/components/Home/ParallaxSection/Parallax';
 
 const Home = () => {
   const { isLoading, isError, data, error } = useGetAllDoctors('');
   return (
     <>
       {/*======== hero section here ========*/}
+
       <FadeInSection>
         <Hero />
       </FadeInSection>
       {/* ======== Get in Touch section  ======== */}
       <GetInTouch />
+
+      <ParallaxSection />
 
       {/* ======== About section ======== */}
       <About />
