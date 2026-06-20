@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom';
 import DoctorsList from './DoctorsList';
 import { doctorsInterface } from '@/types/doctors.ds';
 import { AxiosError } from 'axios';
+import FadeInSection from '../Motions/motion';
 
 const DoctorsComp = ({
   title,
@@ -21,18 +22,20 @@ const DoctorsComp = ({
   const { pathname } = useLocation();
   const pn = pathname === '/doctors';
   return (
-    <section>
-      <div className='container'>
-        <div className={` mx-auto ${pn ? 'mb-[-100px]' : 'mb-[50px]'}`}>
-          <h2 className='heading text-center'>{title}</h2>
-          <p className='text__para text-center'>{subtitle}</p>
+    <FadeInSection>
+      <section>
+        <div className='container'>
+          <div className={` mx-auto ${pn ? 'mb-[-100px]' : 'mb-[50px]'}`}>
+            <h2 className='heading text-center'>{title}</h2>
+            <p className='text__para text-center'>{subtitle}</p>
+          </div>
+          <DoctorsList
+            doctorListDetails={{ isLoading, isError, data, error }}
+            url='/doctors'
+          />
         </div>
-        <DoctorsList
-          doctorListDetails={{ isLoading, isError, data, error }}
-          url='/doctors'
-        />
-      </div>
-    </section>
+      </section>
+    </FadeInSection>
   );
 };
 

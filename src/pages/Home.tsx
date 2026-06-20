@@ -8,14 +8,16 @@ import DoctorsHome from '../components/Doctors';
 import Testimonial from '../components/Testimonial';
 import { useGetAllDoctors } from '@/Hook/useDoctors';
 import { AxiosError } from 'axios';
+import FadeInSection from '@/components/Motions/motion';
 
 const Home = () => {
   const { isLoading, isError, data, error } = useGetAllDoctors('');
   return (
     <>
       {/*======== hero section here ========*/}
-      <Hero />
-
+      <FadeInSection>
+        <Hero />
+      </FadeInSection>
       {/* ======== Get in Touch section  ======== */}
       <GetInTouch />
 

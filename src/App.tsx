@@ -3,6 +3,8 @@ import Layout from './layout/Layout';
 import { BrowserRouter } from 'react-router-dom';
 import { useGeolocation } from './Hook/useGeoLocation';
 import { useAuthStore } from './store/authStore';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const App = () => {
   const { setGeolocation } = useAuthStore();
@@ -19,6 +21,15 @@ const App = () => {
       });
     }
   }, [data, isError, isLoading, setGeolocation]);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 700,
+      once: true,
+      offset: 100,
+      easing: 'ease-out-cubic',
+    });
+  }, []);
 
   return (
     <BrowserRouter>
