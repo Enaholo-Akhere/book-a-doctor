@@ -11,12 +11,11 @@ import {
   sectionViewport,
 } from '@/components/Motions/flexMotion';
 
-const About = () => {
+const Recognition = (): React.JSX.Element => {
   return (
     <section>
       <div className='container'>
         <div className='flex justify-between gap-[80px] xl:gap-0 flex-col lg:flex-row items-center'>
-          {/* image side */}
           <MotionDiv
             initial='hidden'
             whileInView='show'
@@ -32,13 +31,12 @@ const About = () => {
               whileInView='show'
               viewport={sectionViewport}
               variants={cardImageVariant}
-              className='absolute z-20 left-[200px] bottom-[20px] w-[200px] sm:left-[370px] sm:bottom-[60px] sm:w-[200px] md:left-[450px] md:bottom-[100px] md:w-[250px] lg:left-[260px] lg:bottom-[60px] lg:w-[200px] xl:left-[350px] xl:bottom-[50px] xl:w-[250px] 2xl:left-[430px] 2xl:bottom-[100px] 2xl:w-[300px]'
+              className='absolute z-20 left-[150px] bottom-[20px] w-[180px] sm:left-[370px] sm:bottom-[60px] sm:w-[200px] md:left-[450px] md:bottom-[100px] md:w-[250px] lg:left-[260px] lg:bottom-[60px] lg:w-[200px] xl:left-[350px] xl:bottom-[50px] xl:w-[250px] 2xl:left-[430px] 2xl:bottom-[100px] 2xl:w-[300px]'
             >
               <img src={aboutCardImg} alt='about' className='w-full h-full' />
             </MotionDiv>
           </MotionDiv>
 
-          {/* text side */}
           <MotionDiv
             initial='hidden'
             whileInView='show'
@@ -79,4 +77,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default Recognition;
