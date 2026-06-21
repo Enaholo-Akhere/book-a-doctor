@@ -1,5 +1,5 @@
 import Button from '@/components/Button';
-import heroImage from '@/assets/images/hero-img01.png';
+import heroImage from '@/assets/images/hero-img01.jpg';
 import heroImage2 from '@/assets/images/hero-img02.png';
 import heroImage3 from '@/assets/images/hero-img03.png';
 import StartItem from '@/components/StartItem';
@@ -55,7 +55,11 @@ const Hero = () => {
           </div>
           <div className='flex gap-[30px] lg:justify-end justify-center w-[100%] lg:w-[50%] m-auto'>
             <div className='lg:w-[250px] md:w-[250px] w-[150px] 2xl:w-[350px] '>
-              <img src={heroImage} alt='book a doctor' className='w-full' />
+              <img
+                src={heroImage}
+                alt='book a doctor'
+                className='w-full rounded-xl'
+              />
             </div>
             <div className='mt-[30px] lg:w-[170px] md:w-[200px] w-[100px] 2xl:w-[250px] '>
               <img

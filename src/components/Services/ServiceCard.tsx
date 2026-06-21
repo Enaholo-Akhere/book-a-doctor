@@ -12,7 +12,7 @@ const ServiceCard = ({ item }: { item: Service }) => {
         pn ? 'py-[0px]' : 'py-[30px]'
       } px-3 lg:px-5 flex flex-col justify-between gap-2`}
       data-aos='fade-up'
-      data-aos-delay={200 * item.id}
+      data-aos-delay='200'
     >
       <h2 className='text-[26px] leading-9 text-headingColor font-[700] '>
         {name}

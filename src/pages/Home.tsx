@@ -1,4 +1,4 @@
-import About from '../components/Home/about/About';
+import Recognition from '../components/Home/about/Recognition';
 import Hero from '@/components/Home/Hero/Hero';
 import GetInTouch from '@/components/Home/GetInTouch/GetInTouch';
 import Feature from '@/components/Home/Feature/Feature';
@@ -26,7 +26,7 @@ const Home = () => {
       <ParallaxSection />
 
       {/* ======== About section ======== */}
-      <About />
+      <Recognition />
 
       {/* ======== Services section ======== */}
 
