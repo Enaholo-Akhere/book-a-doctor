@@ -25,7 +25,7 @@ const GetInTouch = () => {
               <div
                 className=' px-2 flex flex-col justify-between items-center py-5 h-full'
                 data-aos='fade-up'
-                data-aos-delay={200 * ms.id}
+                data-aos-delay='200'
               >
                 <div className='mb-10'>
                   <img src={ms.icon} alt='world class doctors' />

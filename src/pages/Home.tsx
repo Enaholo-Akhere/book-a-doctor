@@ -1,4 +1,4 @@
-import Recognition from '../components/Home/about/Recognition';
+import Recognition from '@/components/Home/Recognition';
 import Hero from '@/components/Home/Hero/Hero';
 import GetInTouch from '@/components/Home/GetInTouch/GetInTouch';
 import Feature from '@/components/Home/Feature/Feature';
