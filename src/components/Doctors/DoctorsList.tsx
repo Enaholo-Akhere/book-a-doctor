@@ -48,11 +48,13 @@ const DoctorsList = ({
         data &&
         data?.data?.map((doctor: doctorsInterface) => {
           return (
-            <DoctorCard
-              key={doctor._id}
-              doctor={doctor}
-              url={handleUrlPath(doctor._id)}
-            />
+            <div data-aos='fade-up' data-aos-delay='200'>
+              <DoctorCard
+                key={doctor._id}
+                doctor={doctor}
+                url={handleUrlPath(doctor._id)}
+              />
+            </div>
           );
         })}
     </div>

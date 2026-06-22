@@ -7,7 +7,11 @@ const GetInTouch = () => {
   return (
     <section>
       <div className='container'>
-        <div className='lg:w-[470px] mx-auto mb-[50px]'>
+        <div
+          className='lg:w-[470px] mx-auto mb-[50px]'
+          data-aos='fade-up'
+          data-aos-delay='200'
+        >
           <h2 className='heading text-center'>
             Providing the best medical services
           </h2>
