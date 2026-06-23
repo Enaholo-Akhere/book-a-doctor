@@ -1,6 +1,7 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { useAuthStore } from '@/store/authStore';
 import { handleAxiosError } from "@/utils/axiosError";
+import { refreshToken } from "@/library/api/refreshToken";
 
 const prodURL = import.meta.env.VITE_PROD_BASE_URL
 const devURL = import.meta.env.VITE_DEV_BASE_URL
@@ -11,7 +12,7 @@ export const api = axios.create({
     withCredentials: true,
 });
 
-const refreshApi = axios.create({
+export const refreshApi = axios.create({
     baseURL: baseUrl,
     withCredentials: true,
 })
@@ -63,15 +64,20 @@ api.interceptors.response.use((response) => response, async (error: AxiosError) 
         isRefreshing = true;
 
         try {
-            const { data } = await refreshApi.post('/auth/refresh-token');
+            // const { data } = await refreshApi.post('/auth/refresh-token');
+            console.log(' i got here inside refreshedToken')
 
-            const newToken = data.token;
-            useAuthStore.getState().setToken(newToken);
+            const refreshPromise = await refreshToken();
+
+            console.log('new refreshed token', refreshPromise)
+
+            // const newToken = data.token;
+            // useAuthStore.getState().setToken(newToken);
 
 
-            originalRequest.headers.Authorization = `Bearer ${newToken}`;
-            processQueue(null, newToken);
-            return api(originalRequest);
+            // originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            // processQueue(null, newToken);
+            // return api(originalRequest);
         } catch (error) {
 
             console.log('i got here line 77', error)
