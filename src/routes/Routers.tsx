@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 const Home = lazy(() => import('@/pages/Home'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 const Login = lazy(() => import('@/pages/Login'));
+const Chat = lazy(() => import('@/pages/Chat'));
 const Signup = lazy(() => import('@/pages/Signup'));
 const Contact = lazy(() => import('@/pages/Contact'));
 const Services = lazy(() => import('@/pages/Services'));
@@ -48,9 +49,11 @@ const Routers = () => {
       </Route> */}
       <Route element={<UserProtectedRoute isAllowed={['patient']} />}>
         <Route path='/users/profile/me' element={<MyAccountUser />} />
+        <Route path='/users/chat' element={<Chat />} />
       </Route>
       <Route element={<DoctorProtectedRoute isAllowed={['doctor']} />}>
         <Route path='/dashboard/profile/me' element={<MyAccountDoctor />} />
+        <Route path='/dashboard/chat' element={<Chat />} />
       </Route>
       <Route element={<AuthProtectedRoute />}>
         <Route path='/signup' element={<Signup />} />
