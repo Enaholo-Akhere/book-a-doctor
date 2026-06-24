@@ -64,23 +64,16 @@ api.interceptors.response.use((response) => response, async (error: AxiosError) 
         isRefreshing = true;
 
         try {
-            // const { data } = await refreshApi.post('/auth/refresh-token');
-            console.log(' i got here inside refreshedToken')
 
-            const refreshPromise = await refreshToken();
+            const refreshedToken = await refreshToken();
 
             console.log('new refreshed token', refreshPromise)
 
-            // const newToken = data.token;
-            // useAuthStore.getState().setToken(newToken);
-
-
-            // originalRequest.headers.Authorization = `Bearer ${newToken}`;
-            // processQueue(null, newToken);
-            // return api(originalRequest);
+            originalRequest.headers.Authorization = `Bearer ${refreshedToken}`;
+            processQueue(null, refreshedToken);
+            return api(originalRequest);
         } catch (error) {
 
-            console.log('i got here line 77', error)
 
             processQueue(error, null);
 
@@ -99,14 +92,12 @@ api.interceptors.response.use((response) => response, async (error: AxiosError) 
 
         if (handleAxiosError(error) === "Cannot verify user") {
 
-            console.log('i got here line 97')
 
             useAuthStore.getState().logout();
             window.location.href = '/login';
         } else {
 
             console.log('i got here line 96')
-
             await refreshApi.put('/auth/logout');
             useAuthStore.getState().logout();
             window.location.href = '/login';
