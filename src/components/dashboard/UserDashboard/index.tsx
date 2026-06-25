@@ -42,7 +42,6 @@ const UserDashboard = () => {
   };
 
   const [tab, setTab] = useState<string>('bookings');
-  const [showChat, setShowChat] = useState<boolean>(false);
 
   const errMsg = error as AxiosError;
   const errorData = errMsg?.response?.data as { message?: string };
@@ -52,21 +51,11 @@ const UserDashboard = () => {
       {isError && <Error errorMessage={errorData?.message} />}
       {!isError && !isLoading && data && (
         <>
-          <p
-            className='cursor-pointer'
-            onClick={() => setShowChat((prev) => !prev)}
-          >
-            Chat Doctor
-          </p>
-          <div className='relative'>
-            <div className='absolute right-0 bottom-[100%]'>
-              <div className={`${showChat ? 'block' : 'hidden'}`}>
-                <ChatWindow
-                  currentUserId=''
-                  otherUser={{ id: '3ewdfr', name: 'John Doe' }}
-                />
-              </div>
-            </div>
+          <div className=''>
+            <ChatWindow
+              currentUserId=''
+              otherUser={{ id: '3ewdfr', name: 'John Doe' }}
+            />
           </div>
           <div className='grid md:grid-cols-3 gap-10 '>
             <div className='pb-[50px] px-[30px] rounded-md '>

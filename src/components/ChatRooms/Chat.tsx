@@ -2,6 +2,12 @@
 import { useSocket } from '@/Hook/useSockets';
 import { useEffect, useRef, useState } from 'react';
 import api from '@/library/api/axios';
+import Button from '../Button';
+import { MockMessage } from '@/assets/data/chat-data';
+import chatBg from '@/assets/images/chat-bg.png';
+import { LuCheck } from 'react-icons/lu';
+import { LuCheckCheck } from 'react-icons/lu';
+import { IoMdSend } from 'react-icons/io';
 
 // your configured axios instance
 
@@ -11,15 +17,17 @@ interface Message {
   senderName: string;
   content: string;
   createdAt: string;
+  currentUserId: string;
 }
 
 const ChatWindow = ({
-  currentUserId,
+  // currentUserId,
   otherUser,
 }: {
   currentUserId: string;
   otherUser: { id: string; name: string };
 }) => {
+  const [showChat, setShowChat] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isOtherTyping, setIsOtherTyping] = useState(false);
@@ -79,49 +87,91 @@ const ChatWindow = ({
   };
 
   return (
-    <div className='flex flex-col h-full'>
-      <div className='flex-1 overflow-y-auto p-4 space-y-2'>
-        {messages.map((msg) => (
-          <div
-            key={msg._id}
-            className={`flex ${msg.senderId === currentUserId ? 'justify-end' : 'justify-start'}`}
-          >
-            <div
-              className={`max-w-xs px-4 py-2 rounded-2xl text-sm
-              ${
-                msg.senderId === currentUserId
-                  ? 'bg-teal-700 text-white'
-                  : 'bg-gray-100 text-gray-900'
-              }`}
-            >
-              {msg.content}
+    <div
+      className={`${showChat && 'fixed inset-0 bg-black/30 backdrop-blur-xs'}`}
+    >
+      <div className='max-w-[600px] fixed bottom-0 right-0 z-2 '>
+        <div className='m-4'>
+          <Button
+            title={showChat ? 'Close Chat' : 'Chat Doctor'}
+            onClick={() => setShowChat((prev) => !prev)}
+          />
+        </div>
+        {showChat && (
+          <div className='grid grid-cols-12 gap-4 z'>
+            <div className='col-span-4  z-100 bg-white rounded-xl p-2'>
+              Chat A Doctor
             </div>
-          </div>
-        ))}
-        {isOtherTyping && (
-          <div className='flex justify-start'>
-            <div className='bg-gray-100 px-4 py-2 rounded-2xl text-sm text-gray-500'>
-              {otherUser.name} is typing…
+            <div className='col-span-8'>
+              <div className='flex flex-col h-full'>
+                {/* <div className='flex-1 overflow-y-auto p-4 space-y-2 h-[400px] border-4 border-red-600'> */}
+                <div
+                  className='overflow-y-auto p-4 space-y-2 h-[300px] border-2 border-gray-400 rounded-xl bg-irisBlueColor'
+                  style={{
+                    backgroundImage: `url(${chatBg})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                  }}
+                >
+                  {MockMessage.map((msg, i) => (
+                    <div
+                      key={msg._id}
+                      className={`flex  ${msg.senderId === msg.currentUserId ? 'justify-end' : 'justify-start'}`}
+                    >
+                      <div>
+                        <p
+                          className={`max-w-xs px-4 py-2 rounded-2xl text-sm
+              ${
+                msg.senderId === msg.currentUserId
+                  ? 'bg-irisBlueColor text-white'
+                  : 'bg-primaryColor2 text-white'
+              }`}
+                        >
+                          {msg.content}
+                        </p>
+                        <span className='text-[10px] text-gray-700 flex justify-between'>
+                          <p>
+                            {i % 2 === 0 ? (
+                              <LuCheck size={15} />
+                            ) : (
+                              <LuCheckCheck color='#0d8c81' size={15} />
+                            )}
+                          </p>
+                          <p>{msg.createdAt}</p>
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                  {isOtherTyping && (
+                    <div className='flex justify-start'>
+                      <div className='bg-gray-100 px-4 py-2 rounded-2xl text-sm text-gray-500'>
+                        {otherUser.name} is typing…
+                      </div>
+                    </div>
+                  )}
+                  <div ref={bottomRef} />
+                </div>
+                <div className=' p-2 flex gap-2 z-2'>
+                  <textarea
+                    className='flex-1 border rounded-full px-4 py-2 text-sm
+            outline-none overflow-hidden resize-none bg-white'
+                    value={input}
+                    onChange={handleInput}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                    placeholder='Type a message…'
+                  ></textarea>
+                  <button
+                    onClick={handleSend}
+                    className='bg-teal-700 text-white px-4 py-4 rounded-full m-auto text-sm'
+                  >
+                    <IoMdSend color='white' size={30} />
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         )}
-        <div ref={bottomRef} />
-      </div>
-
-      <div className='border-t p-3 flex gap-2'>
-        <input
-          className='flex-1 border rounded-full px-4 py-2 text-sm outline-none'
-          value={input}
-          onChange={handleInput}
-          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-          placeholder='Type a message…'
-        />
-        <button
-          onClick={handleSend}
-          className='bg-teal-700 text-white px-4 py-2 rounded-full text-sm'
-        >
-          Send
-        </button>
       </div>
     </div>
   );

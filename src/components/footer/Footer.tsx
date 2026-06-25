@@ -11,8 +11,8 @@ import { QuickLinkInterface, SocialLinkInterface } from '@/types/doctors.ds';
 const Footer = () => {
   const year = new Date().getFullYear();
   return (
-    <footer className='pb-16 pt-10 relative '>
-      <div className='absolute w-full m-auto'>
+    <footer className='pb-16 pt-10 '>
+      <div className=' w-full m-auto'>
         <div className='container'>
           <div className='flex justify-between flex-col md:flex-row flex-wrap gap-[35px]'>
             <div className='w-full md:w-[250px] h-full'>

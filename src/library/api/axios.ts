@@ -67,8 +67,6 @@ api.interceptors.response.use((response) => response, async (error: AxiosError) 
 
             const refreshedToken = await refreshToken();
 
-            console.log('new refreshed token', refreshPromise)
-
             originalRequest.headers.Authorization = `Bearer ${refreshedToken}`;
             processQueue(null, refreshedToken);
             return api(originalRequest);
