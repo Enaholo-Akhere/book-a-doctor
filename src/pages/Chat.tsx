@@ -1,4 +1,4 @@
-import ChatWindow from '@/components/ChatRooms/Chat';
+import ChatWindow from '@/components/ChatRooms/ChatWindow';
 import { usePageTitle } from '@/Hook/useTitle';
 
 const Chat = () => {
