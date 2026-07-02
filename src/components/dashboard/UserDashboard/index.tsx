@@ -12,7 +12,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { handleAxiosError } from '@/utils/axiosError';
 import { useCutTitle } from '@/Hook/useTextCut';
-import ChatWindow from '@/components/ChatRooms/Chat';
+import ChatRoom from '@/components/ChatRooms';
 
 const UserDashboard = () => {
   const user = useAuthStore((state) => state.user);
@@ -42,6 +42,8 @@ const UserDashboard = () => {
   };
 
   const [tab, setTab] = useState<string>('bookings');
+  const [showChat, setShowChat] = useState<string>('chatList');
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   const errMsg = error as AxiosError;
   const errorData = errMsg?.response?.data as { message?: string };
@@ -52,9 +54,19 @@ const UserDashboard = () => {
       {!isError && !isLoading && data && (
         <>
           <div className=''>
-            <ChatWindow
-              currentUserId=''
-              otherUser={{ id: '3ewdfr', name: 'John Doe' }}
+            <div className='m-4 fixed bottom-0 right-0'>
+              {!openModal && (
+                <Button
+                  title={openModal ? 'Close Chat' : 'Chat Doctor'}
+                  onClick={() => setOpenModal(true)}
+                />
+              )}
+            </div>
+            <ChatRoom
+              showChat={showChat}
+              setShowChat={setShowChat}
+              openModal={openModal}
+              setOpenModal={setOpenModal}
             />
           </div>
           <div className='grid md:grid-cols-3 gap-10 '>

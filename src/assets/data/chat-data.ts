@@ -21,7 +21,7 @@ export const MockMessage: Message[] = [
         currentUserId: '54321',
     },
     {
-        _id: 'js9sjsyad',
+        _id: 'js9sjsyads',
         senderId: '12345',
         senderName: 'Dessy',
         createdAt: new Date().toLocaleTimeString([], {
@@ -33,14 +33,14 @@ export const MockMessage: Message[] = [
         currentUserId: '12',
     },
     {
-        _id: 'js9sjsyo',
+        _id: 'js9sjsyosDS',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
         content: ' i am not too good',
         currentUserId: '54321',
     }, {
-        _id: 'js9sjsyo',
+        _id: 'js9sjsyoSFAS',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
@@ -48,7 +48,7 @@ export const MockMessage: Message[] = [
         currentUserId: '54321',
     },
     {
-        _id: 'js9sjsyad',
+        _id: 'js9sjsyadFEF',
         senderId: '12345',
         senderName: 'Dessy',
         createdAt: Date.now().toLocaleString(),
@@ -56,14 +56,14 @@ export const MockMessage: Message[] = [
         currentUserId: '12',
     },
     {
-        _id: 'js9sjsyo',
+        _id: 'js9sjsyoF3T23',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
         content: ' i am not too good',
         currentUserId: '54321',
     }, {
-        _id: 'js9sjsyo',
+        _id: 'js9sjsyoKRJ',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
@@ -71,7 +71,7 @@ export const MockMessage: Message[] = [
         currentUserId: '54321',
     },
     {
-        _id: 'js9sjsyad',
+        _id: 'js9sjsyadTFS5',
         senderId: '12345',
         senderName: 'Dessy',
         createdAt: Date.now().toLocaleString(),
@@ -79,14 +79,14 @@ export const MockMessage: Message[] = [
         currentUserId: '12',
     },
     {
-        _id: 'js9sjsyo',
+        _id: 'js9sjsyoFFD4Y',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
         content: ' i am not too good',
         currentUserId: '54321',
     }, {
-        _id: 'js9sjsyo',
+        _id: 'js9sjsyoLKSDF88',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
@@ -94,7 +94,7 @@ export const MockMessage: Message[] = [
         currentUserId: '54321',
     },
     {
-        _id: 'js9sjsyad',
+        _id: 'js9sjsyadJ4',
         senderId: '12345',
         senderName: 'Dessy',
         createdAt: Date.now().toLocaleString(),
@@ -102,14 +102,14 @@ export const MockMessage: Message[] = [
         currentUserId: '12',
     },
     {
-        _id: 'js9sjsyo',
+        _id: 'js9sjsyoGSFG4',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
         content: ' i am not too good',
         currentUserId: '54321',
     }, {
-        _id: 'js9sjsyo',
+        _id: 'js9sjsEGyo',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
@@ -117,7 +117,7 @@ export const MockMessage: Message[] = [
         currentUserId: '54321',
     },
     {
-        _id: 'js9sjsyad',
+        _id: 'js9GAGsjsyad',
         senderId: '12345',
         senderName: 'Dessy',
         createdAt: Date.now().toLocaleString(),
@@ -125,14 +125,14 @@ export const MockMessage: Message[] = [
         currentUserId: '12',
     },
     {
-        _id: 'js9sjsyo',
+        _id: 'js9sDGjsyo',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
         content: ' i am not i am not too good i am not too good too good',
         currentUserId: '54321',
     }, {
-        _id: 'js9sjsyo',
+        _id: 'js9sYRYjsyo',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
@@ -140,7 +140,7 @@ export const MockMessage: Message[] = [
         currentUserId: '54321',
     },
     {
-        _id: 'js9sjsyad',
+        _id: 'js9sjsyHGNSad',
         senderId: '12345',
         senderName: 'Dessy',
         createdAt: Date.now().toLocaleString(),
@@ -148,14 +148,14 @@ export const MockMessage: Message[] = [
         currentUserId: '12',
     },
     {
-        _id: 'js9sjsyo',
+        _id: 'js9sGDFFHjsyo',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
         content: ' i am not too good',
         currentUserId: '54321',
     }, {
-        _id: 'js9sjsyo',
+        _id: 'js9sjsyDBBGo',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
@@ -163,7 +163,7 @@ export const MockMessage: Message[] = [
         currentUserId: '54321',
     },
     {
-        _id: 'js9sjsyad',
+        _id: 'js9sjsyaHTHSH5d',
         senderId: '12345',
         senderName: 'Dessy',
         createdAt: Date.now().toLocaleString(),
@@ -171,14 +171,14 @@ export const MockMessage: Message[] = [
         currentUserId: '12',
     },
     {
-        _id: 'js9sjsyo',
+        _id: 'js9sjsyGHF5YSo',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
         content: ' i am not too good',
         currentUserId: '54321',
     }, {
-        _id: 'js9sjsyo',
+        _id: 'js9sjsySHH5Y35Yo',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
@@ -186,7 +186,7 @@ export const MockMessage: Message[] = [
         currentUserId: '54321',
     },
     {
-        _id: 'js9sjsyad',
+        _id: 'js9sjsyDHXHYYad',
         senderId: '12345',
         senderName: 'Dessy',
         createdAt: Date.now().toLocaleString(),
@@ -194,14 +194,14 @@ export const MockMessage: Message[] = [
         currentUserId: '12',
     },
     {
-        _id: 'js9sjsyo',
+        _id: 'js9sjYDERSRsyo',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
         content: ' i am not too good',
         currentUserId: '54321',
     }, {
-        _id: 'js9sjsyo',
+        _id: 'js9sjsyDFGDG44o',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
@@ -209,7 +209,7 @@ export const MockMessage: Message[] = [
         currentUserId: '54321',
     },
     {
-        _id: 'js9sjsyad',
+        _id: 'js9sjsyaDFG44d',
         senderId: '12345',
         senderName: 'Dessy',
         createdAt: Date.now().toLocaleString(),
@@ -217,7 +217,7 @@ export const MockMessage: Message[] = [
         currentUserId: '12',
     },
     {
-        _id: 'js9sjsyo',
+        _id: 'js9sjsyoSY5YTH',
         senderId: '54321',
         senderName: 'Enaholo',
         createdAt: Date.now().toLocaleString(),
