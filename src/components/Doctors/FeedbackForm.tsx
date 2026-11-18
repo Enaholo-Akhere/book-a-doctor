@@ -12,7 +12,7 @@ import { QUERY_KEYS } from '@/constants/queryKeys';
 
 const FeedbackForm = ({ doctorId }: { doctorId: string }) => {
   const [hover, setHover] = useState<number>(0);
-  const { mutate, isPending, error } = useReviews();
+  const { mutate, isPending } = useReviews();
 
   const {
     register,
@@ -46,8 +46,9 @@ const FeedbackForm = ({ doctorId }: { doctorId: string }) => {
             queryKey: [QUERY_KEYS.ALL_DOCTORS],
           });
         },
-        onError: () => {
+        onError: (error) => {
           toast.error(handleAxiosError(error));
+          reset();
         },
       }
     );

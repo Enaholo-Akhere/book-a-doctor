@@ -5,4 +5,5 @@ export const QUERY_KEYS = {
     DOCTOR_ME: import.meta.env.DOCTOR_ME,
     ALL_DOCTORS: import.meta.env.ALL_DOCTORS,
     DOCTOR_BY_ID: import.meta.env.DOCTOR_BY_ID,
+    ALL_REVIEWS: import.meta.env.ALL_REVIEWS,
 }

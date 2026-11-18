@@ -1,17 +1,19 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { loginSchema, loginType } from '@/utils/authSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useLogin } from '@/Hook/auth/userAuth';
 import toast from 'react-hot-toast';
 import HashLoader from 'react-spinners/HashLoader';
-import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useState } from 'react';
 import { handleAxiosError } from '@/utils/axiosError';
 
 const LoginComp = () => {
   const Navigate = useNavigate();
+  const location = useLocation();
+  // const from = (location.state as { from?: string } | null)?.from ?? '/';
+  const from = (location.state as { from?: string } | null)?.from;
   const { mutate, isPending } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -26,11 +28,19 @@ const LoginComp = () => {
   const submitHandler = (data: loginType) => {
     mutate(data, {
       onSuccess: (res) => {
-        const url =
-          res?.user?.role === 'doctor'
-            ? '/doctors/profile/me'
-            : '/users/profile/me';
-        Navigate(url);
+        // const url =
+        //   res?.user?.role === 'doctor'
+        //     ? '/doctors/profile/me'
+        //     : '/users/profile/me';
+        // Navigate(url, { state: { from } });
+        // // Navigate(from, { replace: true });
+        console.log('location from login line 37', location.state);
+
+        const defaultUrl =
+    res?.user?.role === 'doctor' ? '/doctors/profile/me' : '/users/profile/me';
+
+  const target = from && !from.startsWith('/login') ? from : defaultUrl;
+  Navigate(target, { replace: true });
       },
       onError: (error) => {
         toast.error(handleAxiosError(error));

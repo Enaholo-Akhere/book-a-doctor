@@ -1,13 +1,21 @@
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 // import patientsAvatar from '@/assets/images/patient-avatar.png';
+// @ts-expect-error - Swiper CSS imports are not typed in this project
 import 'swiper/css';
+// @ts-expect-error - Swiper CSS imports are not typed in this project
 import 'swiper/css/pagination';
 import { HiStar } from 'react-icons/hi';
-import { Reviews } from '@/assets/data/reviews';
 import { ReviewInterface } from '@/types/doctors.ds';
+import { useGetReviews } from '@/Hook/useReviews';
 
 const TestimonialSwiper = () => {
+
+  const { data: Reviews, isLoading: reviewLoading } = useGetReviews();
+
+  console.log('Reviews Name', Reviews);
+  console.log('isLoading:', reviewLoading);
+
   return (
     <div className='mt-[30px] lg:mt-[55px]'>
       <Swiper
