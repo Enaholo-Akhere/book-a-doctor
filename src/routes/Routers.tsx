@@ -25,11 +25,8 @@ const MyAccountUser = lazy(
 const MyAccountDoctor = lazy(
   () => import('@/pages/Dashboard/doctorAccount/MyAccount')
 );
-const UserProtectedRoute = lazy(
-  () => import('@/routes/protectedRoutes/userProtectedRoute')
-);
-const DoctorProtectedRoute = lazy(
-  () => import('@/routes/protectedRoutes/doctorProtectedRoute')
+const RoleProtectedRoute = lazy(
+  () => import('@/routes/protectedRoutes/roleProtectedRoute')
 );
 
 const StripeCheckoutSuccess = lazy(
@@ -47,11 +44,11 @@ const Routers = () => {
       {/* <Route element={<DashboardProtectedRoutes />}>
         <Route path='/dashboard' element={<Dashboard />} />
       </Route> */}
-      <Route element={<UserProtectedRoute isAllowed={['patient']} />}>
+      <Route element={<RoleProtectedRoute isAllowed={['patient']} />}>
         <Route path='/users/profile/me' element={<MyAccountUser />} />
         <Route path='/users/chat' element={<Chat />} />
       </Route>
-      <Route element={<DoctorProtectedRoute isAllowed={['doctor']} />}>
+      <Route element={<RoleProtectedRoute isAllowed={['doctor']} />}>
         <Route path='/dashboard/profile/me' element={<MyAccountDoctor />} />
         <Route path='/dashboard/chat' element={<Chat />} />
       </Route>

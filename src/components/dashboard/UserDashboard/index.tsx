@@ -12,7 +12,8 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { handleAxiosError } from '@/utils/axiosError';
 import { useCutTitle } from '@/Hook/useTextCut';
-import ChatRoom from '@/components/ChatRooms';
+import { useChatUIStore } from '@/store/chatUIStore';
+import { useConversations } from '@/Hook/useChat';
 
 const UserDashboard = () => {
   const user = useAuthStore((state) => state.user);
@@ -42,8 +43,10 @@ const UserDashboard = () => {
   };
 
   const [tab, setTab] = useState<string>('bookings');
-  const [showChat, setShowChat] = useState<string>('chatList');
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const isChatOpen = useChatUIStore((s) => s.isOpen);
+  const openChatList = useChatUIStore((s) => s.openList);
+  const { data: conversations } = useConversations();
+  const unread = conversations?.reduce((sum, c) => sum + c.unreadCount, 0) ?? 0;
 
   const errMsg = error as AxiosError;
   const errorData = errMsg?.response?.data as { message?: string };
@@ -55,19 +58,13 @@ const UserDashboard = () => {
         <>
           <div className=''>
             <div className='m-4 fixed bottom-0 right-0'>
-              {!openModal && (
+              {!isChatOpen && (
                 <Button
-                  title={openModal ? 'Close Chat' : 'Chat Doctor'}
-                  onClick={() => setOpenModal(true)}
+                  title={unread ? `Chat Doctor (${unread})` : 'Chat Doctor'}
+                  onClick={openChatList}
                 />
               )}
             </div>
-            <ChatRoom
-              showChat={showChat}
-              setShowChat={setShowChat}
-              openModal={openModal}
-              setOpenModal={setOpenModal}
-            />
           </div>
           <div className='grid md:grid-cols-3 gap-10 '>
             <div className='pb-[50px] px-[30px] rounded-md '>

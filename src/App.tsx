@@ -4,7 +4,17 @@ import { BrowserRouter } from 'react-router-dom';
 import { useGeolocation } from './Hook/useGeoLocation';
 import { useAuthStore } from './store/authStore';
 import AOS from 'aos';
+import SocketProvider from './library/socket/SocketProvider';
+import CallProvider from './components/Call/CallProvider';
+import ChatRoom from './components/ChatRooms';
+import { useChatRealtimeSync } from './Hook/useChat';
 import 'aos/dist/aos.css';
+
+/** Keeps chat caches in sync with socket events, app-wide. */
+const ChatRealtimeSync = () => {
+  useChatRealtimeSync();
+  return null;
+};
 
 const App = () => {
   const { setGeolocation } = useAuthStore();
@@ -33,9 +43,15 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Layout />
-      </Suspense>
+      <SocketProvider>
+        <CallProvider>
+          <ChatRealtimeSync />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Layout />
+          </Suspense>
+          <ChatRoom />
+        </CallProvider>
+      </SocketProvider>
     </BrowserRouter>
   );
 };
