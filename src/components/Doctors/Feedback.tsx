@@ -4,7 +4,7 @@ import { AiFillStar } from 'react-icons/ai';
 import FeedbackForm from './FeedbackForm';
 import { doctorsInterface } from '@/types/doctors.ds';
 import Button from '../Button';
-import { useNavigate } from 'react-router-dom';
+import { useRedirectToLogin } from '@/routes/redirect';
 import { useAuthStore } from '@/store/authStore';
 
 const Feedback = ({ doctorData }: { doctorData: doctorsInterface }) => {
@@ -12,10 +12,10 @@ const Feedback = ({ doctorData }: { doctorData: doctorsInterface }) => {
   const [showFeedbackForm, setShowFeedbackForm] = useState<boolean>(false);
   const user = useAuthStore((state) => state.user);
 
-  const navigate = useNavigate();
+  const redirectToLogin = useRedirectToLogin();
 
   const handleFeedBack = () =>
-    user ? setShowFeedbackForm(true) : navigate('/login');
+    user ? setShowFeedbackForm(true) : redirectToLogin();
 
   return (
     <div>

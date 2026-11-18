@@ -5,7 +5,7 @@ import { useBookingsFlutterwave, useBookingsStripe } from '@/Hook/useBooking';
 import { toast } from 'react-hot-toast';
 import { handleAxiosError } from '@/utils/axiosError';
 import { useAuthStore } from '@/store/authStore';
-import { useNavigate } from 'react-router-dom';
+import { useRedirectToLogin } from '@/routes/redirect';
 import Loading from '../Loader';
 import { formatCurrency } from '@/utils/formartCurrency';
 import { useAmount } from '@/Hook/useAmount';
@@ -19,7 +19,7 @@ const SidePanel = ({ data }: { data: doctorsInterface }) => {
 
   const user = useAuthStore((state) => state.user);
 
-  const navigate = useNavigate();
+  const redirectToLogin = useRedirectToLogin();
 
   const { price, isLoading } = useAmount(data.ticketPrice);
 
@@ -73,10 +73,10 @@ const SidePanel = ({ data }: { data: doctorsInterface }) => {
   };
 
   const handleBookingFNStripe = () =>
-    user ? handleBookingStripe() : navigate('/login');
+    user ? handleBookingStripe() : redirectToLogin();
 
   const handleBookingFNFlutterwave = () =>
-    user ? handleBookingFlutterwave() : navigate('/login');
+    user ? handleBookingFlutterwave() : redirectToLogin();
   return (
     <>
       {isLoading && <Loading />}
