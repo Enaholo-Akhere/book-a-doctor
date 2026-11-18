@@ -10,6 +10,9 @@ import Profile from './Profile';
 import { useAuthStore } from '@/store/authStore';
 import Appointments from './appointments';
 import { handleAxiosError } from '@/utils/axiosError';
+import Button from '@/components/Button';
+import { useChatUIStore } from '@/store/chatUIStore';
+import { useConversations } from '@/Hook/useChat';
 
 const DoctorDashboard = () => {
   const user = useAuthStore((state) => state.user);
@@ -24,11 +27,23 @@ const DoctorDashboard = () => {
   const data: doctorsInterface = userData?.data;
 
   const [tabs, setTabs] = useState('overview');
+  const isChatOpen = useChatUIStore((s) => s.isOpen);
+  const openChatList = useChatUIStore((s) => s.openList);
+  const { data: conversations } = useConversations();
+  const unread = conversations?.reduce((sum, c) => sum + c.unreadCount, 0) ?? 0;
 
   return (
     <div className='max-w-[1170px] px-5 mx-auto '>
       {isLoading && <Loading />}
       {isError && <Error errorMessage={handleAxiosError(error)} />}
+      {!isLoading && !isError && data && !isChatOpen && (
+        <div className='m-4 fixed bottom-0 right-0 z-10'>
+          <Button
+            title={unread ? `Chat Patients (${unread})` : 'Chat Patients'}
+            onClick={openChatList}
+          />
+        </div>
+      )}
       {!isLoading && !isError && data && (
         <div className='grid lg:grid-cols-3 gap-[30px] lg:gap-[50px] '>
           <Tabs tab={tabs} setTab={setTabs} />

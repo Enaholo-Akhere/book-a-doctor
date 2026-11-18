@@ -1,75 +1,110 @@
 import { FaArrowLeftLong } from 'react-icons/fa6';
-import imgUrl from '@/assets/images/daniel.jpg';
-import { truncateText } from '@/utils/helperFunctions';
+import { GoBell } from 'react-icons/go';
+import HashLoader from 'react-spinners/HashLoader';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { GoBell } from 'react-icons/go';
+import avatarIcon from '@/assets/images/avatar-icon.png';
+import { truncateText } from '@/utils/helperFunctions';
+import { useConversations } from '@/Hook/useChat';
+import { useChatUIStore } from '@/store/chatUIStore';
+import { useAuthStore } from '@/store/authStore';
+import type { Conversation } from '@/types/chat';
 
-const ChatList = ({
-  // currentUserId,
-  //   otherUser,
-  setShowChat,
-  //   openModal,
-  setOpenModal,
-}: {
-  currentUserId: string;
-  otherUser: { id: string; name: string };
-  setShowChat: (str: string) => void;
-  openModal: boolean;
-  setOpenModal: (opM: boolean) => void;
-}) => {
-  dayjs.extend(relativeTime);
+dayjs.extend(relativeTime);
 
-  console.log(Array(4).length);
+const preview = (c: Conversation, myId?: string) => {
+  if (!c.lastMessage) return c.peer.specialization ? `${c.peer.specialization} · Say hello 👋` : 'Say hello 👋';
+  const prefix = c.lastMessage.type === 'text' && c.lastMessage.senderId === myId ? 'You: ' : '';
+  return prefix + c.lastMessage.content;
+};
 
-  const daysToday = dayjs('7/2/2026, 11:13:47 PM').fromNow(); // an hour ago
+const ChatList = () => {
+  const { data: conversations, isLoading, isError, refetch } = useConversations();
+  const close = useChatUIStore((s) => s.close);
+  const openRoom = useChatUIStore((s) => s.openRoom);
+  const user = useAuthStore((s) => s.user);
 
-  const text = `Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Quisquam velit sint, ratione quam dolorum quasi nemo delectus
-                ducimus expedita ipsam accusantium maiores doloribus unde ad`;
   return (
     <div className='fixed '>
-      <div className='max-w-[500px] w-[400px] h-fit fixed bottom-0 right-0  rounded-t-xl mr-5 p-5  bg-white'>
+      <div className='max-w-[calc(100vw-2.5rem)] w-[400px] h-fit fixed bottom-0 right-0  rounded-t-xl mr-5 p-5  bg-white'>
         <div className='flex flex-col h-[400px] overflow-auto'>
           <div className='flex gap-4 items-center'>
-            <FaArrowLeftLong
-              className='cursor-pointer'
-              onClick={() => setOpenModal(false)}
-            />
+            <FaArrowLeftLong className='cursor-pointer' aria-label='Close chat' onClick={close} />
             <p>Call and Meeting</p>
           </div>
-          {[...Array(4)].map((_, index) => (
+
+          {isLoading && (
+            <div className='flex flex-1 items-center justify-center'>
+              <HashLoader size={25} color='#0d8c81' />
+            </div>
+          )}
+
+          {isError && (
+            <div className='flex flex-1 flex-col items-center justify-center gap-2 text-sm text-gray-500'>
+              <p>Couldn&apos;t load your conversations.</p>
+              <button className='text-primaryColor font-semibold cursor-pointer' onClick={() => refetch()}>
+                Try again
+              </button>
+            </div>
+          )}
+
+          {conversations?.length === 0 && (
+            <div className='flex flex-1 flex-col items-center justify-center text-center gap-2 px-6 text-sm text-gray-500'>
+              <GoBell className='size-6 text-primaryColor' />
+              {user?.role === 'doctor' ? (
+                <p>Patients who book an appointment with you will appear here.</p>
+              ) : (
+                <p>Book an appointment with a doctor to start chatting and calling.</p>
+              )}
+            </div>
+          )}
+
+          {conversations?.map((c) => (
             <div
-              key={index + 10}
+              key={c.peer._id}
+              role='button'
+              tabIndex={0}
               className='cursor-pointer bg-gray-100 rounded-xl mt-3 flex flex-col gap-2 p-2 '
-              onClick={() => setShowChat('chatRoom')}
+              onClick={() => openRoom(c.peer._id)}
+              onKeyDown={(e) => e.key === 'Enter' && openRoom(c.peer._id)}
             >
               <div className='flex items-center justify-between'>
                 <div className='w-[50px] h-[50px] rounded-full border-2 border-solid border-white '>
                   <img
-                    src={imgUrl}
-                    alt='CareConnect chat-image'
+                    src={c.peer.photo || avatarIcon}
+                    alt={`${c.peer.name} CareConnect chat-image`}
                     className='h-full w-full object-cover rounded-full'
                   />
                 </div>
-                <div className='flex flex-col justify-center'>
-                  <p className='text-gray-700 text-[13px] '>Harry McHouston</p>
-                  <p className='text-gray-500 text-[12px] '>Online</p>
+                <div className='flex flex-col justify-center items-end'>
+                  <p className='text-gray-700 text-[13px] '>{c.peer.name}</p>
+                  <p className={`text-[12px] ${c.online ? 'text-primaryColor' : 'text-gray-500'}`}>
+                    {c.online ? 'Online' : 'Offline'}
+                  </p>
                 </div>
               </div>
               <div className='flex flex-col'>
                 <div className='flex items-center justify-between gap-2'>
-                  <p className='text-primaryColor font-extrabold text-[12px] italic '>
-                    {truncateText(text, 40)}
+                  <p
+                    className={`text-[12px] italic ${c.unreadCount ? 'text-primaryColor font-extrabold' : 'text-gray-600'}`}
+                  >
+                    {truncateText(preview(c, user?._id), 40)}
                   </p>
-                  <span className='relative p-1 rounded-full h-6 w-6 flex items-center justify-center'>
-                    <GoBell className='font-extrabold size-3' />
-                    <p className='absolute bottom-2 font-extrabold left-2.5  text-primaryColor text-xs rounded-full h-5 w-5 flex items-center justify-center'>
-                      3
-                    </p>
-                  </span>
+                  {c.unreadCount > 0 && (
+                    <span
+                      className='relative p-1 rounded-full h-6 w-6 flex items-center justify-center'
+                      aria-label={`${c.unreadCount} unread`}
+                    >
+                      <GoBell className='font-extrabold size-3' />
+                      <p className='absolute bottom-2 font-extrabold left-2.5  text-primaryColor text-xs rounded-full h-5 w-5 flex items-center justify-center'>
+                        {c.unreadCount > 9 ? '9+' : c.unreadCount}
+                      </p>
+                    </span>
+                  )}
                 </div>
-                <p className='text-gray-500 text-[10px] '>{daysToday}</p>
+                {c.lastMessage && (
+                  <p className='text-gray-500 text-[10px] '>{dayjs(c.lastMessage.createdAt).fromNow()}</p>
+                )}
               </div>
             </div>
           ))}
