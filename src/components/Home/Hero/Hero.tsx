@@ -196,13 +196,13 @@ const Hero = () => {
                 initial={{ opacity: 0, y: 16, scale: 0.92 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.6, delay: 1.1, ease: EASE }}
-                className='relative z-10 mx-auto mt-4 flex w-fit gap-2 rounded-full bg-white p-2 shadow-[0_12px_40px_-8px_rgba(27,26,30,0.25)] sm:absolute sm:bottom-6 sm:left-1/2 sm:mt-0 sm:-translate-x-1/2'
+                className='relative z-0 mx-auto mt-4 flex w-fit gap-2 rounded-full bg-white p-2 shadow-[0_12px_40px_-8px_rgba(27,26,30,0.25)] sm:absolute sm:bottom-6 sm:left-1/2 sm:mt-0 sm:-translate-x-1/2'
               >
                 <Link
                   to='/contact'
                   className='whitespace-nowrap rounded-full bg-primaryColor px-5 sm:px-7 py-3 text-[15px] font-semibold text-white shadow-[0_8px_20px_-6px_rgba(13,140,129,0.6)] transition hover:bg-primaryColor2 hover:-translate-y-0.5'
                 >
-                  Contact Us
+                  Contact
                 </Link>
                 <Link
                   to={secondary.to}

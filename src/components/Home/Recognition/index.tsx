@@ -21,7 +21,7 @@ const Recognition = (): React.JSX.Element => {
             whileInView='show'
             viewport={sectionViewport}
             variants={imageVariant}
-            className='relative w-[100%] lg:w-[50%] z-10 order-2 lg:order-1'
+            className='relative w-[100%] lg:w-[50%] z-0 order-2 lg:order-1'
           >
             <div className='w-[80%]'>
               <img src={aboutImg} alt='about' className='w-full h-full' />

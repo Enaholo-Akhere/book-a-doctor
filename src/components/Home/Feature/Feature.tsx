@@ -58,7 +58,7 @@ const Feature = () => {
             whileInView='show'
             viewport={sectionViewport}
             variants={imageVariant}
-            className='relative z-10 xl:w-[770px] flex justify-end mt-[50px] lg:mt-0'
+            className='relative z-0 xl:w-[770px] flex justify-end mt-[50px] lg:mt-0'
           >
             <div className='xl:w-[450px] lg:w-[350px] md:w-[400px] sm:w-[350px] w-[300px] flex justify-end items-end'>
               <img

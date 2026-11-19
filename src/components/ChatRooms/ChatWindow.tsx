@@ -193,8 +193,8 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
 
   return (
     <>
-      <div className='fixed '>
-        <div className='w-[420px] max-w-[100vw] h-fit fixed bottom-0 right-0 px-5 '>
+      <div className='fixed'>
+        <div className='w-[420px] max-w-[100vw] h-fit fixed bottom-0 right-0 px-5 z-10'>
           <div className='flex flex-col h-[500px] '>
             <div className='flex justify-between p-4 bg-gray-50 items-center h-[50px] rounded-t-xl'>
               <div className='flex gap-3 items-center '>

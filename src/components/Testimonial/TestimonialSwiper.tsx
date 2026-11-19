@@ -17,7 +17,7 @@ const TestimonialSwiper = () => {
   console.log('isLoading:', reviewLoading);
 
   return (
-    <div className='mt-[30px] lg:mt-[55px]'>
+    <div className='mt-[30px] lg:mt-[55px] '>
       <Swiper
         modules={[Pagination]}
         spaceBetween={30}
@@ -50,7 +50,7 @@ const TestimonialSwiper = () => {
           let key = 1;
 
           return (
-            <SwiperSlide key={(key += 1)}>
+            <SwiperSlide key={(key += 1)} >
               <div className=' p-2 rounded-3 mb-[20px]'>
                 <div className='flex items-center gap-[20px] '>
                   <div className='w-[50px] h-[50px]'>
