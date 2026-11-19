@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { IoPause, IoPlay } from 'react-icons/io5';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { IoClose, IoPause, IoPlay } from 'react-icons/io5';
 import { FaRegFileAlt, FaRegFileExcel, FaRegFilePdf, FaRegFileWord } from 'react-icons/fa';
 import { MdOutlineFileDownload } from 'react-icons/md';
 import type { ChatMessage } from '@/types/chat';
@@ -26,9 +27,67 @@ const UploadProgress = ({ msg, light }: { msg: ChatMessage; light: boolean }) =>
     </div>
   ) : null;
 
+/**
+ * Full-screen image viewer over the current page. Closes with the ✕ button,
+ * a click on the backdrop, or Escape; focus returns to the thumbnail.
+ */
+const ImageViewer = ({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) => {
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const previous = document.activeElement as HTMLElement | null;
+    closeRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        onClose();
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    const { overflow } = document.body.style;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = overflow;
+      previous?.focus?.();
+    };
+  }, [onClose]);
+
+  return createPortal(
+    <div
+      role='dialog'
+      aria-modal='true'
+      aria-label={alt}
+      onClick={onClose}
+      className='fixed inset-0 z-[1100] flex items-center justify-center bg-black/90 p-4'
+    >
+      <button
+        ref={closeRef}
+        type='button'
+        onClick={onClose}
+        aria-label='Close image'
+        title='Close'
+        className='absolute right-4 top-4 flex size-10 items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/25 cursor-pointer'
+      >
+        <IoClose size={24} />
+      </button>
+      <img
+        src={src}
+        alt={alt}
+        onClick={(e) => e.stopPropagation()}
+        className='max-h-[90vh] max-w-[95vw] rounded-lg object-contain shadow-2xl select-none'
+      />
+    </div>,
+    document.body
+  );
+};
+
 const ImageAttachment = ({ msg }: { msg: ChatMessage }) => {
   const a = msg.attachment!;
+  const [open, setOpen] = useState(false);
+  const close = useCallback(() => setOpen(false), []);
   const aspect = a.width && a.height ? `${a.width} / ${a.height}` : undefined;
+
   const img = (
     <img
       src={a.url}
@@ -38,12 +97,25 @@ const ImageAttachment = ({ msg }: { msg: ChatMessage }) => {
       className={`block max-h-64 w-full max-w-[240px] rounded-xl object-cover bg-black/5 ${msg.pending ? 'opacity-60' : ''}`}
     />
   );
-  return msg.pending || msg.failed ? (
-    img
-  ) : (
-    <a href={a.url} target='_blank' rel='noopener noreferrer' title='Open image'>
-      {img}
-    </a>
+
+  // Uploading/failed images aren't viewable; a failed one's tap means "retry".
+  if (msg.pending || msg.failed) return img;
+
+  return (
+    <>
+      <button
+        type='button'
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen(true);
+        }}
+        aria-label={`View ${a.name}`}
+        className='block cursor-zoom-in'
+      >
+        {img}
+      </button>
+      {open && <ImageViewer src={a.url} alt={a.name} onClose={close} />}
+    </>
   );
 };
 
