@@ -2,6 +2,19 @@ export type ChatRole = 'patient' | 'doctor';
 export type CallType = 'audio' | 'video';
 export type CallLogStatus = 'completed' | 'missed' | 'rejected';
 
+export type MessageType = 'text' | 'call' | 'file' | 'voice';
+
+export interface ChatAttachment {
+  url: string;
+  resourceType: 'image' | 'video' | 'raw';
+  name: string;
+  mimeType: string;
+  size: number;
+  durationSec?: number;
+  width?: number;
+  height?: number;
+}
+
 export interface ChatMessage {
   _id: string;
   roomId: string;
@@ -10,8 +23,9 @@ export interface ChatMessage {
   senderName: string;
   senderRole: ChatRole;
   content: string;
-  type: 'text' | 'call';
+  type: MessageType;
   call?: { callType: CallType; status: CallLogStatus; durationSec: number };
+  attachment?: ChatAttachment;
   readBy: string[];
   createdAt: string;
   /** Client-only: optimistic message awaiting server ack. */
@@ -20,6 +34,10 @@ export interface ChatMessage {
   failed?: boolean;
   /** Client-only: correlates an optimistic message with its server echo. */
   clientId?: string;
+  /** Client-only: upload progress 0-100 for attachments. */
+  progress?: number;
+  /** Client-only: original file kept so a failed upload can be retried. */
+  localFile?: Blob;
 }
 
 export interface ChatPeer {

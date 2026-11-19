@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { useAuthStore } from '@/store/authStore';
 import { isViewingConversation } from '@/store/chatUIStore';
 import { useSocket } from '@/library/socket/socketContext';
-import { getConversations, getMessages } from '@/services/chat.service';
+import { AttachmentUpload, getConversations, getMessages, sendAttachment } from '@/services/chat.service';
 import { getRoomId } from '@/utils/roomId';
 import { truncateText } from '@/utils/helperFunctions';
 import type { ChatMessage, Conversation, MessagesPage } from '@/types/chat';
@@ -67,7 +67,23 @@ const updateConversation = (
   return found;
 };
 
-const countsAsUnread = (m: ChatMessage) => m.type === 'text' || m.call?.status === 'missed';
+const uploadErrorMessage = (err: unknown) => {
+  const e = err as { response?: { data?: { message?: string } }; code?: string };
+  if (e.response?.data?.message) return e.response.data.message;
+  return e.code === 'ECONNABORTED' ? 'Upload timed out' : 'Upload failed';
+};
+
+const countsAsUnread = (m: ChatMessage) => m.type !== 'call' || m.call?.status === 'missed';
+
+/** Short text for toasts/previews of any message type. */
+export const messagePreview = (m: Pick<ChatMessage, 'type' | 'content' | 'attachment'>) => {
+  if (m.type === 'voice') return '🎤 Voice message';
+  if (m.type === 'file') {
+    const isImage = m.attachment?.resourceType === 'image';
+    return `${isImage ? '📷' : '📎'} ${m.content || m.attachment?.name || (isImage ? 'Photo' : 'File')}`;
+  }
+  return m.content;
+};
 
 // ── Queries ──────────────────────────────────────────────────────────
 
@@ -127,15 +143,20 @@ export const useChatRealtimeSync = () => {
         (c) => c.peer._id === peerId,
         (c) => ({
           ...c,
-          lastMessage: { content: message.content, type: message.type, senderId: message.senderId, createdAt: message.createdAt },
+          lastMessage: {
+            content: message.type === 'voice' ? 'Voice message' : message.type === 'file' ? message.content || message.attachment?.name || 'File' : message.content,
+            type: message.type,
+            senderId: message.senderId,
+            createdAt: message.createdAt,
+          },
           unreadCount: bumpUnread ? c.unreadCount + 1 : c.unreadCount,
         }),
         true
       );
       if (!found) qc.invalidateQueries({ queryKey: CHAT_KEYS.conversations });
 
-      if (bumpUnread && message.type === 'text') {
-        toast(`${message.senderName}: ${truncateText(message.content, 60)}`, { icon: '💬', id: `chat-${peerId}` });
+      if (bumpUnread && message.type !== 'call') {
+        toast(`${message.senderName}: ${truncateText(messagePreview(message), 60)}`, { icon: '💬', id: `chat-${peerId}` });
       }
     };
 
@@ -240,6 +261,67 @@ export const useSendMessage = (peerId: string | null) => {
   );
 
   return send;
+};
+
+/**
+ * Uploads a file or voice note over HTTP (sockets aren't meant for large
+ * binaries). Shows an optimistic bubble with progress; the server echoes the
+ * saved message over the socket and it replaces the bubble by clientId.
+ */
+export const useSendAttachment = (peerId: string | null) => {
+  const qc = useQueryClient();
+  const user = useAuthStore((s) => s.user);
+
+  return useCallback(
+    async (upload: Omit<AttachmentUpload, 'clientId'>, retryOf?: ChatMessage) => {
+      if (!user || !peerId) return;
+      if (retryOf) patchMessages(qc, peerId, (msgs) => msgs.filter((m) => m._id !== retryOf._id));
+
+      const clientId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+      const localUrl = URL.createObjectURL(upload.file);
+      const mimeType = upload.file.type || 'application/octet-stream';
+      const setProgress = (progress: number) =>
+        patchMessages(qc, peerId, (msgs) => msgs.map((m) => (m.clientId === clientId && m.pending ? { ...m, progress } : m)));
+
+      upsertMessage(qc, peerId, {
+        _id: clientId,
+        clientId,
+        roomId: getRoomId(user._id, peerId),
+        senderId: user._id,
+        recipientId: peerId,
+        senderName: user.name,
+        senderRole: user.role === 'doctor' ? 'doctor' : 'patient',
+        content: '',
+        type: upload.kind,
+        attachment: {
+          url: localUrl,
+          resourceType: mimeType.startsWith('image/') ? 'image' : mimeType.startsWith('audio/') ? 'video' : 'raw',
+          name: upload.kind === 'voice' ? 'Voice message' : upload.fileName,
+          mimeType,
+          size: upload.file.size,
+          durationSec: upload.durationSec,
+        },
+        readBy: [user._id],
+        createdAt: new Date().toISOString(),
+        pending: true,
+        progress: 0,
+        localFile: upload.file,
+      });
+
+      try {
+        const message = await sendAttachment(peerId, { ...upload, clientId }, setProgress);
+        upsertMessage(qc, peerId, message, clientId);
+        // Give the real URL time to load before dropping the local preview.
+        setTimeout(() => URL.revokeObjectURL(localUrl), 30_000);
+      } catch (err) {
+        patchMessages(qc, peerId, (msgs) =>
+          msgs.map((m) => (m.clientId === clientId && m.pending ? { ...m, pending: false, failed: true } : m))
+        );
+        toast.error(`${uploadErrorMessage(err)}. Tap it to retry.`);
+      }
+    },
+    [user, peerId, qc]
+  );
 };
 
 /** Emits throttled typing:start and a trailing typing:stop. */
