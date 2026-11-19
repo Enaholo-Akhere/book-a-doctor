@@ -29,6 +29,8 @@ interface doctor {
     photo: { imageUrl: string };
     specialization: string;
     averageRating: number;
+    totalRating?: number;
+    hospital?: string;
     _id: string;
     timeSlots: timeSlot[];
 
@@ -42,11 +44,29 @@ export interface paymentDetailInterface {
     ipAddress: string;
     amountPaid: number
 }
+/** Patient as populated on a booking. Health fields are only sent to the patient's own doctor. */
+export interface AppointmentPatient {
+    _id: string;
+    name: string;
+    email: string;
+    photo: { imageUrl: string };
+    phone?: string;
+    gender?: string;
+    bloodType?: string;
+    genotype?: string;
+    dateOfBirth?: string;
+    heightCm?: number;
+    weightKg?: number;
+    allergies?: string[];
+    chronicConditions?: string[];
+    medications?: string[];
+}
+
 export interface appointments {
     ticketPrice: string;
     createdAt: string;
     updatedAt: string;
-    user: { name: string; email: string; photo: { imageUrl: string }, _id: string };
+    user: AppointmentPatient;
     doctor: doctor;
     isPaid: boolean;
     photo: { imageUrl: string };
@@ -66,7 +86,7 @@ export interface doctorsInterface {
     totalPatients: number | null;
     hospital: string;
     isApproved: 'approved' | 'pending';
-    gender: 'male' | 'female' | 'others';
+    gender: 'male' | 'female' | 'other';
     bio: string;
     about: string;
     phone: string;
@@ -76,7 +96,9 @@ export interface doctorsInterface {
     qualifications: qualifications[];
     experiences: experiences[];
     timeSlots: timeSlot[];
-    reviews: ReviewInterface[]
+    reviews: ReviewInterface[];
+    verified?: boolean;
+    createdAt?: string;
 }
 
 export interface questionContent {

@@ -6,18 +6,17 @@ const registrationSchema = z.object({
     password: z.string().min(8, 'password length too short'),
     role: z.enum(['patient', 'doctor'], 'role is required'),
     phone: z.string().min(11, 'invalid phone number').max(15, 'invalid phone number'),
-    gender: z.enum(['male', 'female', 'others']),
+    gender: z.enum(['male', 'female', 'other']),
     photo: z
         .any()
 }).required()
 
 
 const editRegistrationSchema = z.object({
-    name: z.string().max(30, 'character limit exceeded').min(3, 'name too short'),
+    name: z.string().trim().max(50, 'Name must be under 50 characters').min(3, 'Name is too short'),
     email: z.email('invalid email address'),
-    phone: z.string().min(11, 'invalid phone number').max(15, 'invalid phone number'),
-    gender: z.enum(['male', 'female', 'others']),
-    bloodType: z.string().max(3, 'invalid blood type').min(2, 'invalid blood type'),
+    phone: z.string().regex(/^\+[1-9][0-9]{7,14}$/, 'Use international format, e.g. +2349012345678'),
+    gender: z.enum(['male', 'female', 'other'], { message: 'Select a gender' }),
     photo: z
         .any().optional()
 })
@@ -35,14 +34,14 @@ const feedbackSchema = z.object({
 
 
 const editDoctorSchema = z.object({
-    name: z.string().max(30, 'character limit exceeded').min(3, 'name too short'),
+    name: z.string().trim().max(50, 'Name must be under 50 characters').min(3, 'Name is too short'),
     email: z.string().email('invalid email address'),
-    phone: z.string().regex(/^\+?[0-9]{10,}$/, 'Phone number must have at least 10 digits'),
-    gender: z.enum(['male', 'female', 'others']),
-    bio: z.string().min(1, 'Bio is required').max(100),
+    phone: z.string().regex(/^\+[1-9][0-9]{7,14}$/, 'Use international format, e.g. +2349012345678'),
+    gender: z.enum(['male', 'female', 'other'], { message: 'Select a gender' }),
+    bio: z.string().trim().min(1, 'Add a short headline').max(50, 'Keep the headline under 50 characters'),
     specialization: z.string().max(50, 'exceeded max character limit').min(3, 'specialization too short'),
-    ticketPrice: z.string().min(1, 'Ticket price must be at least 1'),
-    about: z.string().min(10, 'About is required').max(500, 'exceeded max character limit'),
+    ticketPrice: z.string().refine((v) => Number(v) > 0, 'Enter a consultation fee above 0'),
+    about: z.string().trim().min(10, 'Tell patients a little more about you').max(1500, 'Keep this under 1500 characters'),
     qualifications: z.array(
         z.object({
             startDate: z.string().min(1, 'Start date is required'),

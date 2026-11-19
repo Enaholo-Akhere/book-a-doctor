@@ -1,4 +1,5 @@
 import { api } from "@/library/api/axios";
+import { HealthProfileInput } from "@/types/users";
 
 export const profileMe = async ({ id }: { id: string }) => {
     const { data } = await api.get(`/users/profile/me/${id}`);
@@ -21,3 +22,13 @@ export const editUser = async ({ id, formData }: { id: string, formData: FormDat
     return data;
 };
 
+
+export const updateHealthProfile = async (body: HealthProfileInput) => {
+    const { data } = await api.patch('/users/me/health', body);
+    return data;
+};
+
+export const deleteMyAccount = async () => {
+    const { data } = await api.delete('/users/me');
+    return data;
+};
