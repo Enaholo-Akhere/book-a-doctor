@@ -12,12 +12,11 @@ const Modal = ({ children, isOpen, onClose }: modalRoot) => {
   if (!isOpen) return null;
 
   return createPortal(
-    <div className='flex  justify-center w-[90%] m-auto '>
+    <div className='relative z-[200] flex justify-center w-[90%] m-auto'>
       <div
         className=' fixed inset-0 bg-black/30 backdrop-blur-xs '
         onClick={() => {
           onClose();
-          console.log('i got here');
         }}
       >
         {/* <div className=''> */}

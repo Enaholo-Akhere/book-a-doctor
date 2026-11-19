@@ -8,10 +8,12 @@ import logo1 from '/public/CareConnect-logo.png';
 
 const Header = ({
   navLink,
-  toggleMenu,
+  onOpenMenu,
+  menuOpen,
 }: {
   navLink: { path: string; display: string }[];
-  toggleMenu: () => void;
+  onOpenMenu: () => void;
+  menuOpen: boolean;
 }) => {
   const user = useAuthStore((state) => state.user);
 
@@ -52,7 +54,7 @@ const Header = ({
             </div>
           </NavLink>
         </div>
-        <div className='hidden md:block' onClick={toggleMenu}>
+        <div className='hidden md:block'>
           <ul className={'flex items-center gap-[2.7rem] md:flex-column'}>
             {navLink.map((link, index) => (
               <li key={index}>
@@ -60,7 +62,7 @@ const Header = ({
                   to={link.path}
                   className={(navClass) =>
                     navClass.isActive
-                      ? 'text-primaryColor text-16 leading-7 font-[600]]'
+                      ? 'text-primaryColor text-16 leading-7 font-[600]'
                       : 'text-textColor text-16 leading-7 font-[600]'
                   }
                 >
@@ -97,9 +99,16 @@ const Header = ({
             </Link>
           )}
 
-          <span className='md:hidden' onClick={toggleMenu}>
-            <BiMenu className='w-6 h-5 cursor-pointer' />
-          </span>
+          <button
+            type='button'
+            onClick={onOpenMenu}
+            aria-label='Open menu'
+            aria-expanded={menuOpen}
+            aria-controls='mobile-nav'
+            className='md:hidden -mr-2 flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl text-headingColor transition hover:bg-black/5'
+          >
+            <BiMenu className='h-6 w-6' />
+          </button>
         </div>
       </div>
     </header>
