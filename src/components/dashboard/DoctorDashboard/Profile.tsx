@@ -1,107 +1,99 @@
-import { useState } from 'react';
-import { AxiosError } from 'axios';
+import { useEffect, useMemo, useState } from 'react';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import toast from 'react-hot-toast';
+import { Briefcase, CalendarClock, Camera, GraduationCap, Plus, Trash2, UserRound } from 'lucide-react';
 import avatar from '@/assets/images/upload_avatar.png';
 import { editDoctorSchema, editDoctorType } from '@/utils/authSchema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useForm, useFieldArray } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import HashLoader from 'react-spinners/HashLoader';
 import { queryClient } from '@/library/provider/reactQuery';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { doctorsInterface } from '@/types/doctors.ds';
 import { useEditDoctor } from '@/Hook/useDoctors';
-import { AiOutlineDelete } from 'react-icons/ai';
 import { useAuthStore } from '@/store/authStore';
+import { handleAxiosError } from '@/utils/axiosError';
+import { Card, CardHeader, Field, fieldClass, primaryBtn, secondaryBtn } from '../shared/ui';
+import { DAYS } from './doctorUtils';
 
-const Profile = ({ data: userData }: { data: doctorsInterface }) => {
-  const [preview, setPreview] = useState<string | null>();
+const SPECIALIZATIONS = [
+  ['cardiologist', 'Cardiology'],
+  ['dermatologist', 'Dermatology'],
+  ['dentistry', 'Dentistry'],
+  ['general practitioner', 'General practice'],
+  ['gynecologist', 'Obstetrics & gynaecology'],
+  ['neurologist', 'Neurology'],
+  ['oncologist', 'Oncology'],
+  ['optometrist', 'Optometry'],
+  ['orthopedist', 'Orthopaedics'],
+  ['pediatrician', 'Paediatrics'],
+  ['psychiatrist', 'Psychiatry'],
+] as const;
+
+const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
+
+const toDate = (v: unknown) => (v instanceof Date ? v.toISOString().split('T')[0] : String(v ?? '').slice(0, 10));
+const toTime = (v: unknown) => (v instanceof Date ? v.toISOString().substring(11, 16) : String(v ?? ''));
+
+const defaultsFrom = (d: doctorsInterface): editDoctorType => ({
+  name: d.name ?? '',
+  email: d.email ?? '',
+  phone: d.phone ?? '',
+  gender: (d.gender || undefined) as editDoctorType['gender'],
+  photo: d.photo || undefined,
+  bio: d.bio ?? '',
+  about: d.about ?? '',
+  specialization: d.specialization ?? '',
+  ticketPrice: d.ticketPrice ? String(d.ticketPrice) : '',
+  qualifications: (d.qualifications ?? []).map((q) => ({
+    startDate: toDate(q.startDate),
+    endDate: toDate(q.endDate),
+    university: q.university,
+    degree: q.degree,
+  })),
+  experiences: (d.experiences ?? []).map((e) => ({
+    startDate: toDate(e.startDate),
+    endDate: toDate(e.endDate),
+    position: e.position,
+    hospital: e.hospital,
+  })),
+  timeSlots: (d.timeSlots ?? []).map((t) => ({
+    day: t.day,
+    startingTime: toTime(t.startingTime),
+    endingTime: toTime(t.endingTime),
+  })),
+});
+
+const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
+  const [preview, setPreview] = useState<string | null>(doctor.photo?.imageUrl ?? null);
   const { mutate, isPending } = useEditDoctor();
   const updateDoctor = useAuthStore((state) => state.updateDoctor);
+  const defaults = useMemo(() => defaultsFrom(doctor), [doctor]);
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
-  } = useForm<editDoctorType>({
-    resolver: zodResolver(editDoctorSchema),
-    defaultValues: {
-      name: userData?.name,
-      email: userData?.email,
-      phone: userData?.phone,
-      gender: userData?.gender,
-      photo: userData?.photo || undefined,
-      bio: userData?.bio,
-      about: userData?.about,
-      specialization: userData?.specialization,
-      ticketPrice: userData?.ticketPrice?.toString() || '',
-      qualifications: userData.qualifications?.length
-        ? userData.qualifications.map((q) => ({
-            startDate:
-              q.startDate instanceof Date
-                ? q.startDate.toISOString().split('T')[0]
-                : q.startDate,
-            endDate:
-              q.endDate instanceof Date
-                ? q.endDate.toISOString().split('T')[0]
-                : q.endDate,
-            university: q.university,
-            degree: q.degree,
-          }))
-        : [{ startDate: '', endDate: '', university: '', degree: '' }],
-      experiences: userData.experiences?.length
-        ? userData.experiences.map((exp) => ({
-            startDate:
-              exp.startDate instanceof Date
-                ? exp.startDate.toISOString().split('T')[0]
-                : exp.startDate,
-            endDate:
-              exp.endDate instanceof Date
-                ? exp.endDate.toISOString().split('T')[0]
-                : exp.endDate,
-            position: exp.position,
-            hospital: exp.hospital,
-          }))
-        : [{ startDate: '', endDate: '', position: '', hospital: '' }],
-      timeSlots: userData.timeSlots?.length
-        ? userData.timeSlots.map((ts) => ({
-            day: ts.day,
-            startingTime:
-              ts.startingTime instanceof Date
-                ? ts.startingTime.toISOString().substring(11, 16)
-                : ts.startingTime,
-            endingTime:
-              ts.endingTime instanceof Date
-                ? ts.endingTime.toISOString().substring(11, 16)
-                : ts.endingTime,
-          }))
-        : [{ day: '', startingTime: '', endingTime: '' }],
+    reset,
+    watch,
+    formState: { errors, isDirty },
+  } = useForm<editDoctorType>({ resolver: zodResolver(editDoctorSchema), defaultValues: defaults });
+
+  const qualifications = useFieldArray({ control, name: 'qualifications' });
+  const experiences = useFieldArray({ control, name: 'experiences' });
+  const timeSlots = useFieldArray({ control, name: 'timeSlots' });
+
+  const bioLength = watch('bio')?.length ?? 0;
+  const aboutLength = watch('about')?.length ?? 0;
+
+  useEffect(
+    () => () => {
+      if (preview?.startsWith('blob:')) URL.revokeObjectURL(preview);
     },
-  });
-
-  const {
-    fields: qualificationFields,
-    append: appendQualification,
-    remove: removeQualification,
-  } = useFieldArray({ control, name: 'qualifications' });
-
-  const {
-    fields: experienceFields,
-    append: appendExperience,
-    remove: removeExperience,
-  } = useFieldArray({ control, name: 'experiences' });
-
-  const {
-    fields: timeSlotFields,
-    append: appendTimeSlot,
-    remove: removeTimeSlot,
-  } = useFieldArray({ control, name: 'timeSlots' });
+    [preview]
+  );
 
   const submitHandler = (data: editDoctorType) => {
     const formData = new FormData();
-
     formData.append('name', data.name);
-    formData.append('email', data.email);
     formData.append('phone', data.phone);
     formData.append('gender', data.gender);
     formData.append('bio', data.bio);
@@ -111,7 +103,6 @@ const Profile = ({ data: userData }: { data: doctorsInterface }) => {
     formData.append('qualifications', JSON.stringify(data.qualifications));
     formData.append('experiences', JSON.stringify(data.experiences));
     formData.append('timeSlots', JSON.stringify(data.timeSlots));
-
     if (data.photo instanceof FileList && data.photo.length > 0) {
       formData.append('photo', data.photo[0]);
     } else {
@@ -119,506 +110,260 @@ const Profile = ({ data: userData }: { data: doctorsInterface }) => {
     }
 
     mutate(
-      { id: userData._id, formData },
+      { id: doctor._id, formData },
       {
         onSuccess: (result) => {
-          toast.success('Profile updated successfully');
-          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ME] });
+          toast.success('Profile saved');
           updateDoctor(result.data);
+          reset(defaultsFrom(result.data));
+          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ME] });
         },
-        onError: (err) => {
-          const error = err as AxiosError;
-          const errorData = error?.response?.data as { message?: string };
-          toast.error(errorData?.message || 'Profile update failed');
-        },
+        onError: (err) => toast.error(handleAxiosError(err) || 'Profile update failed'),
       }
     );
   };
 
-  const classStylings =
-    'w-full px-[10px] py-3 border-b border-solid border-[#0066FF61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer';
 
   return (
-    <div className='px-5 lg:px-0 mt-5'>
-      <div className='w-full mx-auto rounded-lg shadow-md md:py-5'>
-        <div className='rounded-l-lg py-10 lg:mt-[-40px]'>
-          <form
-            className='py-4 md:py-0 px-5'
-            onSubmit={handleSubmit(submitHandler)}
-          >
-            {/* Name */}
-            <div className='mb-3'>
-              <input
-                type='text'
-                placeholder='Full Name'
-                {...register('name')}
-                className={classStylings}
-              />
-              {errors.name && (
-                <p className='text-red-500 text-sm'>{errors.name.message}</p>
-              )}
+    <form onSubmit={handleSubmit(submitHandler)} noValidate className='space-y-6'>
+      {/* Public profile */}
+      <Card>
+        <CardHeader title='Public profile' description='What patients see when they find you' icon={<UserRound size={18} />} />
+        <div className='px-5 pb-5 sm:px-6'>
+          <div className='flex flex-wrap items-center gap-4 rounded-xl bg-gray-50 p-4'>
+            <img src={preview || avatar} alt='Profile' className='h-16 w-16 rounded-full object-cover ring-4 ring-white' />
+            <div className='min-w-[10rem] flex-1'>
+              <p className='text-sm font-semibold text-headingColor'>Profile photo</p>
+              <p className='text-xs text-gray-500'>A clear, professional headshot. JPG, PNG, WEBP or HEIC, up to 5 MB.</p>
             </div>
-
-            {/* Email */}
-            <div className='mb-3'>
-              <input
-                type='email'
-                disabled
-                placeholder='Enter your email'
-                {...register('email')}
-                className={`${classStylings} bg-gray-100 cursor-not-allowed`}
-              />
-              {errors.email && (
-                <p className='text-red-500 text-sm'>{errors.email.message}</p>
-              )}
-            </div>
-
-            {/* Phone */}
-            <div className='mb-3'>
-              <input
-                type='tel'
-                placeholder='Phone number (+2349012345678)'
-                {...register('phone')}
-                className={classStylings}
-              />
-              {errors.phone && (
-                <p className='text-red-500 text-sm'>{errors.phone.message}</p>
-              )}
-            </div>
-
-            {/* Bio */}
-            <div className='mb-3'>
-              <input
-                type='text'
-                placeholder='Enter your BIO'
-                {...register('bio')}
-                className={classStylings}
-              />
-              {errors.bio && (
-                <p className='text-red-500 text-sm'>{errors.bio.message}</p>
-              )}
-            </div>
-
-            {/* Gender / Specialization / Ticket Price */}
-            <div className='grid sm:grid-cols-1 md:grid-cols-3 gap-5'>
-              <div>
-                <div className='mb-3 flex flex-col justify-between'>
-                  <label className='text-headingColor font-bold text-[15px] text-left'>
-                    Gender
-                  </label>
-                  <select
-                    {...register('gender')}
-                    className='text-textColor font-semibold text-[15px] px-4 py-3 focus:outline-none border-1 border-[#0066FF61] focus:border-primaryColor rounded-lg max-w-full'
-                  >
-                    <option value=''>Select Gender</option>
-                    <option value='male'>Male</option>
-                    <option value='female'>Female</option>
-                    <option value='others'>Others</option>
-                  </select>
-                  {errors.gender && (
-                    <p className='text-red-500 text-sm'>
-                      {errors?.gender.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div>
-                <div className='mb-3 flex flex-col justify-between'>
-                  <label className='text-headingColor font-bold text-[15px] text-left'>
-                    Specialization
-                  </label>
-                  <select
-                    {...register('specialization')}
-                    className='text-textColor font-semibold text-[15px] px-4 py-3 focus:outline-none border-1 border-[#0066FF61] focus:border-primaryColor rounded-lg max-w-full'
-                  >
-                    <option value=''>Select Specialization</option>
-                    <option value='cardiologist'>Cardiology</option>
-                    <option value='neurologist'>Neurology</option>
-                    <option value='oncologist'>Oncology</option>
-                    <option value='optometrist'>Optometrist</option>
-                    <option value='dentistry'>Dentistry</option>
-                  </select>
-                  {errors.specialization && (
-                    <p className='text-red-500 text-sm'>
-                      {errors?.specialization.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div>
-                <div className='mb-3 flex flex-col justify-between'>
-                  <label className='text-headingColor font-bold text-[15px] text-left'>
-                    Ticket Price
-                  </label>
+            <Controller
+              name='photo'
+              control={control}
+              render={({ field }) => (
+                <label className={secondaryBtn}>
+                  <Camera size={16} /> Change photo
                   <input
-                    type='number'
-                    placeholder='0.00'
-                    {...register('ticketPrice')}
-                    className={`${classStylings} border-1 h-12 rounded-lg`}
+                    type='file'
+                    accept='.jpg,.jpeg,.png,.webp,.heic'
+                    className='sr-only'
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      if (file.size > MAX_PHOTO_BYTES) {
+                        toast.error('Photo must be 5 MB or smaller');
+                        e.target.value = '';
+                        return;
+                      }
+                      field.onChange(e.target.files);
+                      setPreview(URL.createObjectURL(file));
+                    }}
                   />
-                  {errors.ticketPrice && (
-                    <p className='text-red-500 text-sm'>
-                      {errors.ticketPrice.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* ===== QUALIFICATIONS ===== */}
-            <div className='mb-5'>
-              <h4 className='text-16 text-headingColor font-200 mt-5'>
-                QUALIFICATIONS
-              </h4>
-              {qualificationFields.map((field, index) => (
-                <div key={field.id}>
-                  <div className='grid sm:grid-cols-1 md:grid-cols-2 gap-5'>
-                    <div>
-                      <label className='text-headingColor font-bold text-[15px] text-left'>
-                        Start Date*
-                      </label>
-                      <input
-                        type='date'
-                        {...register(`qualifications.${index}.startDate`)}
-                        className={`${classStylings} border-1 h-12 rounded-lg`}
-                      />
-                      {errors.qualifications?.[index]?.startDate && (
-                        <p className='text-red-500 text-sm'>
-                          {errors.qualifications[index]?.startDate?.message}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label className='text-headingColor font-bold text-[15px] text-left'>
-                        End Date*
-                      </label>
-                      <input
-                        type='date'
-                        {...register(`qualifications.${index}.endDate`)}
-                        className={`${classStylings} border-1 h-12 rounded-lg`}
-                      />
-                      {errors.qualifications?.[index]?.endDate && (
-                        <p className='text-red-500 text-sm'>
-                          {errors.qualifications[index]?.endDate?.message}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label className='text-headingColor font-bold text-[15px] text-left'>
-                        Degree*
-                      </label>
-                      <input
-                        type='text'
-                        placeholder='Degree obtained'
-                        {...register(`qualifications.${index}.degree`)}
-                        className={`${classStylings} border-1 h-12 rounded-lg`}
-                      />
-                      {errors.qualifications?.[index]?.degree && (
-                        <p className='text-red-500 text-sm'>
-                          {errors.qualifications[index]?.degree?.message}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label className='text-headingColor font-bold text-[15px] text-left'>
-                        University*
-                      </label>
-                      <input
-                        type='text'
-                        placeholder='Name of University'
-                        {...register(`qualifications.${index}.university`)}
-                        className={`${classStylings} border-1 h-12 rounded-lg`}
-                      />
-                      {errors.qualifications?.[index]?.university && (
-                        <p className='text-red-500 text-sm'>
-                          {errors.qualifications[index]?.university?.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <button
-                    type='button'
-                    onClick={() => removeQualification(index)}
-                    className='cursor-pointer bg-red-600 p-2 rounded-full text-white text-[18px] mt-2 mb-[30px] w-fit h-fit'
-                  >
-                    <AiOutlineDelete />
-                  </button>
-                </div>
-              ))}
-              <div className='flex justify-end'>
-                <button
-                  type='button'
-                  onClick={() =>
-                    appendQualification({
-                      startDate: '',
-                      endDate: '',
-                      degree: '',
-                      university: '',
-                    })
-                  }
-                  className='cursor-pointer bg-[#000] py-2 px-4 rounded text-white h-fit'
-                >
-                  Add Qualification
-                </button>
-              </div>
-            </div>
-
-            {/* ===== EXPERIENCE ===== */}
-            <div className='mb-5'>
-              <h4 className='text-16 text-headingColor font-200 mt-5'>
-                EXPERIENCE
-              </h4>
-              {experienceFields.map((field, index) => (
-                <div key={field.id}>
-                  <div className='grid sm:grid-cols-1 md:grid-cols-2 gap-5'>
-                    <div>
-                      <label className='text-headingColor font-bold text-[15px] text-left'>
-                        Start Date*
-                      </label>
-                      <input
-                        type='date'
-                        {...register(`experiences.${index}.startDate`)}
-                        className={`${classStylings} border-1 h-12 rounded-lg`}
-                      />
-                      {errors.experiences?.[index]?.startDate && (
-                        <p className='text-red-500 text-sm'>
-                          {errors.experiences[index]?.startDate?.message}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label className='text-headingColor font-bold text-[15px] text-left'>
-                        End Date*
-                      </label>
-                      <input
-                        type='date'
-                        {...register(`experiences.${index}.endDate`)}
-                        className={`${classStylings} border-1 h-12 rounded-lg`}
-                      />
-                      {errors.experiences?.[index]?.endDate && (
-                        <p className='text-red-500 text-sm'>
-                          {errors.experiences[index]?.endDate?.message}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label className='text-headingColor font-bold text-[15px] text-left'>
-                        Position*
-                      </label>
-                      <input
-                        type='text'
-                        placeholder='Position held'
-                        {...register(`experiences.${index}.position`)} // ✅ fixed: was pointing to qualifications
-                        className={`${classStylings} border-1 h-12 rounded-lg`}
-                      />
-                      {errors.experiences?.[index]?.position && (
-                        <p className='text-red-500 text-sm'>
-                          {errors.experiences[index]?.position?.message}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label className='text-headingColor font-bold text-[15px] text-left'>
-                        Hospital*
-                      </label>
-                      <input
-                        type='text'
-                        placeholder='Name of Hospital'
-                        {...register(`experiences.${index}.hospital`)} // ✅ fixed: was pointing to qualifications
-                        className={`${classStylings} border-1 h-12 rounded-lg`}
-                      />
-                      {errors.experiences?.[index]?.hospital && (
-                        <p className='text-red-500 text-sm'>
-                          {errors.experiences[index]?.hospital?.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <button
-                    type='button'
-                    onClick={() => removeExperience(index)}
-                    className='cursor-pointer bg-red-600 p-2 rounded-full text-white text-[18px] mt-2 mb-[30px] w-fit h-fit'
-                  >
-                    <AiOutlineDelete />
-                  </button>
-                </div>
-              ))}
-              <div className='flex justify-end'>
-                <button
-                  type='button'
-                  onClick={() =>
-                    appendExperience({
-                      startDate: '',
-                      endDate: '',
-                      position: '',
-                      hospital: '',
-                    })
-                  }
-                  className='cursor-pointer bg-[#000] py-2 px-4 rounded text-white h-fit'
-                >
-                  Add Experience
-                </button>
-              </div>
-            </div>
-
-            {/* ===== TIME SLOTS ===== */}
-            <div className='mb-5'>
-              <h4 className='text-16 text-headingColor font-200 mt-5'>
-                TIME SLOT
-              </h4>
-              {timeSlotFields.map((field, index) => (
-                <div key={field.id}>
-                  <div className='grid sm:grid-cols-1 md:grid-cols-3 gap-5'>
-                    <div>
-                      <label className='text-headingColor font-bold text-[15px] text-left'>
-                        Day*
-                      </label>
-                      <select
-                        {...register(`timeSlots.${index}.day`)} // ✅ fixed: was uncontrolled
-                        className='text-textColor font-semibold text-[15px] px-4 py-3 focus:outline-none border-1 border-[#0066FF61] focus:border-primaryColor rounded-lg w-full'
-                      >
-                        <option value=''>Select Day</option>
-                        <option value='Monday'>Monday</option>
-                        <option value='Tuesday'>Tuesday</option>
-                        <option value='Wednesday'>Wednesday</option>
-                        <option value='Thursday'>Thursday</option>
-                        <option value='Friday'>Friday</option>
-                        <option value='Saturday'>Saturday</option>
-                        <option value='Sunday'>Sunday</option>
-                      </select>
-                      {errors.timeSlots?.[index]?.day && (
-                        <p className='text-red-500 text-sm'>
-                          {errors.timeSlots[index]?.day?.message}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label className='text-headingColor font-bold text-[15px] text-left'>
-                        Starting Time*
-                      </label>
-                      <input
-                        type='time'
-                        {...register(`timeSlots.${index}.startingTime`)}
-                        className={`${classStylings} border-1 h-12 rounded-lg`}
-                      />
-                      {errors.timeSlots?.[index]?.startingTime && (
-                        <p className='text-red-500 text-sm'>
-                          {errors.timeSlots[index]?.startingTime?.message}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label className='text-headingColor font-bold text-[15px] text-left'>
-                        Ending Time*
-                      </label>
-                      <input
-                        type='time'
-                        {...register(`timeSlots.${index}.endingTime`)} // ✅ fixed: was pointing to experience
-                        className={`${classStylings} border-1 h-12 rounded-lg`}
-                      />
-                      {errors.timeSlots?.[index]?.endingTime && (
-                        <p className='text-red-500 text-sm'>
-                          {errors.timeSlots[index]?.endingTime?.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <button
-                    type='button'
-                    onClick={() => removeTimeSlot(index)}
-                    className='cursor-pointer bg-red-600 p-2 rounded-full text-white text-[18px] mt-2 mb-[30px] w-fit h-fit'
-                  >
-                    <AiOutlineDelete />
-                  </button>
-                </div>
-              ))}
-              <div className='flex justify-end'>
-                <button
-                  type='button'
-                  onClick={() =>
-                    appendTimeSlot({
-                      day: '',
-                      startingTime: '',
-                      endingTime: '',
-                    })
-                  }
-                  className='cursor-pointer bg-[#000] py-2 px-4 rounded text-white h-fit'
-                >
-                  Add Timeslot
-                </button>
-              </div>
-            </div>
-
-            {/* About */}
-
-            <div className='mb-5'>
-              <label className='text-headingColor font-bold text-[15px] text-left'>
-                About*
-              </label>
-              <textarea
-                rows={5}
-                placeholder='Write something about you'
-                {...register('about')}
-                className={`${classStylings} border-1 rounded-lg`}
-              ></textarea>
-              {errors.about && (
-                <p className='text-red-500 text-sm'>{errors.about.message}</p>
-              )}
-            </div>
-
-            {/* Upload */}
-            <div className='mb-3 flex items-center gap-3 px-[15px]'>
-              <figure className='w-[60px] h-[60px] rounded-full border-2 border-primaryColor flex items-center justify-center'>
-                <img
-                  src={preview || userData?.photo?.imageUrl || avatar}
-                  alt='avatar'
-                  className='w-full rounded-full h-full object-cover'
-                />
-              </figure>
-              <div className='relative w-[130px] h-[50px]'>
-                <Controller
-                  name='photo'
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
-                      type='file'
-                      accept='.jpg,.jpeg,.png,.webp,.heic'
-                      id='customFile'
-                      onChange={(e) => {
-                        field.onChange(e.target.files);
-                        setPreview(URL.createObjectURL(e.target.files![0]));
-                      }}
-                    />
-                  )}
-                />
-                <label
-                  htmlFor='customFile'
-                  className='absolute inset-0 flex items-center px-3 py-2 text-[15px] font-semibold rounded-lg truncate cursor-pointer bg-[#0066ff46] text-headingColor'
-                >
-                  Upload Photo
                 </label>
+              )}
+            />
+          </div>
+
+          <div className='mt-5 grid gap-4 sm:grid-cols-2'>
+            <Field label='Full name' htmlFor='name' error={errors.name?.message}>
+              <input id='name' autoComplete='name' {...register('name')} className={fieldClass} />
+            </Field>
+            <Field label='Email address' htmlFor='email' hint='Contact support to change your email.'>
+              <input id='email' type='email' disabled {...register('email')} className={fieldClass} />
+            </Field>
+            <Field label='Phone number' htmlFor='phone' error={errors.phone?.message}>
+              <input id='phone' type='tel' autoComplete='tel' placeholder='+2349012345678' {...register('phone')} className={fieldClass} />
+            </Field>
+            <Field label='Gender' htmlFor='gender' error={errors.gender?.message}>
+              <select id='gender' {...register('gender')} className={fieldClass}>
+                <option value=''>Select gender</option>
+                <option value='male'>Male</option>
+                <option value='female'>Female</option>
+                <option value='other'>Other</option>
+              </select>
+            </Field>
+            <Field label='Specialization' htmlFor='specialization' error={errors.specialization?.message}>
+              <select id='specialization' {...register('specialization')} className={fieldClass}>
+                <option value=''>Select specialization</option>
+                {SPECIALIZATIONS.map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Field label='Consultation fee (USD)' htmlFor='fee' error={errors.ticketPrice?.message} hint='Patients pay the equivalent in their local currency.'>
+              <div className='relative'>
+                <span className='pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400'>$</span>
+                <input id='fee' type='number' inputMode='decimal' min='0' step='1' placeholder='0' {...register('ticketPrice')} className={`${fieldClass} pl-7`} />
+              </div>
+            </Field>
+            <Field
+              label='Headline'
+              htmlFor='bio'
+              className='sm:col-span-2'
+              error={errors.bio?.message}
+              hint={`${bioLength}/50 · e.g. "Consultant cardiologist, 12 years' experience"`}
+            >
+              <input id='bio' maxLength={50} {...register('bio')} className={fieldClass} />
+            </Field>
+            <Field label='About you' htmlFor='about' className='sm:col-span-2' error={errors.about?.message} hint={`${aboutLength}/1500 · Your approach, areas of interest and languages spoken.`}>
+              <textarea id='about' rows={5} maxLength={1500} {...register('about')} className={`${fieldClass} resize-y`} />
+            </Field>
+          </div>
+        </div>
+      </Card>
+
+      {/* Availability */}
+      <Card>
+        <CardHeader
+          title='Weekly availability'
+          description='Patients can only book you during these hours'
+          icon={<CalendarClock size={18} />}
+          action={
+            <button type='button' onClick={() => timeSlots.append({ day: '', startingTime: '09:00', endingTime: '17:00' })} className={`${secondaryBtn} py-2`}>
+              <Plus size={15} /> Add hours
+            </button>
+          }
+        />
+        <div className='space-y-3 px-5 pb-5 sm:px-6'>
+          {timeSlots.fields.length === 0 && <p className='rounded-xl bg-gray-50 p-4 text-sm text-gray-500'>No hours yet. Add the days and times you consult.</p>}
+          {timeSlots.fields.map((f, i) => (
+            <div key={f.id} className='grid grid-cols-[1fr_auto] items-start gap-3 rounded-xl border border-gray-100 p-3 sm:grid-cols-[1.2fr_1fr_1fr_auto]'>
+              <Field label='Day' htmlFor={`day-${i}`} error={errors.timeSlots?.[i]?.day?.message} className='col-span-1'>
+                <select id={`day-${i}`} {...register(`timeSlots.${i}.day`)} className={fieldClass}>
+                  <option value=''>Select day</option>
+                  {DAYS.map((d) => (
+                    <option key={d} value={d}>
+                      {d}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+              <RemoveButton onClick={() => timeSlots.remove(i)} label='Remove hours' className='sm:order-last' />
+              <Field label='From' htmlFor={`start-${i}`} error={errors.timeSlots?.[i]?.startingTime?.message}>
+                <input id={`start-${i}`} type='time' {...register(`timeSlots.${i}.startingTime`)} className={fieldClass} />
+              </Field>
+              <Field label='To' htmlFor={`end-${i}`} error={errors.timeSlots?.[i]?.endingTime?.message}>
+                <input id={`end-${i}`} type='time' {...register(`timeSlots.${i}.endingTime`)} className={fieldClass} />
+              </Field>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* Qualifications */}
+      <Card>
+        <CardHeader
+          title='Qualifications'
+          description='Degrees, fellowships and certifications'
+          icon={<GraduationCap size={18} />}
+          action={
+            <button type='button' onClick={() => qualifications.append({ startDate: '', endDate: '', degree: '', university: '' })} className={`${secondaryBtn} py-2`}>
+              <Plus size={15} /> Add
+            </button>
+          }
+        />
+        <div className='space-y-3 px-5 pb-5 sm:px-6'>
+          {qualifications.fields.length === 0 && <p className='rounded-xl bg-gray-50 p-4 text-sm text-gray-500'>Add at least one qualification. It's required for approval.</p>}
+          {qualifications.fields.map((f, i) => (
+            <div key={f.id} className='rounded-xl border border-gray-100 p-4'>
+              <div className='mb-3 flex items-center justify-between'>
+                <p className='text-xs font-semibold uppercase tracking-wide text-gray-400'>Qualification {i + 1}</p>
+                <RemoveButton onClick={() => qualifications.remove(i)} label='Remove qualification' className='!mt-0' />
+              </div>
+              <div className='grid gap-3 sm:grid-cols-2'>
+                <Field label='Degree / certificate' htmlFor={`deg-${i}`} error={errors.qualifications?.[i]?.degree?.message}>
+                  <input id={`deg-${i}`} placeholder='e.g. MBBS' {...register(`qualifications.${i}.degree`)} className={fieldClass} />
+                </Field>
+                <Field label='Institution' htmlFor={`uni-${i}`} error={errors.qualifications?.[i]?.university?.message}>
+                  <input id={`uni-${i}`} placeholder='e.g. University of Lagos' {...register(`qualifications.${i}.university`)} className={fieldClass} />
+                </Field>
+                <Field label='Start date' htmlFor={`qs-${i}`} error={errors.qualifications?.[i]?.startDate?.message}>
+                  <input id={`qs-${i}`} type='date' {...register(`qualifications.${i}.startDate`)} className={fieldClass} />
+                </Field>
+                <Field label='End date' htmlFor={`qe-${i}`} error={errors.qualifications?.[i]?.endDate?.message}>
+                  <input id={`qe-${i}`} type='date' {...register(`qualifications.${i}.endDate`)} className={fieldClass} />
+                </Field>
               </div>
             </div>
+          ))}
+        </div>
+      </Card>
 
-            <div className='mt-7'>
-              <button
-                type='submit'
-                disabled={isPending}
-                className='w-full bg-primaryColor text-white text-[18px] rounded-lg px-4 py-3 cursor-pointer'
-              >
-                {isPending ? (
-                  <HashLoader size={20} color='#ffffff' />
-                ) : (
-                  'Submit'
-                )}
-              </button>
+      {/* Experience */}
+      <Card>
+        <CardHeader
+          title='Experience'
+          description='Hospitals and clinics you have worked at'
+          icon={<Briefcase size={18} />}
+          action={
+            <button type='button' onClick={() => experiences.append({ startDate: '', endDate: '', position: '', hospital: '' })} className={`${secondaryBtn} py-2`}>
+              <Plus size={15} /> Add
+            </button>
+          }
+        />
+        <div className='space-y-3 px-5 pb-5 sm:px-6'>
+          {experiences.fields.length === 0 && <p className='rounded-xl bg-gray-50 p-4 text-sm text-gray-500'>Add your work history so patients know your background.</p>}
+          {experiences.fields.map((f, i) => (
+            <div key={f.id} className='rounded-xl border border-gray-100 p-4'>
+              <div className='mb-3 flex items-center justify-between'>
+                <p className='text-xs font-semibold uppercase tracking-wide text-gray-400'>Role {i + 1}</p>
+                <RemoveButton onClick={() => experiences.remove(i)} label='Remove role' className='!mt-0' />
+              </div>
+              <div className='grid gap-3 sm:grid-cols-2'>
+                <Field label='Position' htmlFor={`pos-${i}`} error={errors.experiences?.[i]?.position?.message}>
+                  <input id={`pos-${i}`} placeholder='e.g. Senior registrar' {...register(`experiences.${i}.position`)} className={fieldClass} />
+                </Field>
+                <Field label='Hospital / clinic' htmlFor={`hos-${i}`} error={errors.experiences?.[i]?.hospital?.message}>
+                  <input id={`hos-${i}`} placeholder='e.g. Lagos University Teaching Hospital' {...register(`experiences.${i}.hospital`)} className={fieldClass} />
+                </Field>
+                <Field label='Start date' htmlFor={`es-${i}`} error={errors.experiences?.[i]?.startDate?.message}>
+                  <input id={`es-${i}`} type='date' {...register(`experiences.${i}.startDate`)} className={fieldClass} />
+                </Field>
+                <Field label='End date' htmlFor={`ee-${i}`} error={errors.experiences?.[i]?.endDate?.message}>
+                  <input id={`ee-${i}`} type='date' {...register(`experiences.${i}.endDate`)} className={fieldClass} />
+                </Field>
+              </div>
             </div>
-          </form>
+          ))}
+        </div>
+      </Card>
+
+      <div className='sticky bottom-3 z-10 flex flex-col-reverse gap-2 rounded-2xl border border-gray-100 bg-white/95 p-3 shadow-lg backdrop-blur sm:flex-row sm:items-center sm:justify-between'>
+        <p className='px-1 text-sm text-gray-500'>
+          {Object.keys(errors).length ? <span className='text-red-600'>Please fix the highlighted fields.</span> : isDirty ? 'You have unsaved changes.' : 'All changes saved.'}
+        </p>
+        <div className='flex gap-2'>
+          <button
+            type='button'
+            disabled={!isDirty || isPending}
+            onClick={() => {
+              reset(defaults);
+              setPreview(doctor.photo?.imageUrl ?? null);
+            }}
+            className={`${secondaryBtn} flex-1 sm:flex-none`}
+          >
+            Discard
+          </button>
+          <button type='submit' disabled={!isDirty || isPending} className={`${primaryBtn} flex-1 sm:flex-none`}>
+            {isPending ? 'Saving…' : 'Save profile'}
+          </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
+
+const RemoveButton = ({ onClick, label, className = '' }: { onClick: () => void; label: string; className?: string }) => (
+  <button
+    type='button'
+    onClick={onClick}
+    aria-label={label}
+    title={label}
+    className={`mt-6 flex h-10 w-10 cursor-pointer items-center justify-center self-start rounded-lg text-gray-400 transition hover:bg-red-50 hover:text-red-600 ${className}`}
+  >
+    <Trash2 size={16} />
+  </button>
+);
 
 export default Profile;

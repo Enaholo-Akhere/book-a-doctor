@@ -5,9 +5,9 @@ const MyAccountDoctor = () => {
   usePageTitle('My Account - CareConnect');
 
   return (
-    <section>
+    <div>
       <DoctorDashboard />
-    </section>
+    </div>
   );
 };
 
