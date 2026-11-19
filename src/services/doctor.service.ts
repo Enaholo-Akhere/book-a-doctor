@@ -33,3 +33,14 @@ export const editDoctor = async ({ id, formData }: { id: string, formData: FormD
     });
     return data;
 };
+
+
+export const updateBookingStatus = async ({ bookingId, status }: { bookingId: string; status: 'approved' | 'cancelled' }) => {
+    const { data } = await api.patch(`/doctors/me/appointments/${bookingId}/status`, { status });
+    return data;
+};
+
+export const deleteMyDoctorAccount = async () => {
+    const { data } = await api.delete('/doctors/me');
+    return data;
+};

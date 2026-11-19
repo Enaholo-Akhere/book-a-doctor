@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/constants/queryKeys";
-import { editDoctor, getAllDoctors, getDoctorById, myAppointments, profileMeDoctor } from "@/services/doctor.service";
+import { updateBookingStatus, editDoctor, getAllDoctors, getDoctorById, myAppointments, profileMeDoctor } from "@/services/doctor.service";
 
 export const useProfileMeDoctor = (id: string) => {
     return useQuery({
@@ -46,5 +46,11 @@ export const useMyBookings = () => {
 export const useEditDoctor = () => {
     return useMutation({
         mutationFn: editDoctor
+    })
+}
+
+export const useUpdateBookingStatus = () => {
+    return useMutation({
+        mutationFn: updateBookingStatus
     })
 }
