@@ -44,6 +44,17 @@ const SIGNAL_TIMEOUT_MS = 10_000;
 const ICE_RETRY_MS = 8_000;
 /** Hint the user if a call hasn't connected after this long (it keeps trying). */
 const SLOW_CONNECT_HINT_MS = 15_000;
+/**
+ * Video is sized for real-world links (mobile uplinks, TURN relays), not LAN:
+ * 640x480 and a bitrate cap keep frames flowing where 720p would stall.
+ */
+const VIDEO_CONSTRAINTS: MediaTrackConstraints = {
+  width: { ideal: 640 },
+  height: { ideal: 480 },
+  frameRate: { ideal: 24, max: 30 },
+  facingMode: 'user',
+};
+const VIDEO_MAX_BITRATE = 600_000;
 
 const typeLabel = (t: CallType) => (t === 'video' ? 'video' : 'voice');
 
@@ -64,6 +75,57 @@ const mediaErrorMessage = (err: unknown, callType: CallType) => {
   if (name === 'NotFoundError') return `No ${devices} found`;
   if (name === 'NotReadableError') return `Your ${devices} is being used by another app`;
   return `Could not access your ${devices}`;
+};
+
+/** Caps outgoing video so it degrades gracefully instead of stalling on slow links. */
+const capVideoBitrate = async (pc: RTCPeerConnection) => {
+  for (const sender of pc.getSenders()) {
+    if (sender.track?.kind !== 'video') continue;
+    const params = sender.getParameters();
+    if (!params.encodings?.length) params.encodings = [{}];
+    params.encodings[0].maxBitrate = VIDEO_MAX_BITRATE;
+    await sender.setParameters(params).catch(() => undefined);
+  }
+};
+
+/**
+ * Logs how the call connected (direct vs TURN relay) and, a few seconds in,
+ * whether video frames are actually flowing. Open the console to diagnose.
+ */
+const logCallRoute = async (pc: RTCPeerConnection) => {
+  try {
+    const stats = await pc.getStats();
+    let pairId: string | undefined;
+    stats.forEach((r) => {
+      if (r.type === 'transport' && r.selectedCandidatePairId) pairId = r.selectedCandidatePairId;
+    });
+    stats.forEach((r) => {
+      if (!pairId && r.type === 'candidate-pair' && r.nominated && r.state === 'succeeded') pairId = r.id;
+    });
+    const pair = pairId ? stats.get(pairId) : undefined;
+    const local = pair && stats.get(pair.localCandidateId);
+    const remote = pair && stats.get(pair.remoteCandidateId);
+    console.info('[call] connected via', {
+      local: local && `${local.candidateType}/${local.protocol}`,
+      remote: remote && `${remote.candidateType}/${remote.protocol}`,
+      relayed: local?.candidateType === 'relay' || remote?.candidateType === 'relay',
+    });
+
+    setTimeout(async () => {
+      if (pc.connectionState === 'closed') return;
+      const later = await pc.getStats();
+      later.forEach((r) => {
+        if (r.kind !== 'video') return;
+        if (r.type === 'inbound-rtp') {
+          console.info('[call] video in', { framesDecoded: r.framesDecoded, packetsLost: r.packetsLost, size: `${r.frameWidth}x${r.frameHeight}` });
+        } else if (r.type === 'outbound-rtp') {
+          console.info('[call] video out', { framesSent: r.framesSent, limitedBy: r.qualityLimitationReason, size: `${r.frameWidth}x${r.frameHeight}` });
+        }
+      });
+    }, 5_000);
+  } catch {
+    // diagnostics only
+  }
 };
 
 export class CallEngine {
@@ -349,6 +411,8 @@ export class CallEngine {
       if (this.pc !== pc) return;
       switch (pc.connectionState) {
         case 'connected':
+          void capVideoBitrate(pc);
+          void logCallRoute(pc);
           this.stopIceRetry();
           clearTimeout(this.slowConnectTimer);
           this.set({
@@ -422,7 +486,7 @@ export class CallEngine {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         audio,
-        video: callType === 'video' ? { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: 'user' } : false,
+        video: callType === 'video' ? VIDEO_CONSTRAINTS : false,
       });
       return { stream, cameraOff: false };
     } catch (err) {
