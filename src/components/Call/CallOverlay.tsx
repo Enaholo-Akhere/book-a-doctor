@@ -176,7 +176,9 @@ const CallOverlay = () => {
       ? `Incoming ${isVideo ? 'video' : 'voice'} call`
       : status === 'outgoing'
         ? session.callId
-          ? 'Ringing…'
+          ? session.notified
+            ? 'Notifying their device…'
+            : 'Ringing…'
           : 'Calling…'
         : status === 'connecting'
           ? 'Connecting…'

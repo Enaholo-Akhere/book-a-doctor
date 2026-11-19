@@ -9,6 +9,7 @@ import { useConversations } from '@/Hook/useChat';
 import { useChatUIStore } from '@/store/chatUIStore';
 import { useAuthStore } from '@/store/authStore';
 import type { Conversation } from '@/types/chat';
+import CallAlertsPrompt from '@/components/Call/CallAlertsPrompt';
 
 dayjs.extend(relativeTime);
 
@@ -34,6 +35,8 @@ const ChatList = () => {
             <FaArrowLeftLong className='cursor-pointer' aria-label='Close chat' onClick={close} />
             <p>Call and Meeting</p>
           </div>
+
+          <CallAlertsPrompt />
 
           {isLoading && (
             <div className='flex flex-1 items-center justify-center'>

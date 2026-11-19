@@ -1,45 +1,103 @@
+import ringtoneUrl from '@/assets/sounds/ringtone.wav';
+import ringbackUrl from '@/assets/sounds/ringback.wav';
+
 /**
- * Ring / ringback tones synthesised with Web Audio (no audio assets).
- * Browsers may keep the AudioContext suspended until the user has
- * interacted with the page; in that case the tone is silently skipped.
+ * Ringtone (incoming) and ringback (outgoing) playback via Web Audio.
+ *
+ * Browsers block audio until the user has interacted with the page. One
+ * shared AudioContext is created and resumed on the first tap/keypress
+ * anywhere in the app (`unlockAudioOnFirstGesture`), so a call arriving
+ * later can ring without a fresh gesture.
  */
 type ToneKind = 'incoming' | 'outgoing';
 
-const PATTERNS: Record<ToneKind, { freqs: number[]; onMs: number; offMs: number; gain: number }> = {
-  incoming: { freqs: [440, 554], onMs: 1200, offMs: 1800, gain: 0.12 },
-  outgoing: { freqs: [440, 480], onMs: 2000, offMs: 4000, gain: 0.06 },
+const SOURCES: Record<ToneKind, { url: string; gain: number }> = {
+  incoming: { url: ringtoneUrl, gain: 0.9 },
+  outgoing: { url: ringbackUrl, gain: 0.5 },
 };
 
-export const playTone = (kind: ToneKind): (() => void) => {
+let ctx: AudioContext | null = null;
+const buffers = new Map<ToneKind, Promise<AudioBuffer | null>>();
+
+const getContext = (): AudioContext | null => {
+  if (ctx) return ctx;
   const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-  if (!Ctx) return () => undefined;
+  ctx = Ctx ? new Ctx() : null;
+  return ctx;
+};
 
-  const ctx = new Ctx();
-  const { freqs, onMs, offMs, gain } = PATTERNS[kind];
-  let stopped = false;
-  let timer: ReturnType<typeof setTimeout> | undefined;
+const loadBuffer = (kind: ToneKind) => {
+  let pending = buffers.get(kind);
+  if (!pending) {
+    pending = fetch(SOURCES[kind].url)
+      .then((r) => r.arrayBuffer())
+      .then((data) => getContext()?.decodeAudioData(data) ?? null)
+      .catch(() => {
+        buffers.delete(kind); // retry next time
+        return null;
+      });
+    buffers.set(kind, pending);
+  }
+  return pending;
+};
 
-  const beep = () => {
-    if (stopped) return;
-    const out = ctx.createGain();
-    out.gain.value = gain;
-    out.connect(ctx.destination);
-    const end = ctx.currentTime + onMs / 1000;
-    freqs.forEach((f) => {
-      const osc = ctx.createOscillator();
-      osc.frequency.value = f;
-      osc.connect(out);
-      osc.start();
-      osc.stop(end);
+/** Call once at startup: primes audio on the first user gesture. */
+export const unlockAudioOnFirstGesture = () => {
+  const unlock = () => {
+    const c = getContext();
+    if (!c) return;
+    void c.resume().then(() => {
+      if (c.state !== 'running') return;
+      events.forEach((e) => window.removeEventListener(e, unlock, true));
+      void loadBuffer('incoming');
+      void loadBuffer('outgoing');
     });
-    timer = setTimeout(beep, onMs + offMs);
   };
+  const events = ['pointerdown', 'keydown', 'touchend'] as const;
+  events.forEach((e) => window.addEventListener(e, unlock, true));
+};
 
-  ctx.resume().then(beep).catch(() => undefined);
+/** Starts a looping tone; returns a function that stops it. */
+export const playTone = (kind: ToneKind): (() => void) => {
+  const c = getContext();
+  if (!c) return () => undefined;
+
+  let stopped = false;
+  let source: AudioBufferSourceNode | null = null;
+
+  void (async () => {
+    await c.resume().catch(() => undefined);
+    const buffer = await loadBuffer(kind);
+    if (stopped || !buffer || c.state !== 'running') return; // still blocked: visual + vibration only
+    const gain = c.createGain();
+    gain.gain.value = SOURCES[kind].gain;
+    gain.connect(c.destination);
+    source = c.createBufferSource();
+    source.buffer = buffer;
+    source.loop = true;
+    source.connect(gain);
+    source.start();
+  })();
 
   return () => {
     stopped = true;
-    clearTimeout(timer);
-    ctx.close().catch(() => undefined);
+    try {
+      source?.stop();
+    } catch {
+      // already stopped
+    }
+    source?.disconnect();
+  };
+};
+
+/** Repeats a vibration pattern (Android; ignored elsewhere). Returns a stop function. */
+export const startVibration = (pattern: number[]): (() => void) => {
+  if (typeof navigator === 'undefined' || typeof navigator.vibrate !== 'function') return () => undefined;
+  const cycle = pattern.reduce((a, b) => a + b, 0);
+  navigator.vibrate(pattern);
+  const timer = setInterval(() => navigator.vibrate(pattern), cycle);
+  return () => {
+    clearInterval(timer);
+    navigator.vibrate(0);
   };
 };

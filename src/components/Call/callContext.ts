@@ -8,6 +8,8 @@ export interface CallSession {
   peer: ChatPeer;
   callType: CallType;
   direction: 'outgoing' | 'incoming';
+  /** Outgoing: the callee was offline and their devices were sent a push notification. */
+  notified?: boolean;
 }
 
 export interface CallContextValue {

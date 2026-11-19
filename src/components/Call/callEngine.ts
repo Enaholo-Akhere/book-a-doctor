@@ -3,7 +3,8 @@ import { getIceServers } from '@/services/chat.service';
 import type { AppSocket, CallEndReason, SignalPayload } from '@/library/socket/events';
 import type { CallType, ChatPeer } from '@/types/chat';
 import type { CallSession, CallStatus } from './callContext';
-import { playTone } from './tones';
+import { playTone, startVibration } from './tones';
+import { showLocalNotification } from '@/library/push/notifications';
 
 /**
  * Framework-agnostic WebRTC call controller (1:1 calls).
@@ -220,7 +221,7 @@ export class CallEngine {
       }
       // Hung up before the server answered: cancel the call it just created.
       if (!stillWaiting) return void socket.emit('call:end', { callId: res.callId });
-      this.set({ session: { ...this.state.session!, callId: res.callId } });
+      this.set({ session: { ...this.state.session!, callId: res.callId, notified: Boolean(res.notified) } });
     });
   };
 
@@ -517,9 +518,36 @@ export class CallEngine {
     return this.iceServers;
   }
 
+  /**
+   * Outgoing: ringback tone. Incoming: ringtone + vibration, plus a system
+   * notification when the tab isn't in front (another tab/app, minimised).
+   */
   private playTone(kind: 'incoming' | 'outgoing') {
     this.stopToneNow();
-    this.stopTone = playTone(kind);
+    const stops = [playTone(kind)];
+
+    const session = this.state.session;
+    if (kind === 'incoming' && session) {
+      stops.push(startVibration([800, 400, 800, 1600]));
+
+      if (document.visibilityState !== 'visible' || !document.hasFocus()) {
+        let closed = false;
+        let close: (() => void) | null = null;
+        const label = session.callType === 'video' ? 'video' : 'voice';
+        void showLocalNotification(`Incoming ${label} call`, {
+          body: `${session.peer.name} is calling you`,
+          tag: `call-${session.callId}`,
+          icon: session.peer.photo ?? undefined,
+          vibrate: [800, 400, 800],
+        }).then((fn) => (closed ? fn() : (close = fn)));
+        stops.push(() => {
+          closed = true;
+          close?.();
+        });
+      }
+    }
+
+    this.stopTone = () => stops.forEach((stop) => stop());
   }
 
   private stopToneNow() {
