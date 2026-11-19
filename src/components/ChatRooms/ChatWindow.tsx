@@ -123,13 +123,15 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
   };
 
   const canSend = Boolean(peer) && !openError && isConnected;
-  const canCall = canSend && Boolean(conversation?.online) && callStatus === 'idle';
+  // Offline peers can still be called: the server rings their devices via push
+  // if they turned on call alerts, otherwise it replies "offline".
+  const canCall = canSend && callStatus === 'idle';
   const callHint = !isConnected
     ? 'You are offline'
-    : !conversation?.online
-      ? `${peer?.name ?? 'They'} is offline`
-      : callStatus !== 'idle'
-        ? 'You are already on a call'
+    : callStatus !== 'idle'
+      ? 'You are already on a call'
+      : !conversation?.online
+        ? `${peer?.name ?? 'They'} is offline. We'll alert their device if they can be reached.`
         : undefined;
 
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

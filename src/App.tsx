@@ -6,6 +6,7 @@ import { useAuthStore } from './store/authStore';
 import AOS from 'aos';
 import SocketProvider from './library/socket/SocketProvider';
 import CallProvider from './components/Call/CallProvider';
+import CallAlertsSetup from './components/Call/CallAlertsSetup';
 import ChatRoom from './components/ChatRooms';
 import { useChatRealtimeSync } from './Hook/useChat';
 import 'aos/dist/aos.css';
@@ -46,6 +47,7 @@ const App = () => {
       <SocketProvider>
         <CallProvider>
           <ChatRealtimeSync />
+          <CallAlertsSetup />
           <Suspense fallback={<div>Loading...</div>}>
             <Layout />
           </Suspense>
