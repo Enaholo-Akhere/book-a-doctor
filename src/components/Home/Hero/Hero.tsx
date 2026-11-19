@@ -83,7 +83,9 @@ const Hero = () => {
 
   return (
     <MotionConfig reducedMotion='user'>
-      <section className='hero__section relative overflow-hidden !px-0 !pb-0 pt-10 md:pt-14'>
+      {/* Below lg the hero is tall and narrow: "cover" would crop the gradient to its
+          white centre, so stretch it to keep the cyan and peach corners visible. */}
+      <section className='hero__section relative overflow-hidden !px-0 !pb-0 pt-10 md:pt-14 max-lg:!bg-[length:100%_100%]'>
         <div className='container relative'>
           {/* ── Headline ─────────────────────────────────────── */}
           <motion.h1
