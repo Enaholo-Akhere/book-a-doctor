@@ -18,6 +18,6 @@ const Testimonial = () => {
       </div>
     </section>
   );
-};
+}; 
 
 export default Testimonial;
