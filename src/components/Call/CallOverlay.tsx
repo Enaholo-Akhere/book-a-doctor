@@ -84,6 +84,7 @@ const CallOverlay = () => {
     isMuted,
     isCameraOff,
     connectedAt,
+    isReconnecting,
     acceptCall,
     rejectCall,
     endCall,
@@ -99,8 +100,9 @@ const CallOverlay = () => {
   const showRemoteVideo = isVideo && inCall && Boolean(remoteStream?.getVideoTracks().length);
   const showLocalVideo = isVideo && Boolean(localStream) && !isCameraOff;
 
-  const statusText =
-    status === 'incoming'
+  const statusText = isReconnecting
+    ? 'Reconnecting…'
+    : status === 'incoming'
       ? `Incoming ${isVideo ? 'video' : 'voice'} call`
       : status === 'outgoing'
         ? session.callId

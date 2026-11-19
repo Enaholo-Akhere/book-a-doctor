@@ -24,6 +24,7 @@ export interface CallState {
   isMuted: boolean;
   isCameraOff: boolean;
   connectedAt: number | null;
+  isReconnecting: boolean;
 }
 
 const IDLE: CallState = {
@@ -34,10 +35,15 @@ const IDLE: CallState = {
   isMuted: false,
   isCameraOff: false,
   connectedAt: null,
+  isReconnecting: false,
 };
 
 const FALLBACK_ICE: RTCIceServer[] = [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }];
 const SIGNAL_TIMEOUT_MS = 10_000;
+/** While media is down, renegotiate (ICE restart) this often until it recovers or the user hangs up. */
+const ICE_RETRY_MS = 8_000;
+/** Hint the user if a call hasn't connected after this long (it keeps trying). */
+const SLOW_CONNECT_HINT_MS = 15_000;
 
 const typeLabel = (t: CallType) => (t === 'video' ? 'video' : 'voice');
 
@@ -70,6 +76,10 @@ export class CallEngine {
   private signalQueue: Promise<void> = Promise.resolve();
   private stopTone: (() => void) | null = null;
   private iceServers: Promise<RTCIceServer[]> | null = null;
+  /** Socket dropped during an answered call; re-bind it on reconnect. */
+  private awaitingResume = false;
+  private iceRetryTimer: ReturnType<typeof setInterval> | undefined;
+  private slowConnectTimer: ReturnType<typeof setTimeout> | undefined;
 
   // ── store ─────────────────────────────────────────────────────────
   subscribe = (listener: () => void) => {
@@ -88,9 +98,10 @@ export class CallEngine {
 
   // ── socket wiring ─────────────────────────────────────────────────
   attach(socket: AppSocket | null) {
+    // Socket replaced/removed (logout, account switch): hang up so the peer knows.
+    if (this.state.status !== 'idle') this.endCall();
     this.detachSocket?.();
     this.detachSocket = null;
-    if (this.state.status !== 'idle') this.teardown();
     this.socket = socket;
     if (!socket) return;
 
@@ -100,6 +111,7 @@ export class CallEngine {
     socket.on('call:ended', this.onEnded);
     socket.on('call:signal', this.onSignal);
     socket.on('disconnect', this.onDisconnect);
+    socket.on('connect', this.onReconnect);
     this.detachSocket = () => {
       socket.off('call:incoming', this.onIncoming);
       socket.off('call:accepted', this.onAccepted);
@@ -107,6 +119,7 @@ export class CallEngine {
       socket.off('call:ended', this.onEnded);
       socket.off('call:signal', this.onSignal);
       socket.off('disconnect', this.onDisconnect);
+      socket.off('connect', this.onReconnect);
     };
   }
 
@@ -252,10 +265,49 @@ export class CallEngine {
     if (message) toast(message, { icon: '📞' });
   };
 
+  /**
+   * A dropped socket doesn't stop peer-to-peer media, so an answered call is
+   * never ended here: it waits for Socket.IO to reconnect and `onReconnect`
+   * re-binds it. Only the user (or the server's safety net) ends it. Calls
+   * still ringing can't be resumed and end immediately.
+   */
   private onDisconnect = () => {
-    if (this.state.status === 'idle') return;
+    const { status, session } = this.state;
+    if (status === 'idle') return;
+
+    if ((status === 'connecting' || status === 'active') && session?.callId) {
+      this.awaitingResume = true;
+      this.set({ isReconnecting: true });
+      return;
+    }
+
     this.teardown();
     toast.error('Connection lost. The call has ended.');
+  };
+
+  private onReconnect = () => {
+    const callId = this.state.session?.callId;
+    if (!this.awaitingResume || !callId) return;
+
+    this.socket?.timeout(SIGNAL_TIMEOUT_MS).emit('call:resume', { callId }, (err, res) => {
+      if (this.state.session?.callId !== callId) return;
+      if (err) return; // still flaky; the next reconnect retries
+      if (!res.ok) {
+        // The server already closed it (peer hung up, or safety net expired).
+        this.teardown();
+        toast('Call ended', { icon: '📞' });
+        return;
+      }
+      this.awaitingResume = false;
+      this.set({ isReconnecting: this.isMediaDown() });
+      // Signals sent while offline were dropped; renegotiate if media is down too.
+      if (this.isMediaDown()) this.restartIce();
+    });
+  };
+
+  /** Closing or reloading the tab is an intentional hang-up. */
+  handlePageHide = () => {
+    if (this.state.status !== 'idle') this.endCall();
   };
 
   // ── WebRTC ────────────────────────────────────────────────────────
@@ -295,16 +347,66 @@ export class CallEngine {
     };
     pc.onconnectionstatechange = () => {
       if (this.pc !== pc) return;
-      if (pc.connectionState === 'connected' && this.state.status !== 'active') {
-        this.set({ status: 'active', connectedAt: this.state.connectedAt ?? Date.now() });
-      } else if (pc.connectionState === 'failed') {
-        toast.error('Could not connect the call. Check your network.');
-        this.endCall();
+      switch (pc.connectionState) {
+        case 'connected':
+          this.stopIceRetry();
+          clearTimeout(this.slowConnectTimer);
+          this.set({
+            status: 'active',
+            connectedAt: this.state.connectedAt ?? Date.now(),
+            isReconnecting: this.awaitingResume,
+          });
+          break;
+        case 'disconnected': // often recovers on its own (network switch, brief loss)
+        case 'failed': // needs new candidates: keep renegotiating until it's back
+          this.startIceRetry(pc.connectionState === 'failed');
+          break;
       }
     };
 
+    clearTimeout(this.slowConnectTimer);
+    this.slowConnectTimer = setTimeout(() => {
+      if (this.pc === pc && pc.connectionState !== 'connected') {
+        toast('Still connecting… a weak network can slow this down. You can hang up anytime.', { icon: '⏳' });
+      }
+    }, SLOW_CONNECT_HINT_MS);
+
     this.pc = pc;
     return pc;
+  }
+
+  private isMediaDown() {
+    const state = this.pc?.connectionState;
+    return state === 'disconnected' || state === 'failed';
+  }
+
+  /** Keeps trying to bring media back; never hangs up on its own. */
+  private startIceRetry(restartNow: boolean) {
+    if (this.state.status === 'active') this.set({ isReconnecting: true });
+    if (restartNow) this.restartIce();
+    if (this.iceRetryTimer) return;
+    this.iceRetryTimer = setInterval(() => {
+      if (this.isMediaDown()) this.restartIce();
+      else this.stopIceRetry();
+    }, ICE_RETRY_MS);
+  }
+
+  private stopIceRetry() {
+    clearInterval(this.iceRetryTimer);
+    this.iceRetryTimer = undefined;
+  }
+
+  /** Only the caller sends offers, which avoids offer glare. */
+  private restartIce() {
+    const pc = this.pc;
+    const callId = this.state.session?.callId;
+    if (!pc || !callId || this.state.session?.direction !== 'outgoing' || !this.socket?.connected) return;
+    this.enqueue(async () => {
+      if (this.pc !== pc || pc.signalingState !== 'stable') return;
+      const offer = await pc.createOffer({ iceRestart: true });
+      await pc.setLocalDescription(offer);
+      this.socket?.emit('call:signal', { callId, description: pc.localDescription!.toJSON() });
+    });
   }
 
   private enqueue(task: () => Promise<void>) {
@@ -363,6 +465,9 @@ export class CallEngine {
 
   private teardown() {
     this.stopToneNow();
+    this.stopIceRetry();
+    clearTimeout(this.slowConnectTimer);
+    this.awaitingResume = false;
     if (this.pc) {
       this.pc.ontrack = null;
       this.pc.onicecandidate = null;

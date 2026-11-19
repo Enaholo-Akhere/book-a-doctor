@@ -13,6 +13,11 @@ const CallProvider = ({ children }: { children: ReactNode }) => {
     return () => engine.attach(null);
   }, [engine, socket]);
 
+  useEffect(() => {
+    window.addEventListener('pagehide', engine.handlePageHide);
+    return () => window.removeEventListener('pagehide', engine.handlePageHide);
+  }, [engine]);
+
   const state = useSyncExternalStore(engine.subscribe, engine.getState);
 
   const value = useMemo<CallContextValue>(
