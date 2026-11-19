@@ -12,14 +12,20 @@ import { SlOptionsVertical } from 'react-icons/sl';
 import { GrAttachment, GrEmoji } from 'react-icons/gr';
 import { AiOutlineAudio } from 'react-icons/ai';
 import { MdErrorOutline, MdOutlinePhoneMissed } from 'react-icons/md';
+import { RiDeleteBin6Line } from 'react-icons/ri';
+import toast from 'react-hot-toast';
 import {
   useConversations,
   useMessages,
   useOpenConversation,
   usePeerTyping,
+  useSendAttachment,
   useSendMessage,
   useTypingEmitter,
 } from '@/Hook/useChat';
+import { useVoiceRecorder, VoiceRecording } from '@/Hook/useVoiceRecorder';
+import { AttachmentBody } from './Attachments';
+import { ACCEPTED_FILE_TYPES, FILE_INPUT_ACCEPT, formatBytes, formatSeconds, MAX_FILE_BYTES } from './attachmentUtils';
 import { useChatUIStore } from '@/store/chatUIStore';
 import { useAuthStore } from '@/store/authStore';
 import { useSocket } from '@/library/socket/socketContext';
@@ -72,6 +78,8 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
     notAllowed ? null : peerId
   );
   const send = useSendMessage(peerId);
+  const sendAttachment = useSendAttachment(peerId);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { notifyTyping, stopTyping } = useTypingEmitter(peerId);
   const isPeerTyping = usePeerTyping(peerId);
 
@@ -80,6 +88,12 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
   const stickToBottom = useRef(true);
   const heightBeforeOlder = useRef<number | null>(null);
   const firstIdRef = useRef<string | undefined>(undefined);
+
+  const sendVoice = (rec: VoiceRecording) => {
+    stickToBottom.current = true;
+    void sendAttachment({ file: rec.blob, fileName: rec.fileName, kind: 'voice', durationSec: rec.durationSec });
+  };
+  const recorder = useVoiceRecorder(sendVoice);
 
   const messages = useMemo(() => (data ? [...data.pages].reverse().flatMap((p) => p.messages) : []), [data]);
 
@@ -131,6 +145,39 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
     send(content);
     setInput('');
     stopTyping();
+  };
+
+  const handleFilePicked = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = ''; // allow picking the same file again
+    if (!file || !canSend) return;
+    const extOk = /\.(docx?|xlsx?|txt|m4a)$/i.test(file.name);
+    if (!ACCEPTED_FILE_TYPES.includes(file.type) && !extOk) {
+      toast.error('Send images, PDFs, Word/Excel documents, text or audio files');
+      return;
+    }
+    if (file.size > MAX_FILE_BYTES) {
+      toast.error(`File is too large (${formatBytes(file.size)}). Max ${formatBytes(MAX_FILE_BYTES)}.`);
+      return;
+    }
+    stickToBottom.current = true;
+    void sendAttachment({ file, fileName: file.name, kind: 'file' });
+  };
+
+  const finishRecording = async (keep: boolean) => {
+    const rec = await recorder.stop(keep);
+    if (rec) sendVoice(rec);
+  };
+
+  const retry = (msg: ChatMessage) => {
+    if (!msg.failed) return;
+    if (msg.type === 'text') return send(msg.content, msg);
+    if (msg.localFile && msg.attachment && (msg.type === 'file' || msg.type === 'voice')) {
+      void sendAttachment(
+        { file: msg.localFile, fileName: msg.attachment.name, kind: msg.type, durationSec: msg.attachment.durationSec },
+        msg
+      );
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -260,14 +307,25 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
                     ) : (
                       <div className={`flex  ${mine ? 'justify-end' : 'justify-start'}`}>
                         <div>
-                          <p
-                            onClick={() => msg.failed && send(msg.content, msg)}
-                            title={msg.failed ? 'Not sent. Tap to retry.' : undefined}
-                            className={`max-w-xs px-4 py-2 rounded-2xl text-sm whitespace-pre-wrap break-words
+                          {msg.type === 'text' ? (
+                            <p
+                              onClick={() => retry(msg)}
+                              title={msg.failed ? 'Not sent. Tap to retry.' : undefined}
+                              className={`max-w-xs px-4 py-2 rounded-2xl text-sm whitespace-pre-wrap break-words
               ${mine ? 'bg-primaryColor2 text-white' : 'bg-white text-black'} ${msg.failed ? 'opacity-60 cursor-pointer' : ''}`}
-                          >
-                            {msg.content}
-                          </p>
+                            >
+                              {msg.content}
+                            </p>
+                          ) : (
+                            <div
+                              onClick={() => retry(msg)}
+                              title={msg.failed ? 'Not sent. Tap to retry.' : undefined}
+                              className={`max-w-xs p-2 rounded-2xl
+              ${mine ? 'bg-primaryColor2 text-white' : 'bg-white text-black'} ${msg.failed ? 'opacity-60 cursor-pointer' : ''}`}
+                            >
+                              <AttachmentBody msg={msg} mine={mine} />
+                            </div>
+                          )}
                           <span
                             className={`text-[10px] text-gray-700 flex gap-2 ${mine ? 'justify-between' : 'justify-start'}`}
                           >
@@ -300,6 +358,41 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
               )}
             </div>
 
+            <input
+              ref={fileInputRef}
+              type='file'
+              accept={FILE_INPUT_ACCEPT}
+              onChange={handleFilePicked}
+              className='hidden'
+              aria-hidden
+              tabIndex={-1}
+            />
+            {recorder.isRecording ? (
+              <div className='py-2 px-4 z-2 flex items-center gap-3 h-14 bg-white'>
+                <button
+                  type='button'
+                  onClick={() => void finishRecording(false)}
+                  aria-label='Discard recording'
+                  title='Discard'
+                  className='cursor-pointer text-gray-500 hover:text-red-600'
+                >
+                  <RiDeleteBin6Line className='size-6' />
+                </button>
+                <span className='size-2.5 rounded-full bg-red-600 animate-pulse' aria-hidden />
+                <span className='flex-1 text-sm tabular-nums text-gray-700' aria-live='polite'>
+                  Recording… {formatSeconds(recorder.elapsed)}
+                </span>
+                <button
+                  type='button'
+                  onClick={() => void finishRecording(true)}
+                  aria-label='Send voice message'
+                  title='Send'
+                  className='cursor-pointer'
+                >
+                  <IoMdSend className='text-primaryColor2 size-8' />
+                </button>
+              </div>
+            ) : (
             <div className='py-2 px-4 gap-2 z-2 grid grid-cols-12 items-center bg-white'>
               <div className='col-span-1 ml-1'>
                 <GrEmoji className='size-8 opacity-40' title='Coming soon' aria-hidden />
@@ -331,16 +424,31 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
                   </button>
                 ) : (
                   <>
-                    <GrAttachment className='text-gray-500 opacity-40' title='Coming soon' aria-hidden />
-                    <AiOutlineAudio
-                      className='bg-red-600 p-2 rounded-full text-white opacity-40'
-                      title='Coming soon'
-                      aria-hidden
-                    />
+                    <button
+                      type='button'
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={!canSend}
+                      aria-label='Attach a file'
+                      title='Attach a file (max 10 MB)'
+                      className='cursor-pointer disabled:cursor-not-allowed disabled:opacity-40'
+                    >
+                      <GrAttachment className='text-gray-500 size-full p-1' />
+                    </button>
+                    <button
+                      type='button'
+                      onClick={() => void recorder.start()}
+                      disabled={!canSend}
+                      aria-label='Record a voice message'
+                      title='Record a voice message'
+                      className='cursor-pointer disabled:cursor-not-allowed disabled:opacity-40'
+                    >
+                      <AiOutlineAudio className='bg-red-600 p-2 rounded-full text-white size-full' />
+                    </button>
                   </>
                 )}
               </div>
             </div>
+            )}
           </div>
         </div>
       </div>

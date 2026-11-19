@@ -14,8 +14,10 @@ dayjs.extend(relativeTime);
 
 const preview = (c: Conversation, myId?: string) => {
   if (!c.lastMessage) return c.peer.specialization ? `${c.peer.specialization} · Say hello 👋` : 'Say hello 👋';
-  const prefix = c.lastMessage.type === 'text' && c.lastMessage.senderId === myId ? 'You: ' : '';
-  return prefix + c.lastMessage.content;
+  const { type, senderId, content } = c.lastMessage;
+  const prefix = type !== 'call' && senderId === myId ? 'You: ' : '';
+  const icon = type === 'voice' ? '🎤 ' : type === 'file' ? '📎 ' : '';
+  return prefix + icon + content;
 };
 
 const ChatList = () => {
