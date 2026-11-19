@@ -217,8 +217,9 @@ const BookingDetails = ({
         <div>
           <p className='text-sm text-gray-500  '>Weekly availability</p>
           {doctor.timeSlots &&
-            doctor.timeSlots.map((timeSlot) => (
+            doctor.timeSlots.map((timeSlot, index) => (
               <InfoRow
+                key={`${timeSlot.day}-${index}`}
                 icon={<Calendar size={14} />}
                 value={formatTime({
                   time: timeSlot.startingTime.toString(),

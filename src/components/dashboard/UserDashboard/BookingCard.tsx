@@ -3,6 +3,7 @@ import { appointments } from '@/types/doctors.ds';
 import { formatDate } from '@/utils/formatDate';
 import { useAmount } from '@/Hook/useAmount';
 import { formatCurrency } from '@/utils/formartCurrency';
+import { statusLabel } from '../shared/status';
 
 interface BookingCardProps {
   appointment: appointments;
@@ -95,8 +96,8 @@ export default function BookingCard({
           <span
             className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full ${STATUS_STYLES[status]}`}
           >
-            <CheckCircle size={11} />
-            {status.charAt(0).toUpperCase() + status.slice(1)}
+            {status === 'approved' && <CheckCircle size={11} />}
+            {statusLabel(status)}
           </span>
           {isPaid && (
             <span className='inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200'>
