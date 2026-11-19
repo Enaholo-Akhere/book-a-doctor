@@ -8,7 +8,6 @@ import DoctorsHome from '../components/Doctors';
 import Testimonial from '../components/Testimonial';
 import { useGetAllDoctors } from '@/Hook/useDoctors';
 import { AxiosError } from 'axios';
-import FadeInSection from '@/components/Motions/motion';
 import ParallaxSection from '@/components/Home/ParallaxSection/Parallax';
 
 const Home = () => {
@@ -17,9 +16,8 @@ const Home = () => {
     <>
       {/*======== hero section here ========*/}
 
-      <FadeInSection>
-        <Hero />
-      </FadeInSection>
+      {/* Hero runs its own entrance animation on load. */}
+      <Hero />
       {/* ======== Get in Touch section  ======== */}
       <GetInTouch />
 
