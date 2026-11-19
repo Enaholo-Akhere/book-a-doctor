@@ -19,6 +19,8 @@ export interface CallContextValue {
   isCameraOff: boolean;
   /** epoch ms when media started flowing */
   connectedAt: number | null;
+  /** Signalling or media link dropped; trying to recover the call. */
+  isReconnecting: boolean;
   startCall: (peer: ChatPeer, callType: CallType) => Promise<void>;
   acceptCall: () => Promise<void>;
   rejectCall: () => void;
