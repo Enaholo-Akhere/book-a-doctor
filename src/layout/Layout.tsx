@@ -2,7 +2,7 @@ import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
 import NavBar from '@/components/navBar/NavBar';
 import Routers from '@/routes/Routers';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const navLink = [
   { path: '/', display: 'Home' },
@@ -12,16 +12,14 @@ const navLink = [
 ];
 
 const Layout = () => {
-  const [toggle, setToggle] = useState(false);
-
-  const toggleMenu = () => {
-    setToggle(!toggle);
-  };
+  const [menuOpen, setMenuOpen] = useState(false);
+  const openMenu = useCallback(() => setMenuOpen(true), []);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   return (
     <>
-      <Header navLink={navLink} toggleMenu={toggleMenu} />
-      <NavBar navLink={navLink} toggleMenu={toggleMenu} toggle={toggle} />
+      <Header navLink={navLink} onOpenMenu={openMenu} menuOpen={menuOpen} />
+      <NavBar navLink={navLink} open={menuOpen} onClose={closeMenu} />
 
       <main className='max-w-[2040px] mx-auto'>
         <Routers />
