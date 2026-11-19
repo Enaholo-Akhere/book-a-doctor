@@ -162,12 +162,12 @@ const SignupComp = () => {
               </div>
 
               {/* Role & Gender */}
-              <div className='mb-3 flex items-center justify-between'>
-                <label className='text-headingColor font-bold text-[15px]'>
+              <div className='mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2'>
+                <label className='text-headingColor font-bold text-[15px] min-w-0'>
                   Are you a:
                   <select
                     {...register('role')}
-                    className='text-textColor font-semibold text-[15px] px-4 py-3 focus:outline-none'
+                    className='text-textColor font-semibold text-[15px] px-4 py-3 focus:outline-none max-w-full'
                   >
                     <option value=''>Select Role</option>
                     <option value='patient'>Patient</option>
@@ -175,11 +175,11 @@ const SignupComp = () => {
                   </select>
                 </label>
 
-                <label className='text-headingColor font-bold text-[15px]'>
+                <label className='text-headingColor font-bold text-[15px] min-w-0'>
                   Gender
                   <select
                     {...register('gender')}
-                    className='text-textColor font-semibold text-[15px] px-4 py-3 focus:outline-none'
+                    className='text-textColor font-semibold text-[15px] px-4 py-3 focus:outline-none max-w-full'
                   >
                     <option value=''>Select Gender</option>
                     <option value='male'>Male</option>

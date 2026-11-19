@@ -2,6 +2,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300..700;1,300..700&family=Manrope:wght@200..800&display=swap');
 @import 'tailwindcss';
 
+/* ── Responsive guards ─────────────────────────────────────────────────
+ * Never allow sideways scrolling/panning, at any screen size. `clip` (not
+ * `hidden`) doesn't turn <body> into a scroll container, so the sticky
+ * header keeps working; older browsers fall back to hiding on <html>.
+ */
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+@supports not (overflow: clip) {
+  html {
+    overflow-x: hidden;
+  }
+}
+body {
+  overscroll-behavior-x: none;
+}
+/* iOS Safari zooms into any field with text under 16px when it's focused
+ * (e.g. the chat box) and doesn't zoom back out. 16px on touch devices
+ * prevents that zoom while keeping pinch-to-zoom available. */
+@media (pointer: coarse) {
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']),
+  textarea,
+  select {
+    font-size: max(16px, 1em);
+  }
+}
+
 @theme {
   --color-primaryColor: #0d8c81;
   --color-primaryColor2: #109b8f;

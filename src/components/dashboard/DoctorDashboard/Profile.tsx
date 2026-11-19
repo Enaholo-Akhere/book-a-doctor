@@ -208,7 +208,7 @@ const Profile = ({ data: userData }: { data: doctorsInterface }) => {
                   </label>
                   <select
                     {...register('gender')}
-                    className='text-textColor font-semibold text-[15px] px-4 py-3 focus:outline-none border-1 border-[#0066FF61] focus:border-primaryColor rounded-lg'
+                    className='text-textColor font-semibold text-[15px] px-4 py-3 focus:outline-none border-1 border-[#0066FF61] focus:border-primaryColor rounded-lg max-w-full'
                   >
                     <option value=''>Select Gender</option>
                     <option value='male'>Male</option>
@@ -229,7 +229,7 @@ const Profile = ({ data: userData }: { data: doctorsInterface }) => {
                   </label>
                   <select
                     {...register('specialization')}
-                    className='text-textColor font-semibold text-[15px] px-4 py-3 focus:outline-none border-1 border-[#0066FF61] focus:border-primaryColor rounded-lg'
+                    className='text-textColor font-semibold text-[15px] px-4 py-3 focus:outline-none border-1 border-[#0066FF61] focus:border-primaryColor rounded-lg max-w-full'
                   >
                     <option value=''>Select Specialization</option>
                     <option value='cardiologist'>Cardiology</option>

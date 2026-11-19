@@ -31,7 +31,7 @@ const Recognition = (): React.JSX.Element => {
               whileInView='show'
               viewport={sectionViewport}
               variants={cardImageVariant}
-              className='absolute z-20 left-[150px] bottom-[20px] w-[180px] sm:left-[370px] sm:bottom-[60px] sm:w-[200px] md:left-[450px] md:bottom-[100px] md:w-[250px] lg:left-[260px] lg:bottom-[60px] lg:w-[200px] xl:left-[350px] xl:bottom-[50px] xl:w-[250px] 2xl:left-[430px] 2xl:bottom-[100px] 2xl:w-[300px]'
+              className='absolute z-20 right-0 left-auto bottom-[20px] w-[45%] max-w-[180px] sm:right-auto sm:max-w-none sm:left-[370px] sm:bottom-[60px] sm:w-[200px] md:left-[450px] md:bottom-[100px] md:w-[250px] lg:left-[260px] lg:bottom-[60px] lg:w-[200px] xl:left-[350px] xl:bottom-[50px] xl:w-[250px] 2xl:left-[430px] 2xl:bottom-[100px] 2xl:w-[300px]'
             >
               <img src={aboutCardImg} alt='about' className='w-full h-full' />
             </MotionDiv>

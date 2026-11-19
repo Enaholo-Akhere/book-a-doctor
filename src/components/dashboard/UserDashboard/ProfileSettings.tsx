@@ -143,7 +143,7 @@ const ProfileSettings = ({ user }: { user: user }) => {
                 Gender
                 <select
                   {...register('gender')}
-                  className='text-textColor font-semibold text-[15px] px-4 py-3 focus:outline-none'
+                  className='text-textColor font-semibold text-[15px] px-4 py-3 focus:outline-none max-w-full'
                 >
                   <option value=''>Select Gender</option>
                   <option value='male'>Male</option>
