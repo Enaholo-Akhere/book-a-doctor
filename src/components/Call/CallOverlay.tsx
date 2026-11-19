@@ -5,6 +5,46 @@ import { MdCallEnd } from 'react-icons/md';
 import avatarIcon from '@/assets/images/avatar-icon.png';
 import { useCall } from './callContext';
 
+/**
+ * True once the stream has a video track that is actually receiving frames.
+ * Remote tracks exist (muted) as soon as they're negotiated, long before any
+ * frame arrives, so the track's mute/unmute events are the real signal.
+ */
+const useHasLiveVideo = (stream: MediaStream | null) => {
+  const check = () => Boolean(stream?.getVideoTracks().some((t) => t.readyState === 'live' && !t.muted));
+  const [live, setLive] = useState(check);
+
+  useEffect(() => {
+    if (!stream) return setLive(false);
+    const update = () => setLive(Boolean(stream.getVideoTracks().some((t) => t.readyState === 'live' && !t.muted)));
+    const bound = new Set<MediaStreamTrack>();
+    const bindTracks = () => {
+      stream.getVideoTracks().forEach((t) => {
+        if (bound.has(t)) return;
+        bound.add(t);
+        t.addEventListener('mute', update);
+        t.addEventListener('unmute', update);
+        t.addEventListener('ended', update);
+      });
+      update();
+    };
+    bindTracks();
+    stream.addEventListener('addtrack', bindTracks);
+    stream.addEventListener('removetrack', update);
+    return () => {
+      stream.removeEventListener('addtrack', bindTracks);
+      stream.removeEventListener('removetrack', update);
+      bound.forEach((t) => {
+        t.removeEventListener('mute', update);
+        t.removeEventListener('unmute', update);
+        t.removeEventListener('ended', update);
+      });
+    };
+  }, [stream]);
+
+  return live;
+};
+
 const MediaView = ({
   stream,
   muted = false,
@@ -17,11 +57,38 @@ const MediaView = ({
   className?: string;
 }) => {
   const ref = useRef<HTMLVideoElement>(null);
+  const [blocked, setBlocked] = useState(false);
+
+  const play = () => {
+    ref.current
+      ?.play()
+      .then(() => setBlocked(false))
+      .catch((err: unknown) => {
+        // Mobile browsers may refuse unmuted autoplay; ask for a tap instead.
+        if (err instanceof DOMException && err.name === 'NotAllowedError') setBlocked(true);
+      });
+  };
+
   useEffect(() => {
-    if (ref.current && ref.current.srcObject !== stream) ref.current.srcObject = stream;
+    const el = ref.current;
+    if (!el) return;
+    if (el.srcObject !== stream) el.srcObject = stream;
+    play();
   }, [stream]);
+
   return (
-    <video ref={ref} autoPlay playsInline muted={muted} className={`${className} ${mirrored ? '-scale-x-100' : ''}`} />
+    <>
+      <video ref={ref} autoPlay playsInline muted={muted} className={`${className} ${mirrored ? '-scale-x-100' : ''}`} />
+      {blocked && (
+        <button
+          type='button'
+          onClick={play}
+          className='absolute inset-0 z-30 flex items-center justify-center bg-black/60 text-lg font-semibold cursor-pointer'
+        >
+          Tap to start video
+        </button>
+      )}
+    </>
   );
 };
 
@@ -92,12 +159,15 @@ const CallOverlay = () => {
     toggleCamera,
   } = useCall();
 
+  // Hooks must run before the early return below.
+  const remoteHasVideo = useHasLiveVideo(remoteStream);
+
   if (status === 'idle' || !session) return null;
 
   const { peer, callType } = session;
   const isVideo = callType === 'video';
   const inCall = status === 'connecting' || status === 'active';
-  const showRemoteVideo = isVideo && inCall && Boolean(remoteStream?.getVideoTracks().length);
+  const showRemoteVideo = isVideo && inCall && remoteHasVideo;
   const showLocalVideo = isVideo && Boolean(localStream) && !isCameraOff;
 
   const statusText = isReconnecting
@@ -120,9 +190,15 @@ const CallOverlay = () => {
       className='fixed inset-0 z-[1000] bg-gradient-to-b from-gray-900 to-[#0b3d39] text-white overflow-hidden'
     >
       {/* Remote media */}
+      {/* Video calls keep ONE element for the remote stream (it also plays the
+          audio), hidden until frames arrive, so playback is never interrupted
+          by swapping elements mid-call. */}
       {remoteStream &&
-        (showRemoteVideo ? (
-          <MediaView stream={remoteStream} className='absolute inset-0 h-full w-full object-cover bg-black' />
+        (isVideo ? (
+          <MediaView
+            stream={remoteStream}
+            className={`absolute inset-0 h-full w-full object-cover bg-black ${showRemoteVideo ? '' : 'opacity-0 pointer-events-none'}`}
+          />
         ) : (
           <AudioSink stream={remoteStream} />
         ))}
