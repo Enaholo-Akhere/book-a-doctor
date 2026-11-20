@@ -8,6 +8,7 @@ import SocketProvider from './library/socket/SocketProvider';
 import CallProvider from './components/Call/CallProvider';
 import CallAlertsSetup from './components/Call/CallAlertsSetup';
 import ChatRoom from './components/ChatRooms';
+import AiChat from './components/AiChat';
 import { useChatRealtimeSync } from './Hook/useChat';
 import 'aos/dist/aos.css';
 
@@ -52,6 +53,7 @@ const App = () => {
             <Layout />
           </Suspense>
           <ChatRoom />
+          <AiChat />
         </CallProvider>
       </SocketProvider>
     </BrowserRouter>
