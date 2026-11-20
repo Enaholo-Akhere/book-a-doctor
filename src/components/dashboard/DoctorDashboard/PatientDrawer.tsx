@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Droplet, Mail, MessageCircle, Phone, Pill, ShieldAlert, HeartPulse, X } from 'lucide-react';
+import { Droplet, MessageCircle, Pill, ShieldAlert, HeartPulse, X } from 'lucide-react';
 import { useChatUIStore } from '@/store/chatUIStore';
 import { formatDate } from '@/utils/formatDate';
 import { ageFrom, bmiFrom } from '../shared/healthUtils';
@@ -82,14 +82,6 @@ const PatientDrawer = ({ summary, onClose }: { summary: PatientSummary | null; o
             >
               <MessageCircle size={16} /> Message
             </button>
-            {p.phone && (
-              <a href={`tel:${p.phone}`} className='inline-flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-50'>
-                <Phone size={16} /> Call
-              </a>
-            )}
-            <a href={`mailto:${p.email}`} className='inline-flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-50'>
-              <Mail size={16} /> Email
-            </a>
           </div>
 
           <div>
