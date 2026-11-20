@@ -4,6 +4,7 @@ import TestimonialSwiper from './TestimonialSwiper';
 const Testimonial = () => {
   const { pathname } = useLocation();
   const pn = pathname === '/doctors';
+  
   return (
     <section className={`${pn ? 'lg:mt-[-150px] mt-[0px]' : ''} '`}>
       <div className=' '>
