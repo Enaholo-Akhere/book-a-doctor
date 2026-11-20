@@ -15,6 +15,7 @@ import { handleAxiosError } from '@/utils/axiosError';
 import type { AiChatEntry, AiChatQuotaInfo, AiChatTurn } from '@/types/ai-chat';
 import AiChatLauncher from './AiChatLauncher';
 import AiChatPanel, { AI_CHAT_DISCLAIMER } from './AiChatPanel';
+import { AI_CHAT_OPEN_EVENT } from './openAiChat';
 
 const HISTORY_TURNS = 10;
 const GUEST_KEY = 'ai-chat:guest';
@@ -74,6 +75,13 @@ const AiChat = () => {
   useEffect(() => {
     if (isGuest && entriesOwner === 'guest') saveGuest(entries);
   }, [isGuest, entriesOwner, entries]);
+
+  // Other pages (e.g. Services) can open the panel.
+  useEffect(() => {
+    const show = () => setOpen(true);
+    window.addEventListener(AI_CHAT_OPEN_EVENT, show);
+    return () => window.removeEventListener(AI_CHAT_OPEN_EVENT, show);
+  }, []);
 
   // Remove conversations older versions kept per user in sessionStorage.
   useEffect(() => {
