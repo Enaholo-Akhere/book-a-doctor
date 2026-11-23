@@ -1,7 +1,6 @@
 // Modal.jsx
 import { createPortal } from 'react-dom';
 
-const modalRoot = document.getElementById('modal-root') as HTMLElement;
 interface modalRoot {
   children: React.ReactNode;
   isOpen: boolean;
@@ -10,9 +9,11 @@ interface modalRoot {
 
 const Modal = ({ children, isOpen, onClose }: modalRoot) => {
   if (!isOpen) return null;
+  const modalRoot = document.getElementById('modal-root');
+  if (!modalRoot) return null;
 
   return createPortal(
-    <div className='relative z-[200] flex justify-center w-[90%] m-auto'>
+    <div className='flex  justify-center w-[90%] m-auto '>
       <div
         className=' fixed inset-0 bg-black/30 backdrop-blur-xs '
         onClick={() => {

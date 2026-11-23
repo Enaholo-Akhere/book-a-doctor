@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { AlertTriangle, BadgeCheck, KeyRound, LogOut, ShieldCheck, Trash2 } from 'lucide-react';
 import { user } from '@/types/users';
@@ -45,7 +46,7 @@ const AccountSecurity = ({ user, onLogout, isLoggingOut, deleteAccount, deleteNo
             title='Password'
             description="We'll email you a secure link to set a new password."
             action={
-              <Link to='/forgot-password' className={`${secondaryBtn} py-2`}>
+              <Link href='/forgot-password' className={`${secondaryBtn} py-2`}>
                 <KeyRound size={15} /> Change
               </Link>
             }
@@ -112,7 +113,7 @@ const DeleteAccountDialog = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const { mutate, isPending } = useMutation({ mutationFn: deleteAccount });
   const logoutUser = useAuthStore((s) => s.logout);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -127,7 +128,7 @@ const DeleteAccountDialog = ({
         toast.success('Your account has been deleted');
         logoutUser();
         queryClient.clear();
-        navigate('/', { replace: true });
+        router.replace('/');
       },
       onError: (err) => toast.error(handleAxiosError(err)),
     });

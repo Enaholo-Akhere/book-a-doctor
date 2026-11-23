@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import {
   BadgeCheck,
@@ -56,9 +57,14 @@ const DoctorDashboard = () => {
   const logoutUser = useAuthStore((state) => state.logout);
   const { data: res, isLoading, isError, error, dataUpdatedAt, refetch, isFetching } = useProfileMeDoctor(authUser?._id || '');
   const { mutate: logout, isPending: isLoggingOut } = useLogout();
-  const navigate = useNavigate();
+  const router = useRouter();
 
-  const [params, setParams] = useSearchParams();
+  const params = useSearchParams();
+  const pathname = usePathname();
+  const setParams = (next: Record<string, string>) => {
+    const qs = new URLSearchParams(next).toString();
+    router.push(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  };
   const tabParam = params.get('tab');
   const tab: DoctorTab = isTab(tabParam) ? tabParam : 'overview';
   const [patientId, setPatientId] = useState<string | null>(null);
@@ -86,7 +92,7 @@ const DoctorDashboard = () => {
       onSuccess: (r) => {
         toast.success(r?.message);
         logoutUser();
-        navigate('/login');
+        router.push('/login');
       },
       onError: (err) => toast.error(handleAxiosError(err)),
     });
@@ -121,7 +127,7 @@ const DoctorDashboard = () => {
                   )}
                 </div>
                 {approved && (
-                  <Link to={`/doctor/${doctor._id}`} className='mt-3 inline-flex items-center gap-1 text-xs font-medium text-primaryColor hover:underline'>
+                  <Link href={`/doctor/${doctor._id}`} className='mt-3 inline-flex items-center gap-1 text-xs font-medium text-primaryColor hover:underline'>
                     View public profile <ExternalLink size={12} />
                   </Link>
                 )}

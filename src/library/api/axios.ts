@@ -3,9 +3,9 @@ import { useAuthStore } from '@/store/authStore';
 import { handleAxiosError } from "@/utils/axiosError";
 import { refreshToken } from "@/library/api/refreshToken";
 
-const prodURL = import.meta.env.VITE_PROD_BASE_URL
-const devURL = import.meta.env.VITE_DEV_BASE_URL
-const baseUrl = import.meta.env.MODE === 'production' ? prodURL : devURL
+const prodURL = process.env.NEXT_PUBLIC_PROD_BASE_URL
+const devURL = process.env.NEXT_PUBLIC_DEV_BASE_URL
+const baseUrl = process.env.NODE_ENV === 'production' ? prodURL : devURL
 
 export const api = axios.create({
     baseURL: baseUrl,

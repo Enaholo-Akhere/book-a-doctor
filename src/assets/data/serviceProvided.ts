@@ -1,6 +1,10 @@
-import icon01 from '@/assets/images/icon01.png';
-import icon02 from '@/assets/images/icon02.png';
-import icon03 from '@/assets/images/icon03.png';
+import icon01Asset from '@/assets/images/icon01.png';
+import icon02Asset from '@/assets/images/icon02.png';
+import icon03Asset from '@/assets/images/icon03.png';
+
+const icon01: string = icon01Asset.src;
+const icon02: string = icon02Asset.src;
+const icon03: string = icon03Asset.src;
 
 export interface medicalServiceInterface {
   id: number;
@@ -29,7 +33,7 @@ export const medicalServices: medicalServiceInterface[] = [
   },
   {
     id: 3,
-    url: '',
+    url: '/doctors',
     title: 'Book Appointment',
     icon: icon03,
     subtext:

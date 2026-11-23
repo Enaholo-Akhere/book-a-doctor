@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import NavLink from '@/components/NavLink';
 import toast from 'react-hot-toast';
 import {
   ArrowRight,
@@ -17,7 +19,7 @@ import {
   X,
   type LucideIcon,
 } from 'lucide-react';
-import logo from '/public/CareConnect-logo.png';
+const logo = '/CareConnect-logo.png';
 import { useAuthStore } from '@/store/authStore';
 import { useLogout } from '@/Hook/auth/userAuth';
 import { useChatUIStore } from '@/store/chatUIStore';
@@ -53,8 +55,8 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
   const openChatList = useChatUIStore((s) => s.openList);
   const { data: conversations } = useConversations();
   const unread = conversations?.reduce((sum, c) => sum + c.unreadCount, 0) ?? 0;
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
   const closeRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -102,7 +104,7 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
         toast.success(res?.message);
         logoutUser();
         onClose();
-        navigate('/login');
+        router.push('/login');
       },
       onError: (err) => toast.error(handleAxiosError(err)),
     });
@@ -136,7 +138,7 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
       >
         {/* Top bar */}
         <div className='flex items-center justify-between border-b border-gray-100 px-5 py-4'>
-          <Link to='/' className='block w-[130px]'>
+          <Link href='/' className='block w-[130px]'>
             <img src={logo} alt='CareConnect home' className='h-auto w-full' />
           </Link>
           <button
@@ -154,7 +156,7 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
           {/* Account card */}
           {user ? (
             <Link
-              to={dashboardPath}
+              href={dashboardPath}
               className='flex items-center gap-3 rounded-2xl border border-gray-100 bg-gray-50/80 p-3 transition hover:border-primaryColor/30 hover:bg-primaryColor/5'
             >
               {user.photo?.imageUrl ? (
@@ -178,13 +180,13 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
               <p className='mt-1 text-sm text-white/85'>Sign in to book doctors, chat and manage your health.</p>
               <div className='mt-4 grid grid-cols-2 gap-2'>
                 <Link
-                  to='/login'
+                  href='/login'
                   className='inline-flex items-center justify-center gap-1.5 rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-primaryColor transition hover:bg-white/90'
                 >
                   <LogIn size={16} /> Log in
                 </Link>
                 <Link
-                  to='/signup'
+                  href='/signup'
                   className='inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/40 bg-white/10 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-white/20'
                 >
                   <UserPlus size={16} /> Sign up
@@ -202,7 +204,7 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
                 return (
                   <li key={link.path}>
                     <NavLink
-                      to={link.path}
+                      href={link.path}
                       end={link.path === '/'}
                       className={({ isActive }) =>
                         `${itemBase} ${isActive ? 'bg-primaryColor/10 text-primaryColor' : 'text-gray-700 hover:bg-gray-50 hover:text-headingColor'}`
@@ -229,7 +231,7 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
               <ul className='space-y-1'>
                 <li>
                   <NavLink
-                    to={dashboardPath}
+                    href={dashboardPath}
                     className={({ isActive }) =>
                       `${itemBase} ${isActive ? 'bg-primaryColor/10 text-primaryColor' : 'text-gray-700 hover:bg-gray-50 hover:text-headingColor'}`
                     }
@@ -276,7 +278,7 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
         {user?.role !== 'doctor' && (
           <div className='border-t border-gray-100 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]'>
             <Link
-              to='/doctors'
+              href='/doctors'
               className='flex items-center gap-3 rounded-2xl bg-primaryColor px-4 py-3 text-white shadow-sm transition hover:bg-primaryColor2'
             >
               <span className='flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/15'>

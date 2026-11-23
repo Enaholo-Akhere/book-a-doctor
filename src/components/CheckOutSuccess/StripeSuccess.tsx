@@ -1,6 +1,7 @@
+'use client';
 import { useBookingSessionStripe } from '@/Hook/useBooking';
 import { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 // ── Icons (keep all your existing icon components) ──────────────────────────
 const CheckIcon = () => (
@@ -89,8 +90,8 @@ const Skeleton = ({ className }: { className?: string }) => (
 const CheckoutSuccess = () => {
   const [visible, setVisible] = useState(false);
   const [ringExpand, setRingExpand] = useState(false);
-  const [params] = useSearchParams();
-  const navigate = useNavigate();
+  const params = useSearchParams();
+  const router = useRouter();
   const sessionId = params.get('session_id');
 
   const {
@@ -289,7 +290,7 @@ const CheckoutSuccess = () => {
           {/* Actions */}
           <div className='flex flex-col gap-3'>
             <button
-              onClick={() => navigate('/home')}
+              onClick={() => router.push('/')}
               className='w-full py-3.5 rounded-xl text-white font-semibold text-sm tracking-wide transition-all duration-200 active:scale-[0.98]'
               style={{
                 background: 'linear-gradient(135deg, #0d9488, #0f766e)',
@@ -307,7 +308,7 @@ const CheckoutSuccess = () => {
               Back to Home
             </button>
             <button
-              onClick={() => navigate('/users/profile/me')}
+              onClick={() => router.push('/users/profile/me')}
               className='w-full py-3.5 rounded-xl text-slate-600 font-semibold text-sm tracking-wide border border-slate-200 bg-white hover:bg-slate-50 transition-all duration-200 active:scale-[0.98]'
             >
               View My Appointments

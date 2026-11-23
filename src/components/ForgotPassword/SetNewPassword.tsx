@@ -8,12 +8,12 @@ import PassStrength from '../Signup/PassStre';
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 import { useSetPassword } from '@/Hook/auth/userAuth';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const SetNewPasswordComp = () => {
   const { mutate, isPending } = useSetPassword();
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const token = searchParams.get('token');
   const id = searchParams.get('id');
 
@@ -42,7 +42,7 @@ const SetNewPasswordComp = () => {
       {
         onSuccess: (res) => {
           toast.success(res.message);
-          navigate('/login');
+          router.push('/login');
         },
         onError: (error) => {
           toast.error(handleAxiosError(error));

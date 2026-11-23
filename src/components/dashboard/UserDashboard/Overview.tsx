@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import {
   Activity,
   ArrowRight,
@@ -74,7 +74,7 @@ const Overview = ({ user, onNavigate, onOpenAppointment }: OverviewProps) => {
           </p>
           <div className='mt-5 flex flex-wrap gap-3'>
             <Link
-              to='/doctors'
+              href='/doctors'
               className='inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-primaryColor shadow-sm transition hover:bg-white/90'
             >
               <CalendarPlus size={16} /> Book appointment
@@ -123,7 +123,7 @@ const Overview = ({ user, onNavigate, onOpenAppointment }: OverviewProps) => {
               title='No appointments yet'
               description='When you book a doctor, your appointments will show up here.'
               action={
-                <Link to='/doctors' className={primaryBtn}>
+                <Link href='/doctors' className={primaryBtn}>
                   Find a doctor
                 </Link>
               }
@@ -224,7 +224,7 @@ const Overview = ({ user, onNavigate, onOpenAppointment }: OverviewProps) => {
                   <Avatar src={doctor.photo?.imageUrl} name={doctor.name} size={44} />
                   <div className='min-w-0 flex-1'>
                     <Link
-                      to={`/doctor/${doctor._id}`}
+                      href={`/doctor/${doctor._id}`}
                       className='block truncate text-sm font-semibold text-headingColor hover:text-primaryColor'
                     >
                       {doctor.name}

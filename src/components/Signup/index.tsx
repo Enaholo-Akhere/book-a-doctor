@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { AxiosError } from 'axios';
-import signupImg from '@/assets/images/signup.gif';
-import avatar from '@/assets/images/upload_avatar.png';
+import signupImgAsset from '@/assets/images/signup.gif';
+import avatarAsset from '@/assets/images/upload_avatar.png';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import PassStrength from './PassStre';
 import { registrationSchema, registrationType } from '@/utils/authSchema';
@@ -11,10 +12,12 @@ import { Controller, useForm } from 'react-hook-form';
 import { useRegister } from '@/Hook/auth/userAuth';
 import toast from 'react-hot-toast';
 import HashLoader from 'react-spinners/HashLoader';
-import { useNavigate } from 'react-router-dom';
+
+const signupImg: string = signupImgAsset.src;
+const avatar: string = avatarAsset.src;
 
 const SignupComp = () => {
-  const Navigate = useNavigate();
+  const router = useRouter();
 
   const [preview, setPreview] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -53,7 +56,7 @@ const SignupComp = () => {
     mutate(formData, {
       onSuccess: () => {
         toast.success('Signup successful');
-        Navigate('/login');
+        router.push('/login');
       },
       onError: (err) => {
         const error = err as AxiosError;
@@ -241,7 +244,7 @@ const SignupComp = () => {
 
               <p className='mt-5 text-textColor text-center text-[15px] font-bold'>
                 Already have an account?
-                <Link to='/login' className='text-primaryColor ml-1'>
+                <Link href='/login' className='text-primaryColor ml-1'>
                   Login
                 </Link>
               </p>

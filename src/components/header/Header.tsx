@@ -1,10 +1,11 @@
 // import logo from '@/assets/images/logo.png';
 import { BiMenu } from 'react-icons/bi';
-import { NavLink, Link } from 'react-router-dom';
+import Link from 'next/link';
+import NavLink from '@/components/NavLink';
 import { useEffect, useRef } from 'react';
 import Button from '@/components/Button';
 import { useAuthStore } from '@/store/authStore';
-import logo1 from '/public/CareConnect-logo.png';
+const logo1 = '/CareConnect-logo.png';
 
 const Header = ({
   navLink,
@@ -48,7 +49,7 @@ const Header = ({
     <header className='header' ref={headerRef}>
       <div className='container flex justify-between items-center m-auto'>
         <div className=''>
-          <NavLink to='/'>
+          <NavLink href='/'>
             <div className='w-[150px] h-full'>
               <img src={logo1} alt='' className='w-[100%] h-[100%]' />
             </div>
@@ -59,7 +60,7 @@ const Header = ({
             {navLink.map((link, index) => (
               <li key={index}>
                 <NavLink
-                  to={link.path}
+                  href={link.path}
                   className={(navClass) =>
                     navClass.isActive
                       ? 'text-primaryColor text-16 leading-7 font-[600]'
@@ -75,7 +76,7 @@ const Header = ({
         <div className='flex items-center gap-4'>
           {user?.photo.imageUrl && (
             <div className=''>
-              <Link to={`/${role}/profile/me`}>
+              <Link href={`/${role}/profile/me`}>
                 <figure className='w-[35px] h-[35px] rounded-full cursor-pointer'>
                   <img
                     src={user.photo.imageUrl}
@@ -87,7 +88,7 @@ const Header = ({
             </div>
           )}
           {!user?.photo.imageUrl && (
-            <Link to='/login'>
+            <Link href='/login'>
               <Button
                 title='Login'
                 bgColor=' bg-primaryColor'

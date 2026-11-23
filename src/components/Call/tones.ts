@@ -1,5 +1,6 @@
-import ringtoneUrl from '@/assets/sounds/ringtone.wav';
-import ringbackUrl from '@/assets/sounds/ringback.wav';
+// Served from /public/sounds (Next can't bundle .wav imports).
+const ringtoneUrl = '/sounds/ringtone.wav';
+const ringbackUrl = '/sounds/ringback.wav';
 
 /**
  * Ringtone (incoming) and ringback (outgoing) playback via Web Audio.

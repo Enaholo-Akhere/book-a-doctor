@@ -1,6 +1,6 @@
-import aboutImg from '@/assets/images/about.png';
-import aboutCardImg from '@/assets/images/about-card.png';
-import { Link } from 'react-router-dom';
+import aboutImgAsset from '@/assets/images/about.png';
+import aboutCardImgAsset from '@/assets/images/about-card.png';
+import Link from 'next/link';
 import Button from '../../Button';
 import {
   MotionDiv,
@@ -11,9 +11,12 @@ import {
   sectionViewport,
 } from '@/components/Motions/flexMotion';
 
+const aboutImg: string = aboutImgAsset.src;
+const aboutCardImg: string = aboutCardImgAsset.src;
+
 const Recognition = (): React.JSX.Element => {
   return (
-    <section>
+    <section id='about' className='scroll-mt-24'>
       <div className='container'>
         <div className='flex justify-between gap-[80px] xl:gap-0 flex-col lg:flex-row items-center'>
           <MotionDiv
@@ -62,7 +65,7 @@ const Recognition = (): React.JSX.Element => {
               </p>
             </MotionDiv>
             <MotionDiv variants={textItemVariant}>
-              <Link to='/'>
+              <Link href='/'>
                 <Button
                   title='Learn More'
                   px='md:px-[56px] px-[30px]'

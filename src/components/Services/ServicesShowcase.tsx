@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import {
   ArrowDown,
   ArrowUpRight,
@@ -180,7 +180,7 @@ const SpecialistsCard = () => (
       Verified specialists for skin, children, women's and men's health, mental health and more.
     </p>
     <Footer dark>
-      <Link to='/doctors' className='inline-flex items-center gap-1.5 hover:text-irisBlueColor'>
+      <Link href='/doctors' className='inline-flex items-center gap-1.5 hover:text-irisBlueColor'>
         Find a doctor <ArrowUpRight size={16} />
       </Link>
     </Footer>
@@ -225,7 +225,7 @@ const FollowUpCard = () => (
       <Glow color='rgba(254,182,13,0.45)' className='-bottom-24 left-1/2 h-48 w-72 -translate-x-1/2' />
     </div>
     <Footer dark>
-      <Link to='/doctors' className='relative z-10 inline-flex items-center gap-1.5 hover:text-yellowColor'>
+      <Link href='/doctors' className='relative z-10 inline-flex items-center gap-1.5 hover:text-yellowColor'>
         Book a doctor <ArrowUpRight size={16} />
       </Link>
     </Footer>

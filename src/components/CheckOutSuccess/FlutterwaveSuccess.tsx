@@ -1,10 +1,11 @@
-import { useSearchParams } from 'react-router-dom';
+'use client';
+import { useSearchParams } from 'next/navigation';
 import { useBookingTransactionFlutterwave } from '@/Hook/useBooking';
 import Loading from '../Loader';
 import Button from '../Button';
 
 const PaymentSuccessPage = () => {
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const transactionId = searchParams.get('transaction_id') || '';
   const doctorId = searchParams.get('doctorId') || '';
   const { isLoading, data, isError } = useBookingTransactionFlutterwave(

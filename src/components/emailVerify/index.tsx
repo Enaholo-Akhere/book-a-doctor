@@ -1,13 +1,13 @@
 import HashLoader from 'react-spinners/HashLoader';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useVerifyEmail } from '@/Hook/auth/userAuth';
 import { toast } from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { handleAxiosError } from '@/utils/axiosError';
 
 const EmailVerify = () => {
-  const Navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const userId = searchParams.get('userId') || '';
   const token = searchParams.get('token') || '';
   const { isPending, mutate, isSuccess, isError } = useVerifyEmail();
@@ -20,7 +20,7 @@ const EmailVerify = () => {
         onSuccess: (res) => {
           toast.success(res?.message || 'Email verified successfully');
           setTimeout(() => {
-            Navigate('/login');
+            router.push('/login');
           }, 2000);
         },
         onError: (err) => {
@@ -28,7 +28,7 @@ const EmailVerify = () => {
         },
       }
     );
-  }, [Navigate, mutate, token, userId]);
+  }, [router, mutate, token, userId]);
 
   return (
     <div className='flex justify-center items-center flex-col gap-5'>

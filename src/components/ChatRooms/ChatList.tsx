@@ -3,13 +3,15 @@ import { GoBell } from 'react-icons/go';
 import HashLoader from 'react-spinners/HashLoader';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import avatarIcon from '@/assets/images/avatar-icon.png';
+import avatarIconAsset from '@/assets/images/avatar-icon.png';
 import { truncateText } from '@/utils/helperFunctions';
 import { useConversations } from '@/Hook/useChat';
 import { useChatUIStore } from '@/store/chatUIStore';
 import { useAuthStore } from '@/store/authStore';
 import type { Conversation } from '@/types/chat';
 import CallAlertsPrompt from '@/components/Call/CallAlertsPrompt';
+
+const avatarIcon: string = avatarIconAsset.src;
 
 dayjs.extend(relativeTime);
 
