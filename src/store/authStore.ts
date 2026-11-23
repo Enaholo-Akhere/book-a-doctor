@@ -2,6 +2,7 @@ import { appointments, doctorsInterface } from '@/types/doctors.ds';
 import { create } from 'zustand';
 // import { devtools } from 'zustand/middleware';
 import { persist } from "zustand/middleware";
+import { queryClient } from '@/library/provider/reactQuery';
 
 interface User {
     id: string;
@@ -77,12 +78,16 @@ export const useAuthStore = create<AuthState>()(
                 }));
             },
 
-            logout: () =>
+            logout: () => {
+                // Drop every cached query (bookings, chats, consultations...)
+                // so the next account on this tab never sees this one's data.
+                queryClient.clear();
                 set({
                     user: null,
                     token: null,
                     isAuthenticated: false,
-                }),
+                });
+            },
         }),
         {
             name: "auth-storage", // localStorage key

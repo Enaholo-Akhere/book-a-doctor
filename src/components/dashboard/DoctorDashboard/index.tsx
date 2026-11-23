@@ -89,12 +89,13 @@ const DoctorDashboard = () => {
 
   const handleLogout = () =>
     logout(undefined, {
-      onSuccess: (r) => {
-        toast.success(r?.message);
+      onSuccess: (r) => toast.success(r?.message),
+      onError: (err) => toast.error(handleAxiosError(err)),
+      // Log out locally even if the server call failed.
+      onSettled: () => {
         logoutUser();
         router.push('/login');
       },
-      onError: (err) => toast.error(handleAxiosError(err)),
     });
 
   if (isLoading) return <Loading />;

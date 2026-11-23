@@ -118,7 +118,7 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
           toast.success('Profile saved');
           updateDoctor(result.data);
           reset(defaultsFrom(result.data));
-          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ME] });
+          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DOCTOR_ME] });
         },
         onError: (err) => toast.error(handleAxiosError(err) || 'Profile update failed'),
       }

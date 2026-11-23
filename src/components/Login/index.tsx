@@ -77,8 +77,9 @@ const LoginComp = () => {
           </div>
           <div className='mt-7'>
             <button
-              className='w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3 cursor-pointer '
+              className='w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3 cursor-pointer disabled:cursor-not-allowed disabled:opacity-80'
               type='submit'
+              disabled={isPending}
             >
               {isPending ? (
                 <div className='flex justify-center'>

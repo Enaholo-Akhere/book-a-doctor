@@ -19,7 +19,7 @@ const StatusActions = ({ appointment, compact = false }: { appointment: appointm
       {
         onSuccess: (res) => {
           toast.success(res?.message ?? 'Appointment updated');
-          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ME] });
+          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DOCTOR_ME] });
         },
         onError: (err) => toast.error(handleAxiosError(err)),
       }

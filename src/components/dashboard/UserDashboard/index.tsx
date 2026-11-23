@@ -71,12 +71,13 @@ const UserDashboard = () => {
 
   const handleLogout = () =>
     logout(undefined, {
-      onSuccess: (res) => {
-        toast.success(res?.message);
+      onSuccess: (res) => toast.success(res?.message),
+      onError: (err) => toast.error(handleAxiosError(err)),
+      // Log out locally even if the server call failed.
+      onSettled: () => {
         logoutUser();
         router.push('/login');
       },
-      onError: (err) => toast.error(handleAxiosError(err)),
     });
 
   const errorData = (error as AxiosError)?.response?.data as { message?: string };

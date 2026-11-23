@@ -9,10 +9,7 @@ import { useGetReviews } from '@/Hook/useReviews';
 
 const TestimonialSwiper = () => {
 
-  const { data: Reviews, isLoading: reviewLoading } = useGetReviews();
-
-  console.log('Reviews Name', Reviews);
-  console.log('isLoading:', reviewLoading);
+  const { data: Reviews } = useGetReviews();
 
   return (
     <div className='mt-[30px] lg:mt-[55px] '>

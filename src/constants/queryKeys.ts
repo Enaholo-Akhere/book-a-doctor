@@ -1,9 +1,11 @@
+// Plain constants: cache keys are not configuration, and reading them from
+// env vars made every key `undefined` (and so collide) when a var was missing.
 export const QUERY_KEYS = {
-    ME: process.env.NEXT_PUBLIC_QUERY_ME,
-    MY_BOOKINGS: process.env.NEXT_PUBLIC_MY_BOOKINGS,
-    MY_APPOINTMENTS: process.env.NEXT_PUBLIC_MY_APPOINTMENTS,
-    DOCTOR_ME: process.env.NEXT_PUBLIC_DOCTOR_ME,
-    ALL_DOCTORS: process.env.NEXT_PUBLIC_ALL_DOCTORS,
-    DOCTOR_BY_ID: process.env.NEXT_PUBLIC_DOCTOR_BY_ID,
-    ALL_REVIEWS: process.env.NEXT_PUBLIC_ALL_REVIEWS,
-}
+    ME: 'profile-me',
+    MY_BOOKINGS: 'my-bookings',
+    MY_APPOINTMENTS: 'doctor-appointments',
+    DOCTOR_ME: 'doctor-profile-me',
+    ALL_DOCTORS: 'all-doctors',
+    DOCTOR_BY_ID: 'doctor-by-id',
+    ALL_REVIEWS: 'all-reviews',
+} as const;
