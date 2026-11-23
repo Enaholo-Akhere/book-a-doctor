@@ -55,9 +55,11 @@ export interface ClientToServerEvents {
 export type AppSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 
 const isProd = process.env.NODE_ENV === 'production';
-const apiBaseUrl = (isProd ? process.env.NEXT_PUBLIC_PROD_BASE_URL : process.env.NEXT_PUBLIC_DEV_BASE_URL) as string;
+const apiBaseUrl = (isProd ? process.env.NEXT_PUBLIC_PROD_BASE_URL || '/api/v1' : process.env.NEXT_PUBLIC_DEV_BASE_URL) as string;
+// In production, fall back to the backend origin from next.config.ts: the
+// /api rewrite does not forward WebSocket upgrades.
 const explicitSocketUrl: string | undefined = isProd
-  ? process.env.NEXT_PUBLIC_PROD_SOCKET_URL
+  ? process.env.NEXT_PUBLIC_PROD_SOCKET_URL || process.env.NEXT_PUBLIC_BACKEND_ORIGIN
   : process.env.NEXT_PUBLIC_DEV_SOCKET_URL;
 
 /**

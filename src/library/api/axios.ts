@@ -3,7 +3,10 @@ import { useAuthStore } from '@/store/authStore';
 import { handleAxiosError } from "@/utils/axiosError";
 import { refreshToken } from "@/library/api/refreshToken";
 
-const prodURL = process.env.NEXT_PUBLIC_PROD_BASE_URL
+// In production, default to the same-origin /api/v1 proxy (next.config.ts
+// rewrites), so a missing NEXT_PUBLIC_PROD_BASE_URL at build time can't leave
+// the API base URL undefined.
+const prodURL = process.env.NEXT_PUBLIC_PROD_BASE_URL || '/api/v1'
 const devURL = process.env.NEXT_PUBLIC_DEV_BASE_URL
 const baseUrl = process.env.NODE_ENV === 'production' ? prodURL : devURL
 
