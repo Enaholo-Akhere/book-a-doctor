@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { CalendarPlus, Search, SearchX } from 'lucide-react';
 import { user } from '@/types/users';
 import { appointments } from '@/types/doctors.ds';
@@ -51,7 +51,7 @@ const MyBookings = ({ user, selected, onSelect }: MyBookingsProps) => {
           title='You have no appointments yet'
           description='Browse our verified specialists and book a consultation. Your bookings and receipts will appear here.'
           action={
-            <Link to='/doctors' className={primaryBtn}>
+            <Link href='/doctors' className={primaryBtn}>
               Find a doctor
             </Link>
           }

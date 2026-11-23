@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IoCall, IoMicOffOutline, IoMicOutline, IoVideocam, IoVideocamOffOutline, IoVideocamOutline } from 'react-icons/io5';
 import { MdCallEnd } from 'react-icons/md';
-import avatarIcon from '@/assets/images/avatar-icon.png';
+import avatarIconAsset from '@/assets/images/avatar-icon.png';
 import { useCall } from './callContext';
+
+const avatarIcon: string = avatarIconAsset.src;
 
 /**
  * True once the stream has a video track that is actually receiving frames.

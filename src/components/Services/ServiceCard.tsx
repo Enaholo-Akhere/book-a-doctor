@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
 import { Service } from '@/assets/data/services';
 import { useAuthStore } from '@/store/authStore';
@@ -57,7 +57,7 @@ const ServiceCard = ({ item, variant = 'light' }: { item: Service; variant?: 'li
               {cta.label} <ArrowUpRight size={16} />
             </button>
           ) : (
-            <Link to={cta.to} className={ctaClass}>
+            <Link href={cta.to} className={ctaClass}>
               {cta.label} <ArrowUpRight size={16} />
             </Link>
           )}
@@ -103,7 +103,7 @@ const ServiceCard = ({ item, variant = 'light' }: { item: Service; variant?: 'li
           {cta.label} <ArrowRight size={16} />
         </button>
       ) : (
-        <Link to={cta.to} className={ctaClass}>
+        <Link href={cta.to} className={ctaClass}>
           {cta.label} <ArrowRight size={16} />
         </Link>
       )}

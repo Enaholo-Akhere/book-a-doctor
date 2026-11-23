@@ -1,8 +1,8 @@
 import { Fragment, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import HashLoader from 'react-spinners/HashLoader';
-import chatBg from '@/assets/images/chat-bg.png';
-import avatarIcon from '@/assets/images/avatar-icon.png';
+import chatBgAsset from '@/assets/images/chat-bg.png';
+import avatarIconAsset from '@/assets/images/avatar-icon.png';
 import { LuCheck, LuCheckCheck, LuClock } from 'react-icons/lu';
 import { IoMdSend } from 'react-icons/io';
 import { FaArrowLeftLong } from 'react-icons/fa6';
@@ -31,6 +31,9 @@ import { useAuthStore } from '@/store/authStore';
 import { useSocket } from '@/library/socket/socketContext';
 import { useCall } from '@/components/Call/callContext';
 import type { ChatMessage } from '@/types/chat';
+
+const chatBg: string = chatBgAsset.src;
+const avatarIcon: string = avatarIconAsset.src;
 
 const MAX_LENGTH = 2000;
 

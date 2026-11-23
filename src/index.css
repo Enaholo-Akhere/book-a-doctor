@@ -85,7 +85,7 @@ body {
   top: 70% !important;
 }
 
-@media only screen and(max-width: 768px) {
+@media only screen and (max-width: 768px) {
   .navigation {
     width: 100%;
     height: 100%;

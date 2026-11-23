@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom';
-import logo from '/public/CareConnect-logo.png';
+import Link from 'next/link';
 import {
   socialLinks,
   quickLink01,
@@ -7,6 +6,8 @@ import {
   quickLinks03,
 } from '@/components/quick-links';
 import { QuickLinkInterface, SocialLinkInterface } from '@/types/doctors.ds';
+
+const logo = '/CareConnect-logo.png';
 
 const Footer = () => {
   const year = new Date().getFullYear();
@@ -27,7 +28,7 @@ const Footer = () => {
               <div className='flex items-center gap-3 mt-4'>
                 {socialLinks.map(
                   (socials: SocialLinkInterface, index: number) => (
-                    <Link to={socials.path} key={index + 'social-link'}>
+                    <Link href={socials.path} key={index + 'social-link'}>
                       <div className='w-9 h-9 border border-solid border-[#1B1A1E] rounded-full flex items-center justify-center group hover:bg-primaryColor hover:border-none '>
                         {socials.icon}
                       </div>
@@ -44,7 +45,7 @@ const Footer = () => {
                 {quickLink01.map((qLink: QuickLinkInterface, index: number) => (
                   <li key={index + 'quick-link'} className='mb-4'>
                     <Link
-                      to={qLink.path}
+                      href={qLink.path}
                       className='text-[15px] leading-7 font-[400] text-textColor '
                     >
                       {qLink.display}
@@ -62,7 +63,7 @@ const Footer = () => {
                   (qLink: QuickLinkInterface, index: number) => (
                     <li key={index + 'quick-link'} className='mb-4'>
                       <Link
-                        to={qLink.path}
+                        href={qLink.path}
                         className='text-[15px] leading-7 font-[400] text-textColor '
                       >
                         {qLink.display}
@@ -81,7 +82,7 @@ const Footer = () => {
                   (qLink: QuickLinkInterface, index: number) => (
                     <li key={index + 'quick-link'} className='mb-4'>
                       <Link
-                        to={qLink.path}
+                        href={qLink.path}
                         className='text-[15px] leading-7 font-[400] text-textColor '
                       >
                         {qLink.display}

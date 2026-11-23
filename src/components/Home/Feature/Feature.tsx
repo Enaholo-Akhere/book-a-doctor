@@ -1,7 +1,7 @@
-import featureImage from '@/assets/images/feature-img.png';
-import videoIcon from '@/assets/images/video-icon.png';
-import avatarIcon from '@/assets/images/avatar-icon.png';
-import { Link } from 'react-router-dom';
+import featureImageAsset from '@/assets/images/feature-img.png';
+import videoIconAsset from '@/assets/images/video-icon.png';
+import avatarIconAsset from '@/assets/images/avatar-icon.png';
+import Link from 'next/link';
 import Button from '@/components/Button';
 import {
   MotionDiv,
@@ -11,6 +11,10 @@ import {
   textItemVariant,
   sectionViewport,
 } from '@/components/Motions/flexMotion';
+
+const featureImage: string = featureImageAsset.src;
+const videoIcon: string = videoIconAsset.src;
+const avatarIcon: string = avatarIconAsset.src;
 
 const Feature = () => {
   return (
@@ -46,7 +50,7 @@ const Feature = () => {
               </ul>
             </MotionDiv>
             <MotionDiv variants={textItemVariant}>
-              <Link to='/'>
+              <Link href='/'>
                 <Button title='Learn More' />
               </Link>
             </MotionDiv>

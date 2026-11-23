@@ -1,12 +1,26 @@
-import { ReviewInterface } from "@/types/doctors.ds";
-import ehizogieImg from '@/assets/images/ehizogie.png';
-import sarahImg from '@/assets/images/sarah-thompson.jpg';
-import emilyImg from '@/assets/images/emily.jpg';
-import graceImg from '@/assets/images/grace.jpg';
-import jamesImg from '@/assets/images/james.jpg';
-import danielImg from '@/assets/images/daniel.jpg';
+import ehizogieImgAsset from '@/assets/images/ehizogie.png';
+import sarahImgAsset from '@/assets/images/sarah-thompson.jpg';
+import emilyImgAsset from '@/assets/images/emily.jpg';
+import graceImgAsset from '@/assets/images/grace.jpg';
+import jamesImgAsset from '@/assets/images/james.jpg';
+import danielImgAsset from '@/assets/images/daniel.jpg';
 
-export const Reviews: ReviewInterface[] = [
+const ehizogieImg: string = ehizogieImgAsset.src;
+const sarahImg: string = sarahImgAsset.src;
+const emilyImg: string = emilyImgAsset.src;
+const graceImg: string = graceImgAsset.src;
+const jamesImg: string = jamesImgAsset.src;
+const danielImg: string = danielImgAsset.src;
+
+export interface StaticReview {
+    id: number;
+    name: string;
+    comment: string;
+    photo: string;
+    ratings: number;
+}
+
+export const Reviews: StaticReview[] = [
 
     {
         id: 6,

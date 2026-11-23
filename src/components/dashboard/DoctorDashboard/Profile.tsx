@@ -3,7 +3,7 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
 import { Briefcase, CalendarClock, Camera, GraduationCap, Plus, Trash2, UserRound } from 'lucide-react';
-import avatar from '@/assets/images/upload_avatar.png';
+import avatarAsset from '@/assets/images/upload_avatar.png';
 import { editDoctorSchema, editDoctorType } from '@/utils/authSchema';
 import { queryClient } from '@/library/provider/reactQuery';
 import { QUERY_KEYS } from '@/constants/queryKeys';
@@ -13,6 +13,8 @@ import { useAuthStore } from '@/store/authStore';
 import { handleAxiosError } from '@/utils/axiosError';
 import { Card, CardHeader, Field, fieldClass, primaryBtn, secondaryBtn } from '../shared/ui';
 import { DAYS } from './doctorUtils';
+
+const avatar: string = avatarAsset.src;
 
 const SPECIALIZATIONS = [
   ['cardiologist', 'Cardiology'],

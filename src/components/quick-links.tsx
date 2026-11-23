@@ -19,7 +19,7 @@ export const socialLinks: SocialLinkInterface[] = [
 
 export const quickLink01: QuickLinkInterface[] = [
   { path: '/', display: 'Home' },
-  { path: '/about-us', display: 'About Us' },
+  { path: '/#about', display: 'About Us' },
   { path: '/services', display: 'Services' },
   { path: '/', display: 'Blog' },
 ];
@@ -31,7 +31,7 @@ export const quickLinks03: QuickLinkInterface[] = [
 
 export const quickLinks02: QuickLinkInterface[] = [
   { path: '/doctors', display: 'Find a Doctor' },
-  { path: '/request-an-appointment', display: 'Request an Appointment' },
+  { path: '/doctors', display: 'Request an Appointment' },
   { path: '/find-a-location', display: 'Find a Location' },
-  { path: '/get-an-opinion', display: 'Get an Opinion' },
+  { path: '/doctors', display: 'Get an Opinion' },
 ];

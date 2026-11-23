@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useAuthStore } from '@/store/authStore';
 import { refreshToken } from '@/library/api/refreshToken';
-import { AppSocket, SOCKET_URL } from './events';
+import { AppSocket, getSocketUrl } from './events';
 import { SocketContext } from './socketContext';
 
 const AUTH_ERROR = /jwt|token|expired|auth/i;
@@ -24,7 +24,7 @@ const SocketProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!canChat) return;
 
-    const s: AppSocket = io(SOCKET_URL, {
+    const s: AppSocket = io(getSocketUrl(), {
       auth: (cb) => cb({ token: useAuthStore.getState().token }),
       transports: ['websocket', 'polling'],
       reconnectionDelayMax: 10_000,

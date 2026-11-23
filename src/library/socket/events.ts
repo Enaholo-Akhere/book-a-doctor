@@ -54,16 +54,18 @@ export interface ClientToServerEvents {
 
 export type AppSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 
-const isProd = import.meta.env.MODE === 'production';
-const apiBaseUrl: string = isProd ? import.meta.env.VITE_PROD_BASE_URL : import.meta.env.VITE_DEV_BASE_URL;
+const isProd = process.env.NODE_ENV === 'production';
+const apiBaseUrl = (isProd ? process.env.NEXT_PUBLIC_PROD_BASE_URL : process.env.NEXT_PUBLIC_DEV_BASE_URL) as string;
 const explicitSocketUrl: string | undefined = isProd
-  ? import.meta.env.VITE_PROD_SOCKET_URL
-  : import.meta.env.VITE_DEV_SOCKET_URL;
+  ? process.env.NEXT_PUBLIC_PROD_SOCKET_URL
+  : process.env.NEXT_PUBLIC_DEV_SOCKET_URL;
 
 /**
  * Socket server origin. Must be the API *origin*: a path such as `/api/v1`
  * would be treated by Socket.IO as a namespace. In production set
- * VITE_PROD_SOCKET_URL to the backend host directly — Netlify's /api proxy
- * does not forward WebSocket upgrades.
+ * NEXT_PUBLIC_PROD_SOCKET_URL to the backend host directly — the /api rewrite
+ * does not forward WebSocket upgrades. A function because it reads
+ * `window`, which only exists in the browser.
  */
-export const SOCKET_URL = explicitSocketUrl || new URL(apiBaseUrl, window.location.origin).origin;
+export const getSocketUrl = (): string =>
+  explicitSocketUrl || new URL(apiBaseUrl, window.location.origin).origin;

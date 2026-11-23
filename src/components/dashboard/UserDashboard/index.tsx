@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import { CalendarDays, Droplet, HeartPulse, LayoutDashboard, LogOut, MessageCircle, Settings } from 'lucide-react';
@@ -43,9 +43,14 @@ const UserDashboard = () => {
   const logoutUser = useAuthStore((state) => state.logout);
   const { data, isError, isLoading, error } = useProfileMe(authUser?._id || '');
   const { mutate: logout, isPending: isLoggingOut } = useLogout();
-  const navigate = useNavigate();
+  const router = useRouter();
 
-  const [params, setParams] = useSearchParams();
+  const params = useSearchParams();
+  const pathname = usePathname();
+  const setParams = (next: Record<string, string>) => {
+    const qs = new URLSearchParams(next).toString();
+    router.push(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  };
   const tabParam = params.get('tab');
   const tab: DashboardTab = isTab(tabParam) ? tabParam : 'overview';
   const [selectedAppointment, setSelectedAppointment] = useState<appointments | null>(null);
@@ -69,7 +74,7 @@ const UserDashboard = () => {
       onSuccess: (res) => {
         toast.success(res?.message);
         logoutUser();
-        navigate('/login');
+        router.push('/login');
       },
       onError: (err) => toast.error(handleAxiosError(err)),
     });

@@ -1,8 +1,8 @@
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import TestimonialSwiper from './TestimonialSwiper';
 
 const Testimonial = () => {
-  const { pathname } = useLocation();
+  const pathname = usePathname();
   const pn = pathname === '/doctors';
   
   return (
@@ -14,6 +14,9 @@ const Testimonial = () => {
             Hear from the patients whose lives we’ve touched through
             compassionate, expert healthcare.
           </p>
+      <div>
+        hello wolrd
+          </div>
         </div>
         <TestimonialSwiper />
       </div>

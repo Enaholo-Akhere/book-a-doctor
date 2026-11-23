@@ -1,8 +1,10 @@
 import { doctorsInterface } from '@/types/doctors.ds';
-import starIcon from '@/assets/images/Star.png';
-import { Link } from 'react-router-dom';
+import starIconAsset from '@/assets/images/Star.png';
+import Link from 'next/link';
 import { BsArrowRight } from 'react-icons/bs';
 import CardMotion from '../Motions/cardMotion';
+
+const starIcon: string = starIconAsset.src;
 
 const DoctorCard = ({
   doctor,
@@ -59,7 +61,7 @@ const DoctorCard = ({
             </p>
           </div>
           <Link
-            to={url}
+            href={url}
             className='flex-nowrap w-[44px] h-[44px] md:w-[30px] md:h-[30px] xl:w-[44px] xl:h-[44px] rounded-full border border-solid border-[#181A1E] flex items-center justify-center group hover:bg-primaryColor hover:border-none'
           >
             <BsArrowRight className='group-hover:text-white w-6 h-6' />

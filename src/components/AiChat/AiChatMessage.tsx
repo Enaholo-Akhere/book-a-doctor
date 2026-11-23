@@ -1,5 +1,5 @@
 import { Fragment, type ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { BookOpen, CalendarPlus, ExternalLink, Phone, RotateCcw, Siren, Sparkles } from 'lucide-react';
 import type { AiChatEntry } from '@/types/ai-chat';
 
@@ -126,7 +126,7 @@ const AiChatMessage = ({ entry, disclaimer, bookingUrl = '/doctors', onNavigate,
             <p className='font-semibold'>Daily limit reached</p>
             <p className='mt-0.5 text-violet-900/90'>{entry.content}</p>
             <Link
-              to={bookingUrl}
+              href={bookingUrl}
               onClick={onNavigate}
               className='mt-2.5 inline-flex items-center gap-1.5 rounded-lg bg-primaryColor px-3.5 py-2 text-sm font-semibold text-white transition hover:bg-primaryColor2'
             >
@@ -153,7 +153,7 @@ const AiChatMessage = ({ entry, disclaimer, bookingUrl = '/doctors', onNavigate,
                     .map((a, i) => (
                       <Link
                         key={a.url}
-                        to={a.url}
+                        href={a.url}
                         onClick={onNavigate}
                         className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
                           i === 0 ? 'bg-primaryColor text-white hover:bg-primaryColor2' : 'border border-gray-200 text-gray-700 hover:bg-gray-50'

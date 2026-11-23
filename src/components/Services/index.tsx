@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { services } from '@/assets/data/services';
 import ServiceList from './ServiceList';
@@ -14,7 +14,7 @@ const ServicesComp = ({ title, subtitle }: { title: string; subtitle: string }) 
       <ServiceList items={services.filter((s) => s.featured)} />
       <div className='mt-10 flex justify-center'>
         <Link
-          to='/services'
+          href='/services'
           className='inline-flex items-center gap-2 rounded-full border border-primaryColor px-6 py-3 text-sm font-semibold text-primaryColor transition hover:bg-primaryColor hover:text-white'
         >
           View all {services.length} services <ArrowRight size={16} />

@@ -1,14 +1,16 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { motion, MotionConfig, type Variants } from 'framer-motion';
 import { GoArrowUpRight } from 'react-icons/go';
 import { TbHeartHandshake } from 'react-icons/tb';
 import { MdOutlineSupportAgent, MdOutlineVerified } from 'react-icons/md';
 import { RiSecurePaymentLine } from 'react-icons/ri';
 import { IoChatbubblesOutline, IoVideocamOutline } from 'react-icons/io5';
-import heroDoctors from '@/assets/images/hero-doctors.jpg';
+import heroDoctorsAsset from '@/assets/images/hero-doctors.jpg';
 import { useAuthStore } from '@/store/authStore';
 import { getDefaultRoute } from '@/routes/redirect';
 import CountUp from './CountUp';
+
+const heroDoctors: string = heroDoctorsAsset.src;
 
 // ── Content ─────────────────────────────────────────────────────────
 const HEADLINE: { text: string; accent?: boolean }[] = [
@@ -119,7 +121,7 @@ const Hero = () => {
                 your home.
               </p>
               <Link
-                to='/doctors'
+                href='/doctors'
                 className='group mt-4 flex w-fit mx-auto lg:mx-0 items-center gap-1.5 font-semibold text-primaryColor hover:text-primaryColor2'
               >
                 Book Trusted Experts
@@ -199,13 +201,13 @@ const Hero = () => {
                 className='relative z-0 mx-auto mt-4 flex w-fit gap-2 rounded-full bg-white p-2 shadow-[0_12px_40px_-8px_rgba(27,26,30,0.25)] sm:absolute sm:bottom-6 sm:left-1/2 sm:mt-0 sm:-translate-x-1/2'
               >
                 <Link
-                  to='/contact'
+                  href='/contact'
                   className='whitespace-nowrap rounded-full bg-primaryColor px-5 sm:px-7 py-3 text-[15px] font-semibold text-white shadow-[0_8px_20px_-6px_rgba(13,140,129,0.6)] transition hover:bg-primaryColor2 hover:-translate-y-0.5'
                 >
                   Contact
                 </Link>
                 <Link
-                  to={secondary.to}
+                  href={secondary.to}
                   className='whitespace-nowrap rounded-full border border-headingColor/20 px-5 sm:px-7 py-3 text-[15px] font-semibold text-headingColor transition hover:border-primaryColor hover:text-primaryColor'
                 >
                   {secondary.label}

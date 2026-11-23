@@ -3,7 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
 import { Camera, UserRound } from 'lucide-react';
-import avatar from '@/assets/images/upload_avatar.png';
+import avatarAsset from '@/assets/images/upload_avatar.png';
 import { editRegistrationSchema, editRegistrationType } from '@/utils/authSchema';
 import { useEditUser } from '@/Hook/useUsers';
 import { queryClient } from '@/library/provider/reactQuery';
@@ -12,6 +12,8 @@ import { user } from '@/types/users';
 import { useAuthStore } from '@/store/authStore';
 import { handleAxiosError } from '@/utils/axiosError';
 import { Card, CardHeader, Field, fieldClass, primaryBtn, secondaryBtn } from '../shared/ui';
+
+const avatar: string = avatarAsset.src;
 
 const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
 

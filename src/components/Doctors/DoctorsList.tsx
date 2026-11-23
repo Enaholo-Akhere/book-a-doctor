@@ -1,6 +1,6 @@
 import DoctorCard from './DoctorsCard';
 import { doctorsInterface } from '@/types/doctors.ds';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import Loading from '../Loader';
 import Error from '../Error';
 import { handleAxiosError } from '@/utils/axiosError';
@@ -18,7 +18,7 @@ const DoctorsList = ({
   };
   url: string;
 }) => {
-  const { pathname } = useLocation();
+  const pathname = usePathname();
   const pn = pathname === '/doctors';
 
   const { isLoading, isError, data, error } = doctorListDetails;

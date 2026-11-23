@@ -1,21 +1,20 @@
 import { useCallback } from 'react';
-import { Location, useLocation, useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 export type UserRole = 'patient' | 'doctor' | 'admin';
-
-/** Shape of `location.state` when a user is bounced to /login. */
-export interface RedirectState {
-  from?: string;
-}
 
 const AUTH_PAGES = ['/login', '/signup'];
 
 export const getDefaultRoute = (role?: UserRole | null): string =>
   role === 'doctor' ? '/dashboard/profile/me' : '/users/profile/me';
 
-/** Serialises the current location so it can be restored after login. */
-export const toRedirectPath = (location: Location): string =>
-  `${location.pathname}${location.search}${location.hash}`;
+/** Serialises the current browser location so it can be restored after login. */
+export const toRedirectPath = (): string =>
+  `${window.location.pathname}${window.location.search}${window.location.hash}`;
+
+/** /login URL that returns the user to `from` afterwards (read via `?from=`). */
+export const loginUrlFrom = (from: string): string =>
+  `/login?from=${encodeURIComponent(from)}`;
 
 /**
  * Returns `from` only if it is a safe, internal, non-auth path.
@@ -34,11 +33,9 @@ export const getSafeRedirect = (from: unknown): string | null => {
 };
 
 export const getPostLoginRoute = (
-  state: unknown,
+  from: string | null,
   role?: UserRole | null
-): string =>
-  getSafeRedirect((state as RedirectState | null)?.from) ??
-  getDefaultRoute(role);
+): string => getSafeRedirect(from) ?? getDefaultRoute(role);
 
 /**
  * Imperative counterpart to the route guards: sends the user to /login
@@ -46,11 +43,9 @@ export const getPostLoginRoute = (
  * "Book appointment".
  */
 export const useRedirectToLogin = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
 
   return useCallback(() => {
-    const state: RedirectState = { from: toRedirectPath(location) };
-    navigate('/login', { state });
-  }, [navigate, location]);
+    router.push(loginUrlFrom(toRedirectPath()));
+  }, [router]);
 };

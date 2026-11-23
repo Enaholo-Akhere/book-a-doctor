@@ -1,5 +1,5 @@
 import FaqList from './FaqList';
-import faqImg from '@/assets/images/faq-img.png';
+import faqImgAsset from '@/assets/images/faq-img.png';
 import {
   MotionDiv,
   imageVariant,
@@ -7,6 +7,8 @@ import {
   textItemVariant,
   sectionViewport,
 } from '@/components/Motions/flexMotion';
+
+const faqImg: string = faqImgAsset.src;
 
 const Faq = () => {
   return (

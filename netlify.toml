@@ -1,11 +1,5 @@
-[[redirects]]
-
-from = "/api/v1/*"
-to = "https://doctor-webapp-backend-zxn3.onrender.com/api/v1/:splat"
-status = 200
-force = true
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# Netlify detects Next.js and uses its Next.js runtime automatically.
+# The /api/v1 proxy now lives in next.config.ts (rewrites).
+[build]
+  command = "npm run build"
+  publish = ".next"

@@ -1,21 +1,20 @@
+import { useRedirectToLogin } from '@/routes/redirect';
+import { useAuthStore } from '@/store/authStore';
+import { doctorsInterface } from '@/types/doctors.ds';
 import { formatDate } from '@/utils/formatDate';
 import { useState } from 'react';
 import { AiFillStar } from 'react-icons/ai';
-import FeedbackForm from './FeedbackForm';
-import { doctorsInterface } from '@/types/doctors.ds';
 import Button from '../Button';
-import { useRedirectToLogin } from '@/routes/redirect';
-import { useAuthStore } from '@/store/authStore';
+import FeedbackForm from './FeedbackForm';
 
 const Feedback = ({ doctorData }: { doctorData: doctorsInterface }) => {
-  const { totalRating, reviews, _id: doctorId } = doctorData;
+  const { reviews, _id: doctorId } = doctorData;
   const [showFeedbackForm, setShowFeedbackForm] = useState<boolean>(false);
   const user = useAuthStore((state) => state.user);
 
   const redirectToLogin = useRedirectToLogin();
 
-  const handleFeedBack = () =>
-    user ? setShowFeedbackForm(true) : redirectToLogin();
+  const handleFeedBack = () => (user ? setShowFeedbackForm(true) : redirectToLogin());
 
   return (
     <div>
@@ -40,9 +39,7 @@ const Feedback = ({ doctorData }: { doctorData: doctorsInterface }) => {
                 <p className='text-[14px] leading-6 text-textColor '>
                   {formatDate({ date: '05-14-2025' })}
                 </p>
-                <p className='text__para mt-3 font-medium text-[15px] '>
-                  {rev?.reviewText}
-                </p>
+                <p className='text__para mt-3 font-medium text-[15px] '>{rev?.reviewText}</p>
               </div>
             </div>
             <div className='flex gap-1'>

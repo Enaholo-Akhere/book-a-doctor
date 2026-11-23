@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { loginSchema, loginType } from '@/utils/authSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -68,7 +68,7 @@ const LoginComp = () => {
             </div>
             <span>
               <Link
-                to='/forgot-password'
+                href='/forgot-password'
                 className='text-primaryColor font-medium ml-1 text-sm '
               >
                 Forgot Password?
@@ -91,7 +91,7 @@ const LoginComp = () => {
           </div>
           <p className='mt-5 text-textColor text-center '>
             Don&apos;t have an account?{' '}
-            <Link to='/signup' className='text-primaryColor font-medium ml-1 '>
+            <Link href='/signup' className='text-primaryColor font-medium ml-1 '>
               Register
             </Link>
           </p>

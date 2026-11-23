@@ -1,9 +1,11 @@
 // components/motion/ParallaxSection.tsx
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Button from '@/components/Button';
-import teamDoctorImg from '@/assets/images/team_doctors.jpg';
+import teamDoctorImgAsset from '@/assets/images/team_doctors.jpg';
+
+const teamDoctorImg: string = teamDoctorImgAsset.src;
 
 const ParallaxSection = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -89,7 +91,7 @@ const ParallaxSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
-          <Link to='/doctors'>
+          <Link href='/doctors'>
             <Button title='Meet our doctors' />
           </Link>
         </motion.div>

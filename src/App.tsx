@@ -1,16 +1,19 @@
-import { Suspense, useEffect } from 'react';
+'use client';
+import { ReactNode, Suspense, useEffect } from 'react';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Toaster } from 'react-hot-toast';
 import Layout from './layout/Layout';
-import { BrowserRouter } from 'react-router-dom';
+import { queryClient } from './library/provider/reactQuery';
 import { useGeolocation } from './Hook/useGeoLocation';
 import { useAuthStore } from './store/authStore';
-import AOS from 'aos';
 import SocketProvider from './library/socket/SocketProvider';
 import CallProvider from './components/Call/CallProvider';
 import CallAlertsSetup from './components/Call/CallAlertsSetup';
 import ChatRoom from './components/ChatRooms';
 import AiChat from './components/AiChat';
+import ClientOnly from './components/ClientOnly';
 import { useChatRealtimeSync } from './Hook/useChat';
-import 'aos/dist/aos.css';
 
 /** Keeps chat caches in sync with socket events, app-wide. */
 const ChatRealtimeSync = () => {
@@ -18,7 +21,7 @@ const ChatRealtimeSync = () => {
   return null;
 };
 
-const App = () => {
+const AppShell = ({ children }: { children: ReactNode }) => {
   const { setGeolocation } = useAuthStore();
   const { data, isLoading, isError } = useGeolocation();
 
@@ -34,29 +37,29 @@ const App = () => {
     }
   }, [data, isError, isLoading, setGeolocation]);
 
-  useEffect(() => {
-    AOS.init({
-      duration: 700,
-      once: true,
-      offset: 100,
-      easing: 'ease-out-cubic',
-    });
-  }, []);
-
   return (
-    <BrowserRouter>
-      <SocketProvider>
-        <CallProvider>
-          <ChatRealtimeSync />
-          <CallAlertsSetup />
-          <Suspense fallback={<div>Loading...</div>}>
-            <Layout />
-          </Suspense>
+    <SocketProvider>
+      <CallProvider>
+        <ChatRealtimeSync />
+        <CallAlertsSetup />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Layout>{children}</Layout>
+        </Suspense>
+        <ClientOnly>
           <ChatRoom />
           <AiChat />
-        </CallProvider>
-      </SocketProvider>
-    </BrowserRouter>
+        </ClientOnly>
+      </CallProvider>
+    </SocketProvider>
   );
 };
+
+const App = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={queryClient}>
+    <Toaster />
+    <AppShell>{children}</AppShell>
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>
+);
+
 export default App;

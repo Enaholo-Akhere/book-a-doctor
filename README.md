@@ -1,55 +1,24 @@
-# React + TypeScript + Vite
+# CareConnect Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Next.js (App Router) + React 19 + TypeScript + Tailwind v4.
 
-Currently, two official plugins are available:
+## Scripts
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- `npm run dev`: dev server on http://localhost:5173 (the port the backend's CORS allows)
+- `npm run build` / `npm start`: production build and server
+- `npm run lint`, `npm run type-check`
 
-## Expanding the ESLint configuration
+## Layout
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- `src/app/`: routes only. Each `page.tsx` renders a view from `src/views/`.
+  Route groups add the guards: `(guest)` for login/signup, `(patient)` for
+  `/users/*`, `(doctor)` for `/dashboard/*`.
+- `src/views/`: page components (formerly `src/pages`; renamed because Next
+  treats `src/pages` as the Pages Router).
+- `src/App.tsx`: client providers (React Query, socket, calls, chat widgets).
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Environment
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
-# book-a-doctor
+Public env vars use the `NEXT_PUBLIC_` prefix (see `.env.local`). In production
+the API is called on the same origin at `/api/v1`, which `next.config.ts`
+rewrites to the Render backend.

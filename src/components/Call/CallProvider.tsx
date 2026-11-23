@@ -18,7 +18,7 @@ const CallProvider = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener('pagehide', engine.handlePageHide);
   }, [engine]);
 
-  const state = useSyncExternalStore(engine.subscribe, engine.getState);
+  const state = useSyncExternalStore(engine.subscribe, engine.getState, engine.getState);
 
   const value = useMemo<CallContextValue>(
     () => ({

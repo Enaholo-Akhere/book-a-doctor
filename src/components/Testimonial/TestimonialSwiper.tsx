@@ -1,9 +1,7 @@
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 // import patientsAvatar from '@/assets/images/patient-avatar.png';
-// @ts-expect-error - Swiper CSS imports are not typed in this project
 import 'swiper/css';
-// @ts-expect-error - Swiper CSS imports are not typed in this project
 import 'swiper/css/pagination';
 import { HiStar } from 'react-icons/hi';
 import { ReviewInterface } from '@/types/doctors.ds';

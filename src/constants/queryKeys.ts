@@ -1,9 +1,9 @@
 export const QUERY_KEYS = {
-    ME: import.meta.env.VITE_QUERY_ME,
-    MY_BOOKINGS: import.meta.env.VITE_MY_BOOKINGS,
-    MY_APPOINTMENTS: import.meta.env.MY_APPOINTMENTS,
-    DOCTOR_ME: import.meta.env.DOCTOR_ME,
-    ALL_DOCTORS: import.meta.env.ALL_DOCTORS,
-    DOCTOR_BY_ID: import.meta.env.DOCTOR_BY_ID,
-    ALL_REVIEWS: import.meta.env.ALL_REVIEWS,
+    ME: process.env.NEXT_PUBLIC_QUERY_ME,
+    MY_BOOKINGS: process.env.NEXT_PUBLIC_MY_BOOKINGS,
+    MY_APPOINTMENTS: process.env.NEXT_PUBLIC_MY_APPOINTMENTS,
+    DOCTOR_ME: process.env.NEXT_PUBLIC_DOCTOR_ME,
+    ALL_DOCTORS: process.env.NEXT_PUBLIC_ALL_DOCTORS,
+    DOCTOR_BY_ID: process.env.NEXT_PUBLIC_DOCTOR_BY_ID,
+    ALL_REVIEWS: process.env.NEXT_PUBLIC_ALL_REVIEWS,
 }

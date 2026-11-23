@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import DoctorsList from './DoctorsList';
 import { doctorsInterface } from '@/types/doctors.ds';
 import { AxiosError } from 'axios';
@@ -19,7 +19,7 @@ const DoctorsComp = ({
   data: { data: doctorsInterface[] | undefined } | undefined;
   error: AxiosError<unknown, undefined>;
 }) => {
-  const { pathname } = useLocation();
+  const pathname = usePathname();
   const pn = pathname === '/doctors';
   return (
     <FadeInSection>
