@@ -40,15 +40,13 @@ const TestimonialSwiper = () => {
           const handleRatings = (rating: number) => {
             const star = [];
             for (let i = 0; i < rating; i++) {
-              star.push(<HiStar className='text-yellowColor W-[18px] h-5 ' />);
+              star.push(<HiStar key={i} className='text-yellowColor w-[18px] h-5 ' />);
             }
             return star;
           };
 
-          let key = 1;
-
           return (
-            <SwiperSlide key={(key += 1)} >
+            <SwiperSlide key={review._id}>
               <div className=' p-2 rounded-3 mb-[20px]'>
                 <div className='flex items-center gap-[20px] '>
                   <div className='w-[50px] h-[50px]'>
