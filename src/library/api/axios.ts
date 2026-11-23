@@ -86,25 +86,12 @@ api.interceptors.response.use((response) => response, async (error: AxiosError) 
         }
     }
 
-    if (error.response?.status === 403) {
-
-        if (handleAxiosError(error) === "Cannot verify user") {
-
-
-            useAuthStore.getState().logout();
-            window.location.href = '/login';
-        } else {
-
-            console.log('i got here line 96')
-            await refreshApi.put('/auth/logout');
-            useAuthStore.getState().logout();
-            window.location.href = '/login';
-        }
-
-
-
-        return Promise.reject(error);
-    };
+    // Only a dead session ends the login. Other 403s (e.g. "Doctors cannot
+    // review themselves") are ordinary errors for the caller to show.
+    if (error.response?.status === 403 && handleAxiosError(error) === "Cannot verify user") {
+        useAuthStore.getState().logout();
+        window.location.href = '/login';
+    }
 
     return Promise.reject(error);
 }

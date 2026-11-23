@@ -46,12 +46,13 @@ const SidePanel = ({ data }: { data: doctorsInterface }) => {
   };
 
   const handleBookingFlutterwave = () => {
-    if (data) {
+    if (data && user) {
       fMutate(
         {
-          email: data.email,
+          // The payer is the logged-in patient, not the doctor.
+          email: user.email,
           amount: price,
-          name: data.name,
+          name: user.name,
           doctorId: data._id,
         },
         {

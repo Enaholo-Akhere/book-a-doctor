@@ -4,7 +4,7 @@ import { updateBookingStatus, editDoctor, getAllDoctors, getDoctorById, myAppoin
 
 export const useProfileMeDoctor = (id: string) => {
     return useQuery({
-        queryKey: [QUERY_KEYS.ME],
+        queryKey: [QUERY_KEYS.DOCTOR_ME, id],
         queryFn: () => profileMeDoctor({ id }),
         enabled: !!id,
         staleTime: 1000 * 60 * 5,
@@ -35,7 +35,7 @@ export const useGetDoctorById = (id: string) => {
 
 export const useMyBookings = () => {
     return useQuery({
-        queryKey: [QUERY_KEYS.MY_BOOKINGS],
+        queryKey: [QUERY_KEYS.MY_APPOINTMENTS],
         queryFn: myAppointments,
         staleTime: 1000 * 60 * 5,
         retry: false,

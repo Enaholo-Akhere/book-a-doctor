@@ -109,6 +109,38 @@ const CheckoutSuccess = () => {
     };
   }, []);
 
+  // Never claim a confirmed booking we couldn't verify.
+  if (!sessionId || isError) {
+    return (
+      <div className='min-h-screen flex items-center justify-center px-4 py-12'>
+        <div className='w-full max-w-md bg-white rounded-3xl shadow-xl border border-slate-100 p-8 text-center'>
+          <h1 className='text-xl font-semibold text-slate-800 mb-2'>
+            {sessionId ? "We couldn't confirm your booking" : 'No payment session found'}
+          </h1>
+          <p className='text-sm text-slate-500 mb-6'>
+            {sessionId
+              ? 'If you were charged, your booking will appear in My Appointments shortly. Otherwise, please try booking again.'
+              : 'This page needs a payment session. Please start your booking from the doctor’s page.'}
+          </p>
+          <div className='flex flex-col gap-3'>
+            <button
+              onClick={() => router.push('/users/profile/me')}
+              className='w-full py-3.5 rounded-xl text-white font-semibold text-sm bg-teal-700 hover:bg-teal-800 transition-colors'
+            >
+              View My Appointments
+            </button>
+            <button
+              onClick={() => router.push('/doctors')}
+              className='w-full py-3.5 rounded-xl text-slate-600 font-semibold text-sm border border-slate-200 bg-white hover:bg-slate-50 transition-colors'
+            >
+              Find a Doctor
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const doctorName = booking?.doctor?.name ?? '—';
   const specialization = booking?.doctor?.specialization ?? '';
   const patientName = booking?.user?.name ?? '—';
@@ -219,12 +251,6 @@ const CheckoutSuccess = () => {
 
         {/* Body */}
         <div className='px-8 pt-7 pb-8'>
-          {isError && (
-            <div className='mb-4 p-3 bg-red-50 border border-red-100 rounded-xl text-red-500 text-sm text-center'>
-              Could not load booking details. Your payment was successful.
-            </div>
-          )}
-
           {/* Appointment details */}
           <div className='space-y-5 mb-7'>
             <Detail

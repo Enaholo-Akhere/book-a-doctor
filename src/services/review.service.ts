@@ -19,6 +19,5 @@ export const getReviews = async () => {
             'Accept': 'application/json',
         },
     });
-    console.log('Reviews from getReviews service:', data);
     return data.data;
 };

@@ -1,5 +1,6 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
+import { Check, X } from 'lucide-react';
 import { useBookingTransactionFlutterwave } from '@/Hook/useBooking';
 import Loading from '../Loader';
 import Button from '../Button';
@@ -25,7 +26,7 @@ const PaymentSuccessPage = () => {
     return (
       <div className='max-w-md mx-auto mt-10 bg-white rounded-xl border border-gray-200 p-8 text-center'>
         <div className='w-14 h-14 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4'>
-          <i className='ti ti-x text-2xl text-red-600' />
+          <X className='w-6 h-6 text-red-600' aria-hidden />
         </div>
         <h1 className='text-lg font-medium mb-1'>Payment failed</h1>
         <p className='text-sm text-gray-500'>
@@ -38,7 +39,7 @@ const PaymentSuccessPage = () => {
     return (
       <div className='max-w-md mx-auto mt-10 bg-white rounded-xl border border-gray-200 p-8 text-center'>
         <div className='w-14 h-14 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4'>
-          <i className='ti ti-check text-2xl text-green-600' />
+          <Check className='w-6 h-6 text-green-600' aria-hidden />
         </div>
         <h1 className='text-lg font-medium mb-1'>Payment successful</h1>
         <p className='text-sm text-gray-500 mb-6'>

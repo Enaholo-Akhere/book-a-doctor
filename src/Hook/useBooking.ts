@@ -19,7 +19,7 @@ export const useBookingSessionStripe = (sessionId: string | null) => {
 
 export const useBookingTransactionFlutterwave = (transactionId: string, doctorId: string) => {
     return useQuery({
-        queryKey: ['booking-session', transactionId],
+        queryKey: ['booking-transaction-flw', transactionId, doctorId],
         queryFn: () => getBookingByTransactionFlutterwave(transactionId, doctorId),
         enabled: !!transactionId, // only fetch if transactionId exists
         staleTime: 1000 * 60 * 5, // 5 minutes
