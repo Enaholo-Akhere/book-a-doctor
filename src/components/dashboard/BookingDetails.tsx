@@ -77,18 +77,18 @@ function StarRating({ rating }: { rating: number }) {
               ? 'fill-amber-400 text-amber-400'
               : i === Math.ceil(rating) && rating % 1 >= 0.5
                 ? 'fill-amber-200 text-amber-400'
-                : 'fill-transparent text-gray-300'
+                : 'fill-transparent text-slate-300'
           }
         />
       ))}
-      <span className='text-xs text-gray-500 ml-1'>{rating.toFixed(1)}</span>
+      <span className='text-xs text-slate-500 ml-1'>{rating.toFixed(1)}</span>
     </div>
   );
 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className='text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-3'>
+    <p className='text-[11px] font-semibold text-slate-400 uppercase tracking-widest mb-3'>
       {children}
     </p>
   );
@@ -106,12 +106,12 @@ function InfoRow({
   value2: string;
 }) {
   return (
-    <div className='flex items-center justify-between py-2.5 border-b border-gray-100 last:border-0 '>
-      <span className='flex items-center gap-2 text-sm text-gray-500'>
+    <div className='flex items-center justify-between py-2.5 border-b border-slate-100 last:border-0 '>
+      <span className='flex items-center gap-2 text-sm text-slate-500'>
         {icon}
         {/* {label} */}
       </span>
-      <span className='text-sm text-gray-800 font-[Cormorant_Infant] font-semibold'>
+      <span className='text-sm text-slate-800 font-[Cormorant_Infant] font-semibold'>
         <span className='uppercase font-semibold text-[18px] font-[Cormorant_Infant] text-primaryColor'>
           {day}{' '}
         </span>{' '}
@@ -136,7 +136,7 @@ const BookingDetails = ({
       {/* Back button */}
       <button
         onClick={() => onBack(tabState)}
-        className='flex cursor-pointer items-center gap-2 text-sm text-gray-500 hover:text-gray-800 mb-5 transition-colors'
+        className='flex cursor-pointer items-center gap-2 text-sm text-slate-500 hover:text-slate-800 mb-5 transition-colors'
       >
         <ArrowLeft size={16} />
         Back to bookings
@@ -144,11 +144,11 @@ const BookingDetails = ({
 
       <SectionLabel>Booking details</SectionLabel>
 
-      <div className='bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-5'>
+      <div className='bg-white rounded-2xl border border-slate-100 shadow-sm p-5 space-y-5'>
         {/* Header: ID + badges */}
         <div>
           <div className='flex items-start justify-between gap-3 mb-1'>
-            <p className='text-[11px] text-gray-400 font-medium'>Booking ID</p>
+            <p className='text-[11px] text-slate-400 font-medium'>Booking ID</p>
             <div className='flex gap-2 flex-wrap justify-end'>
               <span
                 className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full ${STATUS_STYLES[status]}`}
@@ -163,10 +163,10 @@ const BookingDetails = ({
               )}
             </div>
           </div>
-          <p className='font-mono text-xs text-gray-500 break-all'>{_id}</p>
+          <p className='font-mono text-xs text-slate-500 break-all'>{_id}</p>
         </div>
 
-        <div className='h-px bg-gray-100' />
+        <div className='h-px bg-slate-100' />
 
         {/* Doctor */}
         <div>
@@ -179,10 +179,10 @@ const BookingDetails = ({
               initials={getInitials(doctor.name)}
             />
             <div>
-              <p className='font-semibold text-gray-900 text-[15px]'>
+              <p className='font-semibold text-slate-900 text-[15px]'>
                 {doctor.name}
               </p>
-              <p className='text-xs text-gray-500 capitalize mb-1.5'>
+              <p className='text-xs text-slate-500 capitalize mb-1.5'>
                 {doctor.specialization}
               </p>
               <StarRating rating={doctor.averageRating} />
@@ -190,7 +190,7 @@ const BookingDetails = ({
           </div>
         </div>
 
-        <div className='h-px bg-gray-100' />
+        <div className='h-px bg-slate-100' />
 
         {/* Patient */}
         <div>
@@ -203,19 +203,19 @@ const BookingDetails = ({
               initials={getInitials(user.name)}
             />
             <div>
-              <p className='font-semibold text-gray-900 text-[14px]'>
+              <p className='font-semibold text-slate-900 text-[14px]'>
                 {user.name}
               </p>
-              <p className='text-xs text-gray-500'>{user.email}</p>
+              <p className='text-xs text-slate-500'>{user.email}</p>
             </div>
           </div>
         </div>
 
-        <div className='h-px bg-gray-100' />
+        <div className='h-px bg-slate-100' />
 
         {/* Timestamps */}
         <div>
-          <p className='text-sm text-gray-500  '>Weekly availability</p>
+          <p className='text-sm text-slate-500  '>Weekly availability</p>
           {doctor.timeSlots &&
             doctor.timeSlots.map((timeSlot, index) => (
               <InfoRow
@@ -230,20 +230,20 @@ const BookingDetails = ({
             ))}
         </div>
 
-        <div className='h-px bg-gray-100' />
+        <div className='h-px bg-slate-100' />
 
         {/* Price block */}
-        <div className='bg-gray-50 rounded-xl px-4 py-3 flex items-center justify-between'>
+        <div className='bg-slate-50 rounded-xl px-4 py-3 flex items-center justify-between'>
           <div>
-            <p className='text-[11px] text-gray-400 font-medium uppercase tracking-widest mb-0.5'>
+            <p className='text-[11px] text-slate-400 font-medium uppercase tracking-widest mb-0.5'>
               Ticket price
             </p>
-            <p className='text-2xl font-semibold text-gray-900'>
+            <p className='text-2xl font-semibold text-slate-900'>
               {formatCurrency(price, paymentDetail?.customerCurrency ?? 'USD')}
             </p>
           </div>
           <div className='text-right'>
-            <p className='text-[11px] text-gray-400 font-medium uppercase tracking-widest mb-1'>
+            <p className='text-[11px] text-slate-400 font-medium uppercase tracking-widest mb-1'>
               Payment
             </p>
             <span className='inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200'>

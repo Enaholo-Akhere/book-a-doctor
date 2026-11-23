@@ -25,7 +25,7 @@ const FaqItem = ({ item }: { item: questionContent }) => {
       </div>
       {isOpen && (
         <div className='mt-4'>
-          <p className=' text-[14px] leading-6 lg:text-[16px] lg:leading-8 font-[400] text-textColor pl-[10px] border-l-2 border-l-gray-400 '>
+          <p className=' text-[14px] leading-6 lg:text-[16px] lg:leading-8 font-[400] text-textColor pl-[10px] border-l-2 border-l-slate-400 '>
             {item.content}
           </p>
         </div>

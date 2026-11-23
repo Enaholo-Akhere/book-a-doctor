@@ -28,7 +28,7 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
       type={btnType}
-      className={`${bgColor} ${txtColor} ${bgHover} ${btnWidth} ${px} ${py} {${disabled ? 'hover:cursor-auto hover:bg-gray-700' : `${bgHover}`} cursor-pointer ease-in-out font-[600] rounded-[52px] text-[12px] md:text-[16px] ${classNameProps} `}
+      className={`${bgColor} ${txtColor} ${bgHover} ${btnWidth} ${px} ${py} {${disabled ? 'hover:cursor-auto hover:bg-slate-700' : `${bgHover}`} cursor-pointer ease-in-out font-[600] rounded-[52px] text-[12px] md:text-[16px] ${classNameProps} `}
     >
       {title}
     </button>

@@ -23,8 +23,8 @@ const BookingsChart = ({ data }: { data: WeekBucket[] }) => {
               className='absolute inset-x-0 flex items-center gap-2'
               style={{ bottom: `${(t / niceMax) * 100}%`, transform: 'translateY(50%)' }}
             >
-              <span className='w-6 text-right text-[11px] tabular-nums text-gray-400'>{t}</span>
-              <span className={`h-px flex-1 ${t === 0 ? 'bg-gray-300' : 'bg-gray-100'}`} />
+              <span className='w-6 text-right text-[11px] tabular-nums text-slate-400'>{t}</span>
+              <span className={`h-px flex-1 ${t === 0 ? 'bg-slate-300' : 'bg-slate-100'}`} />
             </div>
           ))}
         </div>
@@ -61,7 +61,7 @@ const BookingsChart = ({ data }: { data: WeekBucket[] }) => {
         {/* X labels: first, middle, last to avoid collisions on small screens */}
         <div className='ml-8 mt-2 flex' aria-hidden>
           {data.map((d, i) => (
-            <span key={d.label} className='flex-1 text-center text-[11px] text-gray-400'>
+            <span key={d.label} className='flex-1 text-center text-[11px] text-slate-400'>
               {i === 0 || i === data.length - 1 || i === Math.floor(data.length / 2) ? d.label : ''}
             </span>
           ))}

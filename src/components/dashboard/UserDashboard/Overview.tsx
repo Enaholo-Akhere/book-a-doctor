@@ -55,7 +55,7 @@ const Overview = ({ user, onNavigate, onOpenAppointment }: OverviewProps) => {
   return (
     <div className='space-y-6'>
       {/* Welcome */}
-      <div className='relative overflow-hidden rounded-2xl bg-gradient-to-br from-primaryColor to-irisBlueColor px-5 py-6 sm:px-8 sm:py-8 text-white'>
+      <div className='relative overflow-hidden rounded-2xl bg-gradient-to-br from-primaryColor to-primary-800 px-5 py-6 sm:px-8 sm:py-8 text-white'>
         <div aria-hidden className='pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10' />
         <div aria-hidden className='pointer-events-none absolute -bottom-20 right-24 h-40 w-40 rounded-full bg-white/10' />
         <div className='relative'>
@@ -129,18 +129,18 @@ const Overview = ({ user, onNavigate, onOpenAppointment }: OverviewProps) => {
               }
             />
           ) : (
-            <ul className='divide-y divide-gray-100 border-t border-gray-100'>
+            <ul className='divide-y divide-slate-100 border-t border-slate-100'>
               {recent.map((a) => (
                 <li key={a._id}>
                   <button
                     type='button'
                     onClick={() => onOpenAppointment(a)}
-                    className='flex w-full cursor-pointer items-center gap-3 px-5 py-3.5 text-left transition hover:bg-gray-50 sm:px-6'
+                    className='flex w-full cursor-pointer items-center gap-3 px-5 py-3.5 text-left transition hover:bg-slate-50 sm:px-6'
                   >
                     <Avatar src={a.doctor?.photo?.imageUrl} name={a.doctor?.name ?? 'Doctor'} size={40} />
                     <div className='min-w-0 flex-1'>
                       <p className='truncate text-sm font-semibold text-headingColor'>{a.doctor?.name}</p>
-                      <p className='truncate text-xs text-gray-500 capitalize'>
+                      <p className='truncate text-xs text-slate-500 capitalize'>
                         {a.doctor?.specialization} · Booked {formatDate({ date: a.createdAt })}
                       </p>
                     </div>
@@ -178,8 +178,8 @@ const Overview = ({ user, onNavigate, onOpenAppointment }: OverviewProps) => {
               extra={bmi && <Badge tone={bmi.tone}>{bmi.label}</Badge>}
             />
           </div>
-          <div className='border-t border-gray-100 px-5 py-4 sm:px-6'>
-            <p className='text-xs font-medium uppercase tracking-wide text-gray-400'>Allergies</p>
+          <div className='border-t border-slate-100 px-5 py-4 sm:px-6'>
+            <p className='text-xs font-medium uppercase tracking-wide text-slate-400'>Allergies</p>
             <div className='mt-2 flex flex-wrap gap-1.5'>
               {user.allergies?.length ? (
                 user.allergies.map((a) => (
@@ -188,10 +188,10 @@ const Overview = ({ user, onNavigate, onOpenAppointment }: OverviewProps) => {
                   </Badge>
                 ))
               ) : (
-                <span className='text-sm text-gray-400'>None recorded</span>
+                <span className='text-sm text-slate-400'>None recorded</span>
               )}
             </div>
-            <p className='mt-4 text-xs font-medium uppercase tracking-wide text-gray-400'>Conditions</p>
+            <p className='mt-4 text-xs font-medium uppercase tracking-wide text-slate-400'>Conditions</p>
             <div className='mt-2 flex flex-wrap gap-1.5'>
               {user.chronicConditions?.length ? (
                 user.chronicConditions.map((c) => (
@@ -200,7 +200,7 @@ const Overview = ({ user, onNavigate, onOpenAppointment }: OverviewProps) => {
                   </Badge>
                 ))
               ) : (
-                <span className='text-sm text-gray-400'>None recorded</span>
+                <span className='text-sm text-slate-400'>None recorded</span>
               )}
             </div>
           </div>
@@ -220,7 +220,7 @@ const Overview = ({ user, onNavigate, onOpenAppointment }: OverviewProps) => {
           ) : (
             <ul className='grid gap-3 px-5 pb-5 sm:grid-cols-2 sm:px-6'>
               {team.map(({ doctor, visits }) => (
-                <li key={doctor._id} className='flex items-center gap-3 rounded-xl border border-gray-100 p-3'>
+                <li key={doctor._id} className='flex items-center gap-3 rounded-xl border border-slate-100 p-3'>
                   <Avatar src={doctor.photo?.imageUrl} name={doctor.name} size={44} />
                   <div className='min-w-0 flex-1'>
                     <Link
@@ -229,7 +229,7 @@ const Overview = ({ user, onNavigate, onOpenAppointment }: OverviewProps) => {
                     >
                       {doctor.name}
                     </Link>
-                    <p className='truncate text-xs text-gray-500 capitalize'>
+                    <p className='truncate text-xs text-slate-500 capitalize'>
                       {doctor.specialization}
                       {visits > 1 ? ` · ${visits} bookings` : ''}
                     </p>
@@ -259,12 +259,12 @@ const Overview = ({ user, onNavigate, onOpenAppointment }: OverviewProps) => {
           <div className='px-5 pb-5 sm:px-6'>
             <div className='flex items-center justify-between text-sm'>
               <span className='font-semibold text-headingColor'>{completeness}%</span>
-              <span className='text-gray-400'>
+              <span className='text-slate-400'>
                 {done} of {tasks.length}
               </span>
             </div>
             <div
-              className='mt-2 h-2 overflow-hidden rounded-full bg-gray-100'
+              className='mt-2 h-2 overflow-hidden rounded-full bg-slate-100'
               role='progressbar'
               aria-valuenow={completeness}
               aria-valuemin={0}
@@ -282,11 +282,11 @@ const Overview = ({ user, onNavigate, onOpenAppointment }: OverviewProps) => {
                     <button
                       type='button'
                       onClick={() => onNavigate(t.tab)}
-                      className='flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1.5 text-left text-sm text-gray-600 transition hover:bg-gray-50 hover:text-headingColor'
+                      className='flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1.5 text-left text-sm text-slate-600 transition hover:bg-slate-50 hover:text-headingColor'
                     >
-                      <Circle size={15} className='shrink-0 text-gray-300' />
+                      <Circle size={15} className='shrink-0 text-slate-300' />
                       <span className='flex-1'>{t.label}</span>
-                      <ArrowRight size={14} className='text-gray-300' />
+                      <ArrowRight size={14} className='text-slate-300' />
                     </button>
                   </li>
                 ))}
@@ -319,13 +319,13 @@ const Metric = ({
   icon?: React.ReactNode;
   extra?: React.ReactNode;
 }) => (
-  <div className='rounded-xl bg-gray-50 px-3.5 py-3'>
-    <p className='flex items-center gap-1 text-xs text-gray-500'>
+  <div className='rounded-xl bg-slate-50 px-3.5 py-3'>
+    <p className='flex items-center gap-1 text-xs text-slate-500'>
       {icon}
       {label}
     </p>
     <div className='mt-1 flex flex-wrap items-center gap-1.5'>
-      <span className={`text-lg font-semibold ${value ? 'text-headingColor' : 'text-gray-300'}`}>{value || '—'}</span>
+      <span className={`text-lg font-semibold ${value ? 'text-headingColor' : 'text-slate-300'}`}>{value || '—'}</span>
       {extra}
     </div>
   </div>

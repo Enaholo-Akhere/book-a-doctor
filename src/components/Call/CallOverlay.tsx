@@ -159,19 +159,19 @@ const RecordingConsentDialog = ({
       role='alertdialog'
       aria-labelledby='rec-consent-title'
       aria-describedby='rec-consent-text'
-      className='w-full max-w-md rounded-2xl bg-white p-6 text-gray-800 shadow-2xl'
+      className='w-full max-w-md rounded-2xl bg-white p-6 text-slate-800 shadow-2xl'
     >
       <h3 id='rec-consent-title' className='text-lg font-semibold text-headingColor'>
         {prompt.doctorName} would like to record this call
       </h3>
-      <p id='rec-consent-text' className='mt-3 text-sm leading-6 text-gray-600'>
+      <p id='rec-consent-text' className='mt-3 text-sm leading-6 text-slate-600'>
         {prompt.notice.text}
       </p>
       <div className='mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end'>
         <button
           type='button'
           onClick={() => onAnswer(false)}
-          className='cursor-pointer rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50'
+          className='cursor-pointer rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50'
         >
           Don&apos;t record
         </button>
@@ -241,7 +241,7 @@ const CallOverlay = () => {
       role='dialog'
       aria-modal='true'
       aria-label={`${isVideo ? 'Video' : 'Voice'} call with ${peer.name}`}
-      className='fixed inset-0 z-[1000] bg-gradient-to-b from-gray-900 to-[#0b3d39] text-white overflow-hidden'
+      className='fixed inset-0 z-[1000] bg-gradient-to-b from-slate-900 to-[#0b3d39] text-white overflow-hidden'
     >
       {/* Remote media */}
       {/* Video calls keep ONE element for the remote stream (it also plays the
@@ -338,7 +338,7 @@ const CallOverlay = () => {
             <ControlButton
               label={isMuted ? 'Unmute' : 'Mute'}
               onClick={toggleMute}
-              className={isMuted ? 'bg-white text-gray-900' : 'bg-white/15 hover:bg-white/25'}
+              className={isMuted ? 'bg-white text-slate-900' : 'bg-white/15 hover:bg-white/25'}
             >
               {isMuted ? <IoMicOffOutline /> : <IoMicOutline />}
             </ControlButton>
@@ -346,7 +346,7 @@ const CallOverlay = () => {
               <ControlButton
                 label={isCameraOff ? 'Camera on' : 'Camera off'}
                 onClick={toggleCamera}
-                className={isCameraOff ? 'bg-white text-gray-900' : 'bg-white/15 hover:bg-white/25'}
+                className={isCameraOff ? 'bg-white text-slate-900' : 'bg-white/15 hover:bg-white/25'}
               >
                 {isCameraOff ? <IoVideocamOffOutline /> : <IoVideocamOutline />}
               </ControlButton>

@@ -26,10 +26,10 @@ const SummaryRow = ({ label, value }: { label: string; value: string | string[] 
   const empty = Array.isArray(value) ? !value.length : !value;
   return (
     <div>
-      <dt className='text-[12px] font-semibold uppercase tracking-wide text-gray-400'>{label}</dt>
+      <dt className='text-[12px] font-semibold uppercase tracking-wide text-slate-400'>{label}</dt>
       <dd className='mt-1 text-[15px] leading-6 text-headingColor'>
         {empty ? (
-          <span className='text-gray-400'>Not discussed</span>
+          <span className='text-slate-400'>Not discussed</span>
         ) : Array.isArray(value) ? (
           <ul className='list-disc space-y-0.5 pl-5'>
             {value.map((v) => (
@@ -63,14 +63,14 @@ export const SummaryView = ({ summary }: { summary?: ConsultationSummary }) =>
       </div>
     </dl>
   ) : (
-    <p className='text-sm text-gray-500'>No summary yet.</p>
+    <p className='text-sm text-slate-500'>No summary yet.</p>
   );
 
 /** Collapsible, speaker-labelled transcript. */
 export const TranscriptView = ({ segments }: { segments: TranscriptSegment[] }) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className='rounded-xl border border-gray-100'>
+    <div className='rounded-xl border border-slate-100'>
       <button
         type='button'
         onClick={() => setOpen((o) => !o)}
@@ -81,16 +81,16 @@ export const TranscriptView = ({ segments }: { segments: TranscriptSegment[] }) 
         {open ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
       </button>
       {open && (
-        <ol className='max-h-[420px] space-y-3 overflow-y-auto border-t border-gray-100 px-4 py-4'>
-          {segments.length === 0 && <li className='text-sm text-gray-500'>No speech was detected in the recording.</li>}
+        <ol className='max-h-[420px] space-y-3 overflow-y-auto border-t border-slate-100 px-4 py-4'>
+          {segments.length === 0 && <li className='text-sm text-slate-500'>No speech was detected in the recording.</li>}
           {segments.map((s, i) => (
             <li key={i} className='flex gap-3 text-sm'>
-              <span className='w-10 shrink-0 pt-0.5 text-xs tabular-nums text-gray-400'>{formatClock(s.startSec)}</span>
+              <span className='w-10 shrink-0 pt-0.5 text-xs tabular-nums text-slate-400'>{formatClock(s.startSec)}</span>
               <p className='min-w-0'>
-                <span className={`font-semibold ${s.speaker === 'doctor' ? 'text-primaryColor' : 'text-violet-700'}`}>
+                <span className={`font-semibold ${s.speaker === 'doctor' ? 'text-primaryColor' : 'text-secondary-700'}`}>
                   {s.speaker === 'doctor' ? 'Doctor' : 'Patient'}:
                 </span>{' '}
-                <span className='text-gray-700'>{s.text}</span>
+                <span className='text-slate-700'>{s.text}</span>
               </p>
             </li>
           ))}

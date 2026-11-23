@@ -110,7 +110,7 @@ const HealthProfile = ({ user }: { user: user }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='space-y-6' noValidate>
-      <div className='flex items-start gap-3 rounded-2xl border border-primaryColor/20 bg-primaryColor/5 px-4 py-3 text-sm text-gray-600'>
+      <div className='flex items-start gap-3 rounded-2xl border border-primaryColor/20 bg-primaryColor/5 px-4 py-3 text-sm text-slate-600'>
         <Lock size={16} className='mt-0.5 shrink-0 text-primaryColor' />
         <p>
           Only you and the doctors you book can see this information. Keeping it accurate helps them give you safe,
@@ -162,15 +162,15 @@ const HealthProfile = ({ user }: { user: user }) => {
             </select>
           </Field>
           <div className='min-w-0'>
-            <p className='mb-1.5 text-[13px] font-medium text-gray-700'>Body mass index</p>
-            <div className='flex h-[46px] items-center gap-2 rounded-xl bg-gray-50 px-3.5'>
+            <p className='mb-1.5 text-[13px] font-medium text-slate-700'>Body mass index</p>
+            <div className='flex h-[46px] items-center gap-2 rounded-xl bg-slate-50 px-3.5'>
               {bmi ? (
                 <>
                   <span className='text-lg font-semibold text-headingColor tabular-nums'>{bmi.value}</span>
                   <Badge tone={bmi.tone}>{bmi.label}</Badge>
                 </>
               ) : (
-                <span className='text-sm text-gray-400'>Add height and weight</span>
+                <span className='text-sm text-slate-400'>Add height and weight</span>
               )}
             </div>
           </div>
@@ -256,8 +256,8 @@ const HealthProfile = ({ user }: { user: user }) => {
         </div>
       </Card>
 
-      <div className='sticky bottom-3 z-10 flex flex-col-reverse gap-2 rounded-2xl border border-gray-100 bg-white/95 p-3 shadow-lg backdrop-blur sm:flex-row sm:items-center sm:justify-between'>
-        <p className='px-1 text-sm text-gray-500'>{isDirty ? 'You have unsaved changes.' : 'All changes saved.'}</p>
+      <div className='sticky bottom-3 z-10 flex flex-col-reverse gap-2 rounded-2xl border border-slate-100 bg-white/95 p-3 shadow-lg backdrop-blur sm:flex-row sm:items-center sm:justify-between'>
+        <p className='px-1 text-sm text-slate-500'>{isDirty ? 'You have unsaved changes.' : 'All changes saved.'}</p>
         <div className='flex gap-2'>
           <button type='button' disabled={!isDirty || isPending} onClick={() => reset(defaults)} className={`${secondaryBtn} flex-1 sm:flex-none`}>
             Discard
@@ -284,7 +284,7 @@ interface TagInputProps {
 
 const TAG_TONES = {
   red: 'bg-red-50 text-red-700',
-  violet: 'bg-violet-50 text-violet-700',
+  violet: 'bg-secondary-50 text-secondary-700',
   teal: 'bg-primaryColor/10 text-primaryColor',
 };
 
@@ -311,11 +311,11 @@ const TagInput = ({ id, label, icon, placeholder, value, onChange, suggestions =
 
   return (
     <div className='min-w-0'>
-      <label htmlFor={id} className='mb-1.5 flex items-center gap-1.5 text-[13px] font-medium text-gray-700'>
+      <label htmlFor={id} className='mb-1.5 flex items-center gap-1.5 text-[13px] font-medium text-slate-700'>
         {icon}
         {label}
       </label>
-      <div className='flex min-h-[46px] flex-wrap items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-2.5 py-2 transition focus-within:border-primaryColor focus-within:ring-4 focus-within:ring-primaryColor/10'>
+      <div className='flex min-h-[46px] flex-wrap items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-2.5 py-2 transition focus-within:border-primaryColor focus-within:ring-4 focus-within:ring-primaryColor/10'>
         {value.map((item) => (
           <span key={item} className={`inline-flex max-w-full items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium ${TAG_TONES[tone]}`}>
             <span className='truncate'>{item}</span>
@@ -339,7 +339,7 @@ const TagInput = ({ id, label, icon, placeholder, value, onChange, suggestions =
             setDraft('');
           }}
           placeholder={value.length ? '' : placeholder}
-          className='min-w-[8rem] flex-1 bg-transparent px-1 py-0.5 text-[15px] text-headingColor outline-none placeholder:text-gray-400'
+          className='min-w-[8rem] flex-1 bg-transparent px-1 py-0.5 text-[15px] text-headingColor outline-none placeholder:text-slate-400'
         />
       </div>
       {unused.length > 0 && (
@@ -349,7 +349,7 @@ const TagInput = ({ id, label, icon, placeholder, value, onChange, suggestions =
               key={s}
               type='button'
               onClick={() => add(s)}
-              className='cursor-pointer rounded-lg border border-dashed border-gray-200 px-2 py-0.5 text-xs text-gray-500 transition hover:border-primaryColor hover:text-primaryColor'
+              className='cursor-pointer rounded-lg border border-dashed border-slate-200 px-2 py-0.5 text-xs text-slate-500 transition hover:border-primaryColor hover:text-primaryColor'
             >
               + {s}
             </button>

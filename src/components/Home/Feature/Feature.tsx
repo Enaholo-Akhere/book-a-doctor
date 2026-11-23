@@ -89,7 +89,7 @@ const Feature = () => {
                   <img src={videoIcon} alt='doctor appointment' />
                 </span>
               </div>
-              <div className='w-[65px] lg:w-[96px] bg-[#CCF0F3] py-1 px-2 lg:py-[6px] lg:px-[10px] text-[8px] leading-[8px] lg:text-[12px] lg:leading-4 text-irisBlueColor font-[500] mt-2 lg:mt-4 rounded-full'>
+              <div className='w-[65px] lg:w-[96px] bg-primary-50 py-1 px-2 lg:py-[6px] lg:px-[10px] text-[8px] leading-[8px] lg:text-[12px] lg:leading-4 text-primary-700 font-[500] mt-2 lg:mt-4 rounded-full'>
                 Consultation
               </div>
               <div className='flex items-center gap-[6px] lg:gap-[10px] mt-2 lg:mt-[18px]'>

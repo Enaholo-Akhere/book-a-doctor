@@ -80,13 +80,13 @@ const MyBookings = ({ user, selected, onSelect }: MyBookingsProps) => {
                 aria-selected={filter === f.key}
                 onClick={() => setFilter(f.key)}
                 className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition ${
-                  filter === f.key ? 'bg-primaryColor text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100'
+                  filter === f.key ? 'bg-primaryColor text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100'
                 }`}
               >
                 {f.label}
                 <span
                   className={`rounded-full px-1.5 text-xs tabular-nums ${
-                    filter === f.key ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'
+                    filter === f.key ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'
                   }`}
                 >
                   {f.count}
@@ -96,7 +96,7 @@ const MyBookings = ({ user, selected, onSelect }: MyBookingsProps) => {
           </div>
           <div className='flex gap-2'>
             <div className='relative min-w-0 flex-1 lg:w-72 lg:flex-none'>
-              <Search size={16} className='pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400' />
+              <Search size={16} className='pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400' />
               <input
                 type='search'
                 value={query}

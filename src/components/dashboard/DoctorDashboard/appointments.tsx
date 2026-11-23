@@ -63,16 +63,16 @@ const AppointmentsPanel = ({
                 aria-selected={filter === f.key}
                 onClick={() => setFilter(f.key)}
                 className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition ${
-                  filter === f.key ? 'bg-primaryColor text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100'
+                  filter === f.key ? 'bg-primaryColor text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100'
                 }`}
               >
                 {f.label}
-                <span className={`rounded-full px-1.5 text-xs tabular-nums ${filter === f.key ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'}`}>{f.count}</span>
+                <span className={`rounded-full px-1.5 text-xs tabular-nums ${filter === f.key ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'}`}>{f.count}</span>
               </button>
             ))}
           </div>
           <div className='relative min-w-0 lg:w-72'>
-            <Search size={16} className='pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400' />
+            <Search size={16} className='pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400' />
             <input
               type='search'
               value={query}
@@ -97,7 +97,7 @@ const AppointmentsPanel = ({
         <Card className='overflow-hidden'>
           {/* Desktop table */}
           <table className='hidden w-full text-sm md:table'>
-            <thead className='bg-gray-50/80 text-left text-xs font-medium uppercase tracking-wide text-gray-500'>
+            <thead className='bg-slate-50/80 text-left text-xs font-medium uppercase tracking-wide text-slate-500'>
               <tr>
                 <th className='px-5 py-3'>Patient</th>
                 <th className='px-3 py-3'>Requested</th>
@@ -106,29 +106,29 @@ const AppointmentsPanel = ({
                 <th className='px-5 py-3 text-right'>Action</th>
               </tr>
             </thead>
-            <tbody className='divide-y divide-gray-100'>
+            <tbody className='divide-y divide-slate-100'>
               {visible.map((a) => (
-                <tr key={a._id} onClick={() => open(a)} className='cursor-pointer transition hover:bg-gray-50/70'>
+                <tr key={a._id} onClick={() => open(a)} className='cursor-pointer transition hover:bg-slate-50/70'>
                   <td className='px-5 py-3.5'>
                     <div className='flex items-center gap-3'>
                       <Avatar src={a.user?.photo?.imageUrl} name={a.user?.name ?? 'Patient'} size={36} />
                       <div className='min-w-0'>
                         <p className='truncate font-medium text-headingColor'>{a.user?.name}</p>
-                        <p className='truncate text-xs text-gray-500'>{a.user?.email}</p>
+                        <p className='truncate text-xs text-slate-500'>{a.user?.email}</p>
                       </div>
                     </div>
                   </td>
-                  <td className='px-3 py-3.5 text-gray-600'>{formatDate({ date: a.createdAt })}</td>
+                  <td className='px-3 py-3.5 text-slate-600'>{formatDate({ date: a.createdAt })}</td>
                   <td className='px-3 py-3.5'>
                     <span className='font-medium tabular-nums text-headingColor'>{formatUsd(Number(a.ticketPrice) || 0)}</span>
-                    <span className={`ml-2 text-xs ${a.isPaid ? 'text-emerald-700' : 'text-gray-400'}`}>{a.isPaid ? 'Paid' : 'Unpaid'}</span>
+                    <span className={`ml-2 text-xs ${a.isPaid ? 'text-emerald-700' : 'text-slate-400'}`}>{a.isPaid ? 'Paid' : 'Unpaid'}</span>
                   </td>
                   <td className='px-3 py-3.5'>
                     <Badge tone={STATUS_TONE[a.status]}>{statusLabel(a.status)}</Badge>
                   </td>
                   <td className='px-5 py-3.5'>
                     <div className='flex justify-end'>
-                      {a.status === 'pending' ? <StatusActions appointment={a} compact /> : <ChevronRight size={16} className='text-gray-300' />}
+                      {a.status === 'pending' ? <StatusActions appointment={a} compact /> : <ChevronRight size={16} className='text-slate-300' />}
                     </div>
                   </td>
                 </tr>
@@ -137,14 +137,14 @@ const AppointmentsPanel = ({
           </table>
 
           {/* Mobile list */}
-          <ul className='divide-y divide-gray-100 md:hidden'>
+          <ul className='divide-y divide-slate-100 md:hidden'>
             {visible.map((a) => (
               <li key={a._id} className='p-4'>
                 <button type='button' onClick={() => open(a)} className='flex w-full cursor-pointer items-center gap-3 text-left'>
                   <Avatar src={a.user?.photo?.imageUrl} name={a.user?.name ?? 'Patient'} size={40} />
                   <span className='min-w-0 flex-1'>
                     <span className='block truncate text-sm font-semibold text-headingColor'>{a.user?.name}</span>
-                    <span className='block truncate text-xs text-gray-500'>
+                    <span className='block truncate text-xs text-slate-500'>
                       {formatDate({ date: a.createdAt })} · {formatUsd(Number(a.ticketPrice) || 0)} · {a.isPaid ? 'Paid' : 'Unpaid'}
                     </span>
                   </span>

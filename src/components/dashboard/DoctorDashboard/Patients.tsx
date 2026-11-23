@@ -25,7 +25,7 @@ const Patients = ({ appointments: list = [], onOpenPatient }: { appointments: ap
   return (
     <div className='space-y-5'>
       <div className='relative max-w-md'>
-        <Search size={16} className='pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400' />
+        <Search size={16} className='pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400' />
         <input
           type='search'
           value={query}
@@ -51,7 +51,7 @@ const Patients = ({ appointments: list = [], onOpenPatient }: { appointments: ap
                 <button
                   type='button'
                   onClick={() => onOpenPatient(p._id)}
-                  className='flex w-full cursor-pointer items-center gap-3 rounded-2xl border border-gray-100 bg-white p-4 text-left shadow-[0_1px_2px_rgba(16,24,40,0.04)] transition hover:border-primaryColor/30 hover:shadow-md'
+                  className='flex w-full cursor-pointer items-center gap-3 rounded-2xl border border-slate-100 bg-white p-4 text-left shadow-[0_1px_2px_rgba(16,24,40,0.04)] transition hover:border-primaryColor/30 hover:shadow-md'
                 >
                   <Avatar src={p.photo?.imageUrl} name={p.name} size={46} />
                   <span className='min-w-0 flex-1'>
@@ -59,8 +59,8 @@ const Patients = ({ appointments: list = [], onOpenPatient }: { appointments: ap
                       <span className='truncate font-semibold text-headingColor'>{p.name}</span>
                       {hasPending && <Badge tone='amber'>Request</Badge>}
                     </span>
-                    <span className='block truncate text-xs text-gray-500'>{details || 'Health profile not completed'}</span>
-                    <span className='mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-400'>
+                    <span className='block truncate text-xs text-slate-500'>{details || 'Health profile not completed'}</span>
+                    <span className='mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400'>
                       <span>
                         {visits} booking{visits === 1 ? '' : 's'} · last {formatDate({ date: lastBooked })}
                       </span>
@@ -71,7 +71,7 @@ const Patients = ({ appointments: list = [], onOpenPatient }: { appointments: ap
                       )}
                     </span>
                   </span>
-                  <ChevronRight size={18} className='shrink-0 text-gray-300' />
+                  <ChevronRight size={18} className='shrink-0 text-slate-300' />
                 </button>
               </li>
             );

@@ -154,7 +154,7 @@ const Hero = () => {
                   <motion.path
                     key={r}
                     d={`M ${300 - r} 360 A ${r} ${r} 0 0 1 ${300 + r} 360`}
-                    stroke='#0d8c81'
+                    stroke='#0c8075'
                     strokeOpacity={0.14 + i * 0.05}
                     strokeWidth={1.5}
                     initial={{ pathLength: 0, opacity: 0 }}
@@ -168,7 +168,7 @@ const Hero = () => {
               <div
                 aria-hidden
                 className='pointer-events-none absolute inset-x-[6%] top-[8%] bottom-0 opacity-50 [mask-image:radial-gradient(ellipse_at_center,black_35%,transparent_70%)]'
-                style={{ backgroundImage: 'radial-gradient(#0d8c81 1px, transparent 1px)', backgroundSize: '14px 14px' }}
+                style={{ backgroundImage: 'radial-gradient(#0c8075 1px, transparent 1px)', backgroundSize: '14px 14px' }}
               />
 
               <Plus className='size-7 sm:size-9 left-[2%] top-[18%] text-primaryColor/25' delay={1.2} />
@@ -252,9 +252,9 @@ const Hero = () => {
               <motion.li
                 key={label}
                 variants={rise}
-                className='flex items-center gap-2 sm:gap-2.5 text-[14px] sm:text-[17px] lg:text-[20px] font-semibold text-gray-500 last:col-span-2 last:justify-center sm:last:col-span-1'
+                className='flex items-center gap-2 sm:gap-2.5 text-[14px] sm:text-[17px] lg:text-[20px] font-semibold text-slate-500 last:col-span-2 last:justify-center sm:last:col-span-1'
               >
-                <Icon className='size-6 text-gray-400' aria-hidden />
+                <Icon className='size-6 text-slate-400' aria-hidden />
                 {label}
               </motion.li>
             ))}

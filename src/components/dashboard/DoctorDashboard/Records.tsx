@@ -146,7 +146,7 @@ const RecordDetail = ({ id, onBack }: { id: string; onBack: () => void }) => {
         <Avatar src={record.patient?.photo?.imageUrl} name={record.patient?.name ?? 'Patient'} size={44} />
         <div className='min-w-0 flex-1'>
           <p className='truncate font-semibold text-headingColor'>{record.patient?.name ?? 'Deleted account'}</p>
-          <p className='text-sm text-gray-500'>
+          <p className='text-sm text-slate-500'>
             {formatRecordDate(record.recordingStartedAt)}
             {record.durationSec ? ` · ${formatMinutes(record.durationSec)}` : ''} · {record.callType === 'video' ? 'Video' : 'Voice'} call
           </p>
@@ -155,13 +155,13 @@ const RecordDetail = ({ id, onBack }: { id: string; onBack: () => void }) => {
       </div>
 
       {record.status === 'recording' && (
-        <p className='rounded-xl bg-gray-50 px-4 py-3 text-sm text-gray-600'>
+        <p className='rounded-xl bg-slate-50 px-4 py-3 text-sm text-slate-600'>
           No audio has been received for this recording. If the call ended unexpectedly (tab closed, connection lost),
           the audio was lost and this record can be discarded.
         </p>
       )}
       {record.status === 'processing' && (
-        <p className='flex items-center gap-2 rounded-xl bg-violet-50 px-4 py-3 text-sm text-violet-800'>
+        <p className='flex items-center gap-2 rounded-xl bg-secondary-50 px-4 py-3 text-sm text-secondary-800'>
           <Loader2 size={16} className='animate-spin' /> Transcribing and drafting the summary. This usually takes under a minute.
         </p>
       )}
@@ -180,7 +180,7 @@ const RecordDetail = ({ id, onBack }: { id: string; onBack: () => void }) => {
         ) : (
           <>
             {record.amendedAt && (
-              <p className='text-xs text-gray-500'>Amended {formatRecordDate(record.amendedAt)} after approval.</p>
+              <p className='text-xs text-slate-500'>Amended {formatRecordDate(record.amendedAt)} after approval.</p>
             )}
             <SummaryView summary={record.summary} />
             <div className='flex flex-wrap justify-end gap-3'>
@@ -200,7 +200,7 @@ const RecordDetail = ({ id, onBack }: { id: string; onBack: () => void }) => {
         <TranscriptView segments={record.transcript} />
       )}
 
-      <p className='text-xs text-gray-400'>
+      <p className='text-xs text-slate-400'>
         Patient consented {formatRecordDate(record.consent.patientConsentedAt)} (notice {record.consent.noticeVersion}).
       </p>
 
@@ -223,7 +223,7 @@ const Records = () => {
     return (
       <Card>
         <div className='px-5 pt-5 sm:px-6'>
-          <button type='button' onClick={() => setSelected(null)} className='inline-flex cursor-pointer items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-headingColor'>
+          <button type='button' onClick={() => setSelected(null)} className='inline-flex cursor-pointer items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-headingColor'>
             <ArrowLeft size={16} /> All records
           </button>
         </div>
@@ -256,24 +256,24 @@ const Records = () => {
           description='During a call, tap Record. The patient is asked for consent, and the transcript and an AI-drafted summary appear here for your review.'
         />
       ) : (
-        <ul className='divide-y divide-gray-100 border-t border-gray-100'>
+        <ul className='divide-y divide-slate-100 border-t border-slate-100'>
           {records.map((r) => (
             <li key={r._id}>
               <button
                 type='button'
                 onClick={() => setSelected(r._id)}
-                className='flex w-full cursor-pointer items-center gap-3 px-5 py-4 text-left transition hover:bg-gray-50 sm:px-6'
+                className='flex w-full cursor-pointer items-center gap-3 px-5 py-4 text-left transition hover:bg-slate-50 sm:px-6'
               >
                 <Avatar src={r.patient?.photo?.imageUrl} name={r.patient?.name ?? 'Patient'} size={40} />
                 <div className='min-w-0 flex-1'>
                   <p className='truncate font-medium text-headingColor'>{r.patient?.name ?? 'Deleted account'}</p>
-                  <p className='truncate text-sm text-gray-500'>
+                  <p className='truncate text-sm text-slate-500'>
                     {r.summary?.chiefComplaint || formatRecordDate(r.recordingStartedAt)}
                   </p>
                 </div>
                 <div className='flex shrink-0 flex-col items-end gap-1'>
                   <StatusBadge status={r.status} />
-                  <span className='text-xs text-gray-400'>{new Date(r.recordingStartedAt).toLocaleDateString()}</span>
+                  <span className='text-xs text-slate-400'>{new Date(r.recordingStartedAt).toLocaleDateString()}</span>
                 </div>
               </button>
             </li>

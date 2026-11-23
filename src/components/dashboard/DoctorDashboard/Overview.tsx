@@ -61,7 +61,7 @@ const Overview = ({ doctor, onNavigate, onOpenPatient, updatedAt, onRefresh, isR
   return (
     <div className='space-y-6'>
       {/* Header */}
-      <div className='relative overflow-hidden rounded-2xl bg-gradient-to-br from-primaryColor to-irisBlueColor px-5 py-6 text-white sm:px-8 sm:py-7'>
+      <div className='relative overflow-hidden rounded-2xl bg-gradient-to-br from-primaryColor to-primary-800 px-5 py-6 text-white sm:px-8 sm:py-7'>
         <div aria-hidden className='pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10' />
         <div className='relative flex flex-col gap-5 md:flex-row md:items-end md:justify-between'>
           <div>
@@ -127,7 +127,7 @@ const Overview = ({ doctor, onNavigate, onOpenPatient, updatedAt, onRefresh, isR
         <button
           type='button'
           onClick={onRefresh}
-          className='inline-flex cursor-pointer items-center gap-1.5 text-xs text-gray-500 hover:text-headingColor'
+          className='inline-flex cursor-pointer items-center gap-1.5 text-xs text-slate-500 hover:text-headingColor'
           title='Refresh'
         >
           <RefreshCw size={13} className={isRefreshing ? 'animate-spin' : ''} />
@@ -159,14 +159,14 @@ const Overview = ({ doctor, onNavigate, onOpenPatient, updatedAt, onRefresh, isR
           {pending.length === 0 ? (
             <EmptyState icon={<CheckCircle2 size={22} />} title="You're all caught up" description='New booking requests will appear here.' />
           ) : (
-            <ul className='divide-y divide-gray-100 border-t border-gray-100'>
+            <ul className='divide-y divide-slate-100 border-t border-slate-100'>
               {pending.slice(0, 4).map((a) => (
                 <li key={a._id} className='flex flex-wrap items-center gap-3 px-5 py-3.5 sm:px-6'>
                   <button type='button' onClick={() => a.user?._id && onOpenPatient(a.user._id)} className='flex min-w-[13rem] flex-1 cursor-pointer items-center gap-3 text-left'>
                     <Avatar src={a.user?.photo?.imageUrl} name={a.user?.name ?? 'Patient'} size={40} />
                     <span className='min-w-0'>
                       <span className='block truncate text-sm font-semibold text-headingColor hover:text-primaryColor'>{a.user?.name}</span>
-                      <span className='block truncate text-xs text-gray-500'>
+                      <span className='block truncate text-xs text-slate-500'>
                         Requested {formatDate({ date: a.createdAt })} · {a.isPaid ? 'Paid' : 'Unpaid'}
                       </span>
                     </span>
@@ -194,8 +194,8 @@ const Overview = ({ doctor, onNavigate, onOpenPatient, updatedAt, onRefresh, isR
             {weeklySchedule(doctor.timeSlots).map(({ day, slots }) => {
               const isToday = day === new Date().toLocaleDateString('en-US', { weekday: 'long' });
               return (
-                <li key={day} className='flex items-start justify-between gap-3 border-b border-gray-50 py-2 last:border-0'>
-                  <span className={`text-sm ${isToday ? 'font-semibold text-primaryColor' : 'text-gray-600'}`}>
+                <li key={day} className='flex items-start justify-between gap-3 border-b border-slate-50 py-2 last:border-0'>
+                  <span className={`text-sm ${isToday ? 'font-semibold text-primaryColor' : 'text-slate-600'}`}>
                     {day.slice(0, 3)}
                     {isToday && <span className='ml-1.5 text-[11px] font-medium'>Today</span>}
                   </span>
@@ -207,7 +207,7 @@ const Overview = ({ doctor, onNavigate, onOpenPatient, updatedAt, onRefresh, isR
                         </span>
                       ))
                     ) : (
-                      <span className='text-gray-300'>Unavailable</span>
+                      <span className='text-slate-300'>Unavailable</span>
                     )}
                   </span>
                 </li>
@@ -227,7 +227,7 @@ const Overview = ({ doctor, onNavigate, onOpenPatient, updatedAt, onRefresh, isR
             action={
               <span className='text-right'>
                 <span className='block text-xl font-semibold tabular-nums text-headingColor'>{thisWeek}</span>
-                <span className='block text-xs text-gray-500'>
+                <span className='block text-xs text-slate-500'>
                   this week{lastWeek ? ` · ${thisWeek >= lastWeek ? '+' : ''}${thisWeek - lastWeek} vs last` : ''}
                 </span>
               </span>
@@ -267,7 +267,7 @@ const Overview = ({ doctor, onNavigate, onOpenPatient, updatedAt, onRefresh, isR
                         {r.rating}
                       </span>
                     </div>
-                    <p className='mt-0.5 line-clamp-2 text-sm text-gray-500'>{r.reviewText}</p>
+                    <p className='mt-0.5 line-clamp-2 text-sm text-slate-500'>{r.reviewText}</p>
                   </div>
                 </li>
               ))}
@@ -292,10 +292,10 @@ const Overview = ({ doctor, onNavigate, onOpenPatient, updatedAt, onRefresh, isR
                   type='button'
                   onClick={() => onNavigate('profile')}
                   disabled={c.done}
-                  className='flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1.5 text-left text-sm transition enabled:hover:bg-gray-50 disabled:cursor-default'
+                  className='flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1.5 text-left text-sm transition enabled:hover:bg-slate-50 disabled:cursor-default'
                 >
-                  {c.done ? <CheckCircle2 size={16} className='shrink-0 text-emerald-600' /> : <Circle size={16} className='shrink-0 text-gray-300' />}
-                  <span className={c.done ? 'text-gray-400 line-through' : 'text-gray-700'}>{c.label}</span>
+                  {c.done ? <CheckCircle2 size={16} className='shrink-0 text-emerald-600' /> : <Circle size={16} className='shrink-0 text-slate-300' />}
+                  <span className={c.done ? 'text-slate-400 line-through' : 'text-slate-700'}>{c.label}</span>
                 </button>
               </li>
             ))}

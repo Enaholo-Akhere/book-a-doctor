@@ -19,7 +19,7 @@ const downloadUrl = (url: string, name: string) =>
 
 const UploadProgress = ({ msg, light }: { msg: ChatMessage; light: boolean }) =>
   msg.pending ? (
-    <div className={`mt-1 h-1 w-full overflow-hidden rounded-full ${light ? 'bg-white/30' : 'bg-gray-200'}`}>
+    <div className={`mt-1 h-1 w-full overflow-hidden rounded-full ${light ? 'bg-white/30' : 'bg-slate-200'}`}>
       <div
         className={`h-full transition-[width] ${light ? 'bg-white' : 'bg-primaryColor2'}`}
         style={{ width: `${msg.progress ?? 0}%` }}
@@ -127,7 +127,7 @@ const FileAttachment = ({ msg, mine }: { msg: ChatMessage; mine: boolean }) => {
       <Icon className='size-8 shrink-0' />
       <div className='min-w-0 flex-1'>
         <p className='truncate text-sm font-medium'>{a.name}</p>
-        <p className={`text-[11px] ${mine ? 'text-white/80' : 'text-gray-500'}`}>{formatBytes(a.size)}</p>
+        <p className={`text-[11px] ${mine ? 'text-white/80' : 'text-slate-500'}`}>{formatBytes(a.size)}</p>
       </div>
       {!msg.pending && !msg.failed && <MdOutlineFileDownload className='size-6 shrink-0' />}
     </div>
@@ -213,9 +213,9 @@ const AudioAttachment = ({ msg, mine }: { msg: ChatMessage; mine: boolean }) => 
           onChange={seek}
           disabled={!duration || msg.failed}
           aria-label='Seek'
-          className={`w-full h-1 cursor-pointer ${mine ? 'accent-white' : 'accent-[#0d8c81]'}`}
+          className={`w-full h-1 cursor-pointer ${mine ? 'accent-white' : 'accent-[#0c8075]'}`}
         />
-        <p className={`text-[11px] tabular-nums ${mine ? 'text-white/80' : 'text-gray-500'}`}>
+        <p className={`text-[11px] tabular-nums ${mine ? 'text-white/80' : 'text-slate-500'}`}>
           {formatSeconds(playing || current ? current : duration)}
         </p>
       </div>

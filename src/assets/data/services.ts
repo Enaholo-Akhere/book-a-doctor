@@ -79,7 +79,7 @@ export const services: Service[] = [
     icon: Stethoscope,
     featured: true,
     cta: BOOK,
-    color: '#0D8C81',
+    color: '#0c8075',
   },
   {
     id: 'chronic-care',
@@ -93,7 +93,7 @@ export const services: Service[] = [
     category: 'general',
     icon: ClipboardCheck,
     cta: BOOK,
-    color: '#01B5C5',
+    color: '#47b4aa',
   },
   {
     id: 'older-adults',
@@ -152,7 +152,7 @@ export const services: Service[] = [
     icon: Baby,
     featured: true,
     cta: BOOK,
-    color: '#01B5C5',
+    color: '#47b4aa',
   },
   {
     id: 'mens-health',
@@ -166,7 +166,7 @@ export const services: Service[] = [
     category: 'specialist',
     icon: Mars,
     cta: BOOK,
-    color: '#01B5C5',
+    color: '#47b4aa',
   },
   {
     id: 'dermatology',
@@ -194,7 +194,7 @@ export const services: Service[] = [
     category: 'specialist',
     icon: HeartPulse,
     cta: BOOK,
-    color: '#0D8C81',
+    color: '#0c8075',
   },
   {
     id: 'sexual-health',
@@ -223,7 +223,7 @@ export const services: Service[] = [
     icon: FlaskConical,
     featured: true,
     cta: BOOK,
-    color: '#01B5C5',
+    color: '#47b4aa',
   },
   {
     id: 'medication-review',
@@ -237,7 +237,7 @@ export const services: Service[] = [
     category: 'support',
     icon: Pill,
     cta: BOOK,
-    color: '#0D8C81',
+    color: '#0c8075',
   },
   {
     id: 'second-opinion',
@@ -279,7 +279,7 @@ export const services: Service[] = [
     category: 'wellbeing',
     icon: Apple,
     cta: BOOK,
-    color: '#0D8C81',
+    color: '#0c8075',
   },
   {
     id: 'travel-health',
@@ -293,7 +293,7 @@ export const services: Service[] = [
     category: 'wellbeing',
     icon: Plane,
     cta: BOOK,
-    color: '#01B5C5',
+    color: '#47b4aa',
   },
   {
     id: 'follow-up-messaging',

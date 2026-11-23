@@ -138,7 +138,7 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
         }`}
       >
         {/* Top bar */}
-        <div className='flex items-center justify-between border-b border-gray-100 px-5 py-4'>
+        <div className='flex items-center justify-between border-b border-slate-100 px-5 py-4'>
           <Link href='/' className='block w-[130px]'>
             <img src={logo} alt='CareConnect home' className='h-auto w-full' />
           </Link>
@@ -147,7 +147,7 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
             type='button'
             onClick={onClose}
             aria-label='Close menu'
-            className='flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl text-gray-500 transition hover:bg-gray-100 hover:text-headingColor focus-visible:ring-2 focus-visible:ring-primaryColor/40 outline-none'
+            className='flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-headingColor focus-visible:ring-2 focus-visible:ring-primaryColor/40 outline-none'
           >
             <X size={20} />
           </button>
@@ -158,7 +158,7 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
           {user ? (
             <Link
               href={dashboardPath}
-              className='flex items-center gap-3 rounded-2xl border border-gray-100 bg-gray-50/80 p-3 transition hover:border-primaryColor/30 hover:bg-primaryColor/5'
+              className='flex items-center gap-3 rounded-2xl border border-slate-100 bg-slate-50/80 p-3 transition hover:border-primaryColor/30 hover:bg-primaryColor/5'
             >
               {user.photo?.imageUrl ? (
                 <img src={user.photo.imageUrl} alt='' className='h-11 w-11 shrink-0 rounded-full object-cover ring-2 ring-white' />
@@ -173,10 +173,10 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
                   {roleLabel}
                 </span>
               </span>
-              <ChevronRight size={18} className='shrink-0 text-gray-400' />
+              <ChevronRight size={18} className='shrink-0 text-slate-400' />
             </Link>
           ) : (
-            <div className='rounded-2xl bg-gradient-to-br from-primaryColor to-irisBlueColor p-4 text-white'>
+            <div className='rounded-2xl bg-gradient-to-br from-primaryColor to-primary-800 p-4 text-white'>
               <p className='font-semibold'>Welcome to CareConnect</p>
               <p className='mt-1 text-sm text-white/85'>Sign in to book doctors, chat and manage your health.</p>
               <div className='mt-4 grid grid-cols-2 gap-2'>
@@ -198,7 +198,7 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
 
           {/* Main navigation */}
           <nav aria-label='Main' className='mt-6'>
-            <p className='px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-gray-400'>Menu</p>
+            <p className='px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400'>Menu</p>
             <ul className='space-y-1'>
               {navLink.map((link) => {
                 const Icon = ICONS[link.path] ?? ChevronRight;
@@ -208,13 +208,13 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
                       href={link.path}
                       end={link.path === '/'}
                       className={({ isActive }) =>
-                        `${itemBase} ${isActive ? 'bg-primaryColor/10 text-primaryColor' : 'text-gray-700 hover:bg-gray-50 hover:text-headingColor'}`
+                        `${itemBase} ${isActive ? 'bg-primaryColor/10 text-primaryColor' : 'text-slate-700 hover:bg-slate-50 hover:text-headingColor'}`
                       }
                     >
                       {({ isActive }) => (
                         <>
                           {isActive && <span aria-hidden className='absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-primaryColor' />}
-                          <Icon size={19} className={isActive ? 'text-primaryColor' : 'text-gray-400 group-hover:text-gray-600'} />
+                          <Icon size={19} className={isActive ? 'text-primaryColor' : 'text-slate-400 group-hover:text-slate-600'} />
                           <span className='flex-1'>{link.display}</span>
                         </>
                       )}
@@ -228,16 +228,16 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
           {/* Account navigation */}
           {user && (
             <nav aria-label='Account' className='mt-6'>
-              <p className='px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-gray-400'>Account</p>
+              <p className='px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400'>Account</p>
               <ul className='space-y-1'>
                 <li>
                   <NavLink
                     href={dashboardPath}
                     className={({ isActive }) =>
-                      `${itemBase} ${isActive ? 'bg-primaryColor/10 text-primaryColor' : 'text-gray-700 hover:bg-gray-50 hover:text-headingColor'}`
+                      `${itemBase} ${isActive ? 'bg-primaryColor/10 text-primaryColor' : 'text-slate-700 hover:bg-slate-50 hover:text-headingColor'}`
                     }
                   >
-                    <LayoutDashboard size={19} className='text-gray-400 group-hover:text-gray-600' />
+                    <LayoutDashboard size={19} className='text-slate-400 group-hover:text-slate-600' />
                     <span className='flex-1'>Dashboard</span>
                   </NavLink>
                 </li>
@@ -248,9 +248,9 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
                       onClose();
                       openChatList();
                     }}
-                    className={`${itemBase} w-full cursor-pointer text-left text-gray-700 hover:bg-gray-50 hover:text-headingColor`}
+                    className={`${itemBase} w-full cursor-pointer text-left text-slate-700 hover:bg-slate-50 hover:text-headingColor`}
                   >
-                    <MessageCircle size={19} className='text-gray-400 group-hover:text-gray-600' />
+                    <MessageCircle size={19} className='text-slate-400 group-hover:text-slate-600' />
                     <span className='flex-1'>Messages</span>
                     {unread > 0 && (
                       <span className='min-w-6 rounded-full bg-red-500 px-1.5 text-center text-xs font-semibold leading-5 text-white tabular-nums'>
@@ -264,9 +264,9 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
                     type='button'
                     onClick={handleLogout}
                     disabled={isLoggingOut}
-                    className={`${itemBase} w-full cursor-pointer text-left text-gray-700 hover:bg-red-50 hover:text-red-600 disabled:opacity-60`}
+                    className={`${itemBase} w-full cursor-pointer text-left text-slate-700 hover:bg-red-50 hover:text-red-600 disabled:opacity-60`}
                   >
-                    <LogOut size={19} className='text-gray-400 group-hover:text-red-500' />
+                    <LogOut size={19} className='text-slate-400 group-hover:text-red-500' />
                     <span className='flex-1'>{isLoggingOut ? 'Signing out…' : 'Sign out'}</span>
                   </button>
                 </li>
@@ -277,7 +277,7 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
 
         {/* Footer CTA */}
         {user?.role !== 'doctor' && (
-          <div className='border-t border-gray-100 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]'>
+          <div className='border-t border-slate-100 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]'>
             <Link
               href='/doctors'
               className='flex items-center gap-3 rounded-2xl bg-primaryColor px-4 py-3 text-white shadow-sm transition hover:bg-primaryColor2'

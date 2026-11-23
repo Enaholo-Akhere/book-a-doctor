@@ -69,17 +69,17 @@ const AiChatQuotaMeter = ({ quota }: { quota: AiChatQuotaInfo }) => {
   }
   const left = quota.remainingQuestions;
   return (
-    <div className="flex items-center gap-2 text-[11px] text-gray-500">
+    <div className="flex items-center gap-2 text-[11px] text-slate-500">
       <span className="flex gap-1" aria-hidden>
         {Array.from({ length: quota.limit }, (_, i) => (
           <span
             key={i}
-            className={`h-1.5 w-4 rounded-full ${i < left ? "bg-violet-500" : "bg-gray-200"}`}
+            className={`h-1.5 w-4 rounded-full ${i < left ? "bg-secondary-500" : "bg-slate-200"}`}
           />
         ))}
       </span>
       <span>
-        <span className="font-semibold tabular-nums text-gray-700">{left}</span>{" "}
+        <span className="font-semibold tabular-nums text-slate-700">{left}</span>{" "}
         of {quota.limit} free questions left today
       </span>
     </div>
@@ -152,10 +152,10 @@ const AiChatPanel = ({
       role="dialog"
       aria-label="AI health assistant"
       onKeyDown={(e) => e.key === "Escape" && onClose()}
-      className="fixed inset-x-3 bottom-3 top-[92px] z-[95] flex flex-col overflow-hidden rounded-2xl border border-violet-100 bg-white shadow-2xl shadow-violet-900/20 sm:inset-x-auto sm:left-5 sm:top-auto sm:bottom-5 sm:h-[min(620px,calc(100dvh-112px))] sm:w-[380px]"
+      className="fixed inset-x-3 bottom-3 top-[92px] z-[95] flex flex-col overflow-hidden rounded-2xl border border-secondary-100 bg-white shadow-2xl shadow-secondary-900/20 sm:inset-x-auto sm:left-5 sm:top-auto sm:bottom-5 sm:h-[min(620px,calc(100dvh-112px))] sm:w-[380px]"
     >
       {/* Header */}
-      <div className="flex items-center gap-3 bg-gradient-to-r from-violet-600 to-indigo-600 px-4 py-3 text-white">
+      <div className="flex items-center gap-3 bg-gradient-to-r from-secondary-600 to-secondary-800 px-4 py-3 text-white">
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/15">
           <Sparkles size={18} />
         </span>
@@ -219,7 +219,7 @@ const AiChatPanel = ({
             aria-live="polite"
           >
             {isLoadingHistory && entries.length === 0 && (
-              <p className="flex items-center justify-center gap-2 pt-6 text-sm text-gray-400">
+              <p className="flex items-center justify-center gap-2 pt-6 text-sm text-slate-400">
                 <Loader2 size={16} className="animate-spin" /> Loading your
                 conversation…
               </p>
@@ -227,13 +227,13 @@ const AiChatPanel = ({
 
             {!isLoadingHistory && entries.length === 0 && (
               <div className="pt-2 text-center">
-                <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 text-white">
+                <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-secondary-500 to-secondary-700 text-white">
                   <Sparkles size={22} />
                 </span>
                 <p className="mt-3 font-semibold text-headingColor">
                   Ask a health question
                 </p>
-                <p className="mx-auto mt-1 max-w-[260px] text-sm text-gray-500">
+                <p className="mx-auto mt-1 max-w-[260px] text-sm text-slate-500">
                   Symptoms, medicines, nutrition, sleep or mental wellbeing. For
                   a diagnosis, book a doctor.
                 </p>
@@ -243,7 +243,7 @@ const AiChatPanel = ({
                       key={s}
                       type="button"
                       onClick={() => submit(s)}
-                      className="cursor-pointer rounded-full border border-violet-200 bg-white px-3 py-1.5 text-xs font-medium text-violet-700 transition hover:border-violet-300 hover:bg-violet-50"
+                      className="cursor-pointer rounded-full border border-secondary-200 bg-white px-3 py-1.5 text-xs font-medium text-secondary-700 transition hover:border-secondary-300 hover:bg-secondary-50"
                     >
                       {s}
                     </button>
@@ -279,14 +279,14 @@ const AiChatPanel = ({
                 className="flex items-center gap-2.5"
                 aria-label="Assistant is typing"
               >
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 text-white">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-secondary-500 to-secondary-700 text-white">
                   <Sparkles size={14} />
                 </span>
-                <span className="flex gap-1 rounded-2xl rounded-tl-md border border-violet-100 bg-white px-3.5 py-3">
+                <span className="flex gap-1 rounded-2xl rounded-tl-md border border-secondary-100 bg-white px-3.5 py-3">
                   {[0, 150, 300].map((d) => (
                     <span
                       key={d}
-                      className="h-1.5 w-1.5 animate-bounce rounded-full bg-violet-400"
+                      className="h-1.5 w-1.5 animate-bounce rounded-full bg-secondary-400"
                       style={{ animationDelay: `${d}ms` }}
                     />
                   ))}
@@ -298,8 +298,8 @@ const AiChatPanel = ({
 
           {/* Out of free questions: keep the input (emergencies are still answered). */}
           {quota?.remainingQuestions === 0 && (
-            <div className="flex items-center gap-3 border-t border-violet-100 bg-violet-50 px-4 py-2.5">
-              <p className="min-w-0 flex-1 text-xs text-violet-900">
+            <div className="flex items-center gap-3 border-t border-secondary-100 bg-secondary-50 px-4 py-2.5">
+              <p className="min-w-0 flex-1 text-xs text-secondary-900">
                 Free questions reset at{" "}
                 <span className="font-semibold">
                   {resetTime(quota.resetsAt)}
@@ -319,14 +319,14 @@ const AiChatPanel = ({
           {/* Composer */}
           <form
             onSubmit={onSubmit}
-            className="border-t border-violet-100 bg-white p-3"
+            className="border-t border-secondary-100 bg-white p-3"
           >
             {quota && quota.remainingQuestions !== 0 && (
               <div className="mb-2 px-1">
                 <AiChatQuotaMeter quota={quota} />
               </div>
             )}
-            <div className="flex items-end gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 focus-within:border-violet-400 focus-within:ring-2 focus-within:ring-violet-200">
+            <div className="flex items-end gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 focus-within:border-secondary-400 focus-within:ring-2 focus-within:ring-secondary-200">
               <label htmlFor="ai-chat-input" className="sr-only">
                 Your health question
               </label>
@@ -339,18 +339,18 @@ const AiChatPanel = ({
                 onChange={(e) => setDraft(e.target.value)}
                 onKeyDown={onKeyDown}
                 placeholder="Ask about a symptom, medicine…"
-                className="max-h-32 flex-1 resize-none bg-transparent py-1 text-sm text-gray-800 outline-none placeholder:text-gray-400"
+                className="max-h-32 flex-1 resize-none bg-transparent py-1 text-sm text-slate-800 outline-none placeholder:text-slate-400"
               />
               <button
                 type="submit"
                 disabled={!draft.trim() || isSending}
                 aria-label="Send"
-                className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-violet-600 text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400"
+                className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-secondary-600 text-white transition hover:bg-secondary-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
               >
                 <SendHorizontal size={16} />
               </button>
             </div>
-            <p className="mt-1.5 text-center text-[10px] text-gray-400">
+            <p className="mt-1.5 text-center text-[10px] text-slate-400">
               AI answers can be wrong. Don't share names, emails or ID numbers.
             </p>
           </form>

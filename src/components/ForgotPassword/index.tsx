@@ -41,7 +41,7 @@ const ForgotPasswordComp = () => {
               autoComplete='on'
               placeholder='Enter your email'
               {...register('email')}
-              className='w-full py-3 border-b border-solid border-[#0066FF61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer '
+              className='w-full py-3 border-b border-solid border-primary-200 focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer '
             />
             {errors.email && (
               <p className='text-red-500 text-sm'>{errors.email.message}</p>

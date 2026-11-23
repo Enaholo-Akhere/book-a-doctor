@@ -49,13 +49,13 @@ const PatientDrawer = ({ summary, onClose }: { summary: PatientSummary | null; o
         onClick={(e) => e.stopPropagation()}
         className='flex h-full w-full max-w-md flex-col bg-white shadow-2xl'
       >
-        <header className='flex items-start gap-3 border-b border-gray-100 p-5'>
+        <header className='flex items-start gap-3 border-b border-slate-100 p-5'>
           <Avatar src={p.photo?.imageUrl} name={p.name} size={52} />
           <div className='min-w-0 flex-1'>
             <h2 id='patient-title' className='truncate text-lg font-semibold text-headingColor'>
               {p.name}
             </h2>
-            <p className='text-sm text-gray-500'>
+            <p className='text-sm text-slate-500'>
               {visits} booking{visits === 1 ? '' : 's'} · last {formatDate({ date: summary.lastBooked })}
             </p>
           </div>
@@ -64,7 +64,7 @@ const PatientDrawer = ({ summary, onClose }: { summary: PatientSummary | null; o
             type='button'
             onClick={onClose}
             aria-label='Close'
-            className='cursor-pointer rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700'
+            className='cursor-pointer rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700'
           >
             <X size={18} />
           </button>
@@ -85,17 +85,17 @@ const PatientDrawer = ({ summary, onClose }: { summary: PatientSummary | null; o
           </div>
 
           <div>
-            <h3 className='text-xs font-semibold uppercase tracking-wide text-gray-400'>Clinical summary</h3>
+            <h3 className='text-xs font-semibold uppercase tracking-wide text-slate-400'>Clinical summary</h3>
             <dl className='mt-3 grid grid-cols-3 gap-2'>
               {facts.map((f) => (
-                <div key={f.label} className='rounded-xl bg-gray-50 px-3 py-2.5'>
-                  <dt className='text-[11px] text-gray-500'>{f.label}</dt>
-                  <dd className={`mt-0.5 text-sm font-semibold ${f.value ? 'text-headingColor' : 'text-gray-300'}`}>{f.value ?? '—'}</dd>
+                <div key={f.label} className='rounded-xl bg-slate-50 px-3 py-2.5'>
+                  <dt className='text-[11px] text-slate-500'>{f.label}</dt>
+                  <dd className={`mt-0.5 text-sm font-semibold ${f.value ? 'text-headingColor' : 'text-slate-300'}`}>{f.value ?? '—'}</dd>
                 </div>
               ))}
             </dl>
             {bmi && (
-              <p className='mt-2 flex items-center gap-2 text-sm text-gray-600'>
+              <p className='mt-2 flex items-center gap-2 text-sm text-slate-600'>
                 BMI <span className='font-semibold tabular-nums text-headingColor'>{bmi.value}</span>
                 <Badge tone={bmi.tone}>{bmi.label}</Badge>
               </p>
@@ -107,14 +107,14 @@ const PatientDrawer = ({ summary, onClose }: { summary: PatientSummary | null; o
           <TagSection title='Current medications' icon={<Pill size={14} />} items={p.medications} tone='teal' />
 
           <div>
-            <h3 className='text-xs font-semibold uppercase tracking-wide text-gray-400'>Bookings with you</h3>
+            <h3 className='text-xs font-semibold uppercase tracking-wide text-slate-400'>Bookings with you</h3>
             <ul className='mt-3 space-y-2'>
               {bookings.map((b) => (
-                <li key={b._id} className='rounded-xl border border-gray-100 p-3'>
+                <li key={b._id} className='rounded-xl border border-slate-100 p-3'>
                   <div className='flex flex-wrap items-center justify-between gap-2'>
                     <div>
                       <p className='text-sm font-medium text-headingColor'>{formatDate({ date: b.createdAt })}</p>
-                      <p className='text-xs text-gray-500'>
+                      <p className='text-xs text-slate-500'>
                         {formatUsd(Number(b.ticketPrice) || 0)} · {b.isPaid ? 'Paid' : 'Unpaid'}
                       </p>
                     </div>
@@ -142,7 +142,7 @@ const PatientDrawer = ({ summary, onClose }: { summary: PatientSummary | null; o
   );
 };
 
-const TAG = { red: 'bg-red-50 text-red-700', violet: 'bg-violet-50 text-violet-700', teal: 'bg-primaryColor/10 text-primaryColor' };
+const TAG = { red: 'bg-red-50 text-red-700', violet: 'bg-secondary-50 text-secondary-700', teal: 'bg-primaryColor/10 text-primaryColor' };
 
 const TagSection = ({
   title,
@@ -158,7 +158,7 @@ const TagSection = ({
   emptyText?: string;
 }) => (
   <div>
-    <h3 className='flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-gray-400'>
+    <h3 className='flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400'>
       {icon}
       {title}
     </h3>
@@ -170,7 +170,7 @@ const TagSection = ({
           </span>
         ))
       ) : (
-        <span className='text-sm text-gray-400'>{emptyText}</span>
+        <span className='text-sm text-slate-400'>{emptyText}</span>
       )}
     </div>
   </div>

@@ -68,12 +68,12 @@ const SetNewPasswordComp = () => {
                 onBlur={() => {
                   if (!passwordValue) setShowCheckPassword(false);
                 }}
-                className='w-full pr-4 py-3 border-solid border-[#0066FF61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor'
+                className='w-full pr-4 py-3 border-solid border-primary-200 focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor'
               />
               <button
                 type='button'
                 onClick={() => setShowPassword((prev) => !prev)}
-                className='text-gray-600 hover:text-gray-800'
+                className='text-slate-600 hover:text-slate-800'
               >
                 {showPassword ? <FaEye /> : <FaEyeSlash />}
               </button>
@@ -87,12 +87,12 @@ const SetNewPasswordComp = () => {
                 onBlur={() => {
                   if (!passwordValue) setShowCheckPassword(false);
                 }}
-                className='w-full pr-4 py-3 border-solid border-[#0066FF61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor'
+                className='w-full pr-4 py-3 border-solid border-primary-200 focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor'
               />
               <button
                 type='button'
                 onClick={() => setShowPassword((prev) => !prev)}
-                className='text-gray-600 hover:text-gray-800'
+                className='text-slate-600 hover:text-slate-800'
               >
                 {showPassword ? <FaEye /> : <FaEyeSlash />}
               </button>

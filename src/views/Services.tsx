@@ -9,7 +9,7 @@ import ServicesShowcase from '@/components/Services/ServicesShowcase';
 
 const STEPS = [
   { icon: Search, title: 'Choose a service', text: 'Pick what you need help with, or ask the AI assistant which doctor fits.', color: '#9771FF' },
-  { icon: CalendarCheck, title: 'Book a doctor', text: 'Choose a verified doctor and a time that suits you, then pay securely.', color: '#01B5C5' },
+  { icon: CalendarCheck, title: 'Book a doctor', text: 'Choose a verified doctor and a time that suits you, then pay securely.', color: '#47b4aa' },
   { icon: Video, title: 'Consult online', text: 'Meet by video, voice or chat, and keep messaging your doctor afterwards.', color: '#FEB60D' },
 ];
 
@@ -56,10 +56,10 @@ const Services = () => {
                     aria-selected={active}
                     onClick={() => setCategory(key)}
                     className={`shrink-0 cursor-pointer rounded-full px-4 py-2 text-sm font-medium transition ${
-                      active ? 'bg-headingColor text-white' : 'bg-white text-gray-600 hover:text-headingColor'
+                      active ? 'bg-headingColor text-white' : 'bg-white text-slate-600 hover:text-headingColor'
                     }`}
                   >
-                    {label} <span className={`ml-1 tabular-nums ${active ? 'text-yellowColor' : 'text-gray-400'}`}>{count}</span>
+                    {label} <span className={`ml-1 tabular-nums ${active ? 'text-yellowColor' : 'text-slate-400'}`}>{count}</span>
                   </button>
                 );
               })}
@@ -88,7 +88,7 @@ const Services = () => {
                   <span className='flex h-11 w-11 items-center justify-center rounded-xl bg-headingColor' style={{ color }}>
                     <Icon size={20} />
                   </span>
-                  <span className='text-3xl font-medium tabular-nums text-gray-300'>0{i + 1}</span>
+                  <span className='text-3xl font-medium tabular-nums text-slate-300'>0{i + 1}</span>
                 </div>
                 <p className='mt-4 text-lg font-medium text-headingColor'>{title}</p>
                 <p className='mt-1 text-sm leading-6 text-textColor'>{text}</p>

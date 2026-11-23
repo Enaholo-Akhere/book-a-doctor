@@ -24,7 +24,7 @@ const GetInTouch = () => {
           {medicalServices.map((ms) => (
             <CardMotion
               key={ms.id}
-              styling='bg-white rounded-xl border border-gray-200 p-5'
+              styling='bg-white rounded-xl border border-slate-200 p-5'
             >
               <div
                 className=' px-2 flex flex-col justify-between items-center py-5 h-full'

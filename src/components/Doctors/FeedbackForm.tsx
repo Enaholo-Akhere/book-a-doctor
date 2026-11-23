@@ -79,7 +79,7 @@ const FeedbackForm = ({ doctorId }: { doctorId: string }) => {
                   className={`${
                     index <= ((field.value && hover) || hover)
                       ? 'text-yellowColor'
-                      : 'text-gray-400'
+                      : 'text-slate-400'
                   } bg-transparent border-none outline-none text-[22px] cursor-pointer`}
                 >
                   <AiFillStar />
@@ -100,7 +100,7 @@ const FeedbackForm = ({ doctorId }: { doctorId: string }) => {
         </h3>
         <textarea
           {...register('reviewText')}
-          className='border border-solid border-[#0066FF34] focus:outline outline-primaryColor w-full px-4 py-3 rounded-md'
+          className='border border-solid border-primary-200 focus:outline outline-primaryColor w-full px-4 py-3 rounded-md'
           rows={5}
           placeholder='Write your review here'
         />

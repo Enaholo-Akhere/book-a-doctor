@@ -113,16 +113,16 @@ const DoctorDashboard = () => {
   const approved = doctor.isApproved === 'approved';
 
   return (
-    <div className='min-h-[calc(100vh-80px)] bg-gray-50/70'>
+    <div className='min-h-[calc(100vh-80px)] bg-slate-50/70'>
       <div className='mx-auto max-w-[1280px] px-4 py-6 sm:px-6 lg:py-10'>
         <div className='lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-8'>
           {/* Sidebar (desktop) */}
           <aside className='hidden lg:block'>
             <div className='sticky top-24 space-y-4'>
-              <div className='rounded-2xl border border-gray-100 bg-white p-5 text-center'>
+              <div className='rounded-2xl border border-slate-100 bg-white p-5 text-center'>
                 <Avatar src={doctor.photo?.imageUrl} name={doctor.name} size={72} className='mx-auto ring-4 ring-primaryColor/10' />
                 <p className='mt-3 truncate font-semibold text-headingColor'>{doctor.name}</p>
-                <p className='truncate text-sm capitalize text-gray-500'>{doctor.specialization || 'Specialization not set'}</p>
+                <p className='truncate text-sm capitalize text-slate-500'>{doctor.specialization || 'Specialization not set'}</p>
                 <div className='mt-3 flex justify-center'>
                   {approved ? (
                     <span className='inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700'>
@@ -141,7 +141,7 @@ const DoctorDashboard = () => {
                 )}
               </div>
 
-              <nav aria-label='Dashboard' className='rounded-2xl border border-gray-100 bg-white p-2'>
+              <nav aria-label='Dashboard' className='rounded-2xl border border-slate-100 bg-white p-2'>
                 {TABS.map(({ key, label, icon: Icon }) => (
                   <button
                     key={key}
@@ -149,7 +149,7 @@ const DoctorDashboard = () => {
                     onClick={() => goTo(key)}
                     aria-current={tab === key ? 'page' : undefined}
                     className={`flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
-                      tab === key ? 'bg-primaryColor text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-headingColor'
+                      tab === key ? 'bg-primaryColor text-white shadow-sm' : 'text-slate-600 hover:bg-slate-50 hover:text-headingColor'
                     }`}
                   >
                     <Icon size={18} />
@@ -169,18 +169,18 @@ const DoctorDashboard = () => {
                 <button
                   type='button'
                   onClick={openChatList}
-                  className='flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-600 transition hover:bg-gray-50 hover:text-headingColor'
+                  className='flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-headingColor'
                 >
                   <MessageCircle size={18} />
                   <span className='flex-1 text-left'>Messages</span>
                   {unread > 0 && <span className='rounded-full bg-red-500 px-2 py-0.5 text-xs font-semibold tabular-nums text-white'>{unread}</span>}
                 </button>
-                <div className='my-2 h-px bg-gray-100' />
+                <div className='my-2 h-px bg-slate-100' />
                 <button
                   type='button'
                   onClick={handleLogout}
                   disabled={isLoggingOut}
-                  className='flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-600 transition hover:bg-red-50 hover:text-red-600'
+                  className='flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-red-50 hover:text-red-600'
                 >
                   <LogOut size={18} />
                   {isLoggingOut ? 'Signing out…' : 'Sign out'}
@@ -195,11 +195,11 @@ const DoctorDashboard = () => {
               <Avatar src={doctor.photo?.imageUrl} name={doctor.name} size={44} />
               <div className='min-w-0 flex-1'>
                 <p className='truncate font-semibold text-headingColor'>{doctor.name}</p>
-                <p className='truncate text-sm capitalize text-gray-500'>{doctor.specialization || 'Specialization not set'}</p>
+                <p className='truncate text-sm capitalize text-slate-500'>{doctor.specialization || 'Specialization not set'}</p>
               </div>
               {approved ? <BadgeCheck size={20} className='text-emerald-600' aria-label='Verified' /> : <Clock3 size={20} className='text-amber-600' aria-label='Pending approval' />}
             </div>
-            <nav aria-label='Dashboard' className='mb-6 grid grid-cols-6 gap-1 rounded-2xl border border-gray-100 bg-white p-1 lg:hidden'>
+            <nav aria-label='Dashboard' className='mb-6 grid grid-cols-6 gap-1 rounded-2xl border border-slate-100 bg-white p-1 lg:hidden'>
               {TABS.map(({ key, short, icon: Icon }) => (
                 <button
                   key={key}
@@ -207,7 +207,7 @@ const DoctorDashboard = () => {
                   onClick={() => goTo(key)}
                   aria-current={tab === key ? 'page' : undefined}
                   className={`relative flex cursor-pointer flex-col items-center gap-1 rounded-xl px-0.5 py-2 text-[11px] font-medium transition sm:text-xs ${
-                    tab === key ? 'bg-primaryColor text-white' : 'text-gray-500 hover:bg-gray-50'
+                    tab === key ? 'bg-primaryColor text-white' : 'text-slate-500 hover:bg-slate-50'
                   }`}
                 >
                   <Icon size={18} />
@@ -225,7 +225,7 @@ const DoctorDashboard = () => {
             {tab !== 'overview' && (
               <header className='mb-6'>
                 <h1 className='text-2xl font-semibold text-headingColor sm:text-[28px]'>{heading.title}</h1>
-                <p className='mt-1 text-sm text-gray-500'>{heading.subtitle}</p>
+                <p className='mt-1 text-sm text-slate-500'>{heading.subtitle}</p>
               </header>
             )}
 
