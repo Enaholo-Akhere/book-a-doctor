@@ -23,7 +23,7 @@ const Feedback = ({ doctorData }: { doctorData: doctorsInterface }) => {
           All reviews {reviews.length}
         </h4>
         {reviews?.map((rev) => (
-          <div className='flex justify-between gap-10 mb-[30px] '>
+          <div key={rev._id} className='flex justify-between gap-10 mb-[30px] '>
             <div className='flex gap-3'>
               <figure className='w-10 h-10 rounded-full'>
                 <img
