@@ -29,6 +29,9 @@ const CallProvider = ({ children }: { children: ReactNode }) => {
       endCall: engine.endCall,
       toggleMute: engine.toggleMute,
       toggleCamera: engine.toggleCamera,
+      requestRecording: engine.requestRecording,
+      answerRecording: engine.answerRecording,
+      stopRecording: engine.stopRecording,
     }),
     [state, engine]
   );

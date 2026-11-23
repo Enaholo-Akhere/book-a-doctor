@@ -4,7 +4,7 @@ import { user } from '@/types/users';
 export const BLOOD_TYPES = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] as const;
 export const GENOTYPES = ['AA', 'AS', 'AC', 'SS', 'SC', 'CC'] as const;
 
-export type DashboardTab = 'overview' | 'appointments' | 'health' | 'settings';
+export type DashboardTab = 'overview' | 'appointments' | 'health' | 'records' | 'settings';
 
 export const ageFrom = (dateOfBirth?: string): number | null => {
   if (!dateOfBirth) return null;

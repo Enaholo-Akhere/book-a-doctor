@@ -7,6 +7,7 @@ import {
   CalendarDays,
   Clock3,
   ExternalLink,
+  FileText,
   LayoutDashboard,
   LogOut,
   MessageCircle,
@@ -32,12 +33,15 @@ import Patients from './Patients';
 import Reviews from './Reviews';
 import Profile from './Profile';
 import PatientDrawer from './PatientDrawer';
+import Records from './Records';
+import { useConsultations } from '@/Hook/useConsultations';
 import { DoctorTab, patientsFrom } from './doctorUtils';
 
 const TABS: { key: DoctorTab; label: string; short: string; icon: typeof LayoutDashboard }[] = [
   { key: 'overview', label: 'Overview', short: 'Home', icon: LayoutDashboard },
   { key: 'appointments', label: 'Appointments', short: 'Bookings', icon: CalendarDays },
   { key: 'patients', label: 'Patients', short: 'Patients', icon: Users },
+  { key: 'records', label: 'Consultation records', short: 'Records', icon: FileText },
   { key: 'reviews', label: 'Reviews', short: 'Reviews', icon: Star },
   { key: 'profile', label: 'Profile & settings', short: 'Profile', icon: UserCog },
 ];
@@ -46,6 +50,7 @@ const TITLES: Record<DoctorTab, { title: string; subtitle: string }> = {
   overview: { title: 'Dashboard', subtitle: '' },
   appointments: { title: 'Appointments', subtitle: 'Review requests and manage your bookings' },
   patients: { title: 'Patients', subtitle: 'Everyone who has booked you, with their health summary' },
+  records: { title: 'Consultation records', subtitle: 'Review AI-drafted summaries of recorded calls' },
   reviews: { title: 'Reviews', subtitle: 'Feedback from your patients' },
   profile: { title: 'Profile & settings', subtitle: 'Your public profile, availability and account' },
 };
@@ -79,6 +84,8 @@ const DoctorDashboard = () => {
   const patients = useMemo(() => patientsFrom(doctor?.appointments), [doctor]);
   const selectedPatient = patients.find((p) => p.patient._id === patientId) ?? null;
   const pendingCount = doctor?.appointments?.filter((a) => a.status === 'pending').length ?? 0;
+  const { data: records } = useConsultations();
+  const toReview = records?.filter((r) => r.status === 'pending_review').length ?? 0;
   const closeDrawer = useCallback(() => setPatientId(null), []);
 
   const goTo = (next: DoctorTab) => setParams(next === 'overview' ? {} : { tab: next });
@@ -152,6 +159,11 @@ const DoctorDashboard = () => {
                         {pendingCount}
                       </span>
                     )}
+                    {key === 'records' && toReview > 0 && (
+                      <span className={`rounded-full px-2 py-0.5 text-xs font-semibold tabular-nums ${tab === key ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800'}`}>
+                        {toReview}
+                      </span>
+                    )}
                   </button>
                 ))}
                 <button
@@ -187,7 +199,7 @@ const DoctorDashboard = () => {
               </div>
               {approved ? <BadgeCheck size={20} className='text-emerald-600' aria-label='Verified' /> : <Clock3 size={20} className='text-amber-600' aria-label='Pending approval' />}
             </div>
-            <nav aria-label='Dashboard' className='mb-6 grid grid-cols-5 gap-1 rounded-2xl border border-gray-100 bg-white p-1 lg:hidden'>
+            <nav aria-label='Dashboard' className='mb-6 grid grid-cols-6 gap-1 rounded-2xl border border-gray-100 bg-white p-1 lg:hidden'>
               {TABS.map(({ key, short, icon: Icon }) => (
                 <button
                   key={key}
@@ -202,6 +214,9 @@ const DoctorDashboard = () => {
                   {short}
                   {key === 'appointments' && pendingCount > 0 && (
                     <span className='absolute right-1.5 top-1 h-2 w-2 rounded-full bg-amber-500' aria-label={`${pendingCount} pending`} />
+                  )}
+                  {key === 'records' && toReview > 0 && (
+                    <span className='absolute right-1.5 top-1 h-2 w-2 rounded-full bg-amber-500' aria-label={`${toReview} to review`} />
                   )}
                 </button>
               ))}
@@ -226,6 +241,7 @@ const DoctorDashboard = () => {
             )}
             {tab === 'appointments' && <AppointmentsPanel appointments={doctor.appointments} onOpenPatient={setPatientId} />}
             {tab === 'patients' && <Patients appointments={doctor.appointments} onOpenPatient={setPatientId} />}
+            {tab === 'records' && <Records />}
             {tab === 'reviews' && <Reviews doctor={doctor} />}
             {tab === 'profile' && (
               <div className='space-y-6'>
