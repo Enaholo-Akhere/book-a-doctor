@@ -1,10 +1,11 @@
 import type { MetadataRoute } from 'next';
 import { BACKEND_ORIGIN, SITE_URL } from '@/constants/site';
+import { doctorPath } from '@/utils/doctorPath';
 
 // Rebuild at most once a day so newly approved doctors get listed.
 export const revalidate = 86400;
 
-type DoctorSummary = { _id: string; isApproved?: string; updatedAt?: string };
+type DoctorSummary = { _id: string; slug?: string; isApproved?: string; updatedAt?: string };
 
 /** Approved doctors' profile pages. Falls back to none if the API is unreachable. */
 const doctorEntries = async (): Promise<MetadataRoute.Sitemap> => {
@@ -19,7 +20,7 @@ const doctorEntries = async (): Promise<MetadataRoute.Sitemap> => {
     return (data ?? [])
       .filter((d) => d.isApproved === 'approved')
       .map((d) => ({
-        url: `${SITE_URL}/doctor/${d._id}`,
+        url: `${SITE_URL}${doctorPath(d)}`,
         lastModified: d.updatedAt ? new Date(d.updatedAt) : undefined,
         changeFrequency: 'weekly',
         priority: 0.7,

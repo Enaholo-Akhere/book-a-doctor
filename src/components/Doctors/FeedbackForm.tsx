@@ -39,8 +39,10 @@ const FeedbackForm = ({ doctorId }: { doctorId: string }) => {
         onSuccess: () => {
           toast.success('Review submitted successfully');
           reset();
+          // The profile is cached under its URL key (slug or id), not
+          // necessarily doctorId, so refresh every cached profile.
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEYS.DOCTOR_BY_ID, doctorId],
+            queryKey: [QUERY_KEYS.DOCTOR_BY_ID],
           });
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEYS.ALL_DOCTORS],

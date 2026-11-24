@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { doctorPath } from '@/utils/doctorPath';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
@@ -135,7 +136,7 @@ const DoctorDashboard = () => {
                   )}
                 </div>
                 {approved && (
-                  <Link href={`/doctor/${doctor._id}`} className='mt-3 inline-flex items-center gap-1 text-xs font-medium text-primaryColor hover:underline'>
+                  <Link href={doctorPath(doctor)} className='mt-3 inline-flex items-center gap-1 text-xs font-medium text-primaryColor hover:underline'>
                     View public profile <ExternalLink size={12} />
                   </Link>
                 )}

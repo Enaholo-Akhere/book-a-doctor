@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { doctorPath } from '@/utils/doctorPath';
 import {
   Activity,
   ArrowRight,
@@ -224,7 +225,7 @@ const Overview = ({ user, onNavigate, onOpenAppointment }: OverviewProps) => {
                   <Avatar src={doctor.photo?.imageUrl} name={doctor.name} size={44} />
                   <div className='min-w-0 flex-1'>
                     <Link
-                      href={`/doctor/${doctor._id}`}
+                      href={doctorPath(doctor)}
                       className='block truncate text-sm font-semibold text-headingColor hover:text-primaryColor'
                     >
                       {doctor.name}

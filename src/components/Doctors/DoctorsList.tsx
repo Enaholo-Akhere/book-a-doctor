@@ -5,6 +5,7 @@ import Loading from '../Loader';
 import Error from '../Error';
 import { handleAxiosError } from '@/utils/axiosError';
 import { AxiosError } from 'axios';
+import { doctorPath } from '@/utils/doctorPath';
 
 const DoctorsList = ({
   doctorListDetails,
@@ -23,8 +24,8 @@ const DoctorsList = ({
 
   const { isLoading, isError, data, error } = doctorListDetails;
 
-  const handleUrlPath = (id: string) => {
-    return pn ? `/doctor/${id}` : url;
+  const handleUrlPath = (doctor: doctorsInterface) => {
+    return pn ? doctorPath(doctor) : url;
   };
 
   return (
@@ -51,7 +52,7 @@ const DoctorsList = ({
             <div key={doctor._id} data-aos='fade-up' data-aos-delay='200'>
               <DoctorCard
                 doctor={doctor}
-                url={handleUrlPath(doctor._id)}
+                url={handleUrlPath(doctor)}
               />
             </div>
           );

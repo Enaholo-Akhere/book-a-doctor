@@ -16,8 +16,9 @@ const starIcon: string = starIconAsset.src;
 
 const DoctorDetails = ({ initialDoctor }: { initialDoctor?: DoctorResponse }) => {
   const [tab, setTab] = useState<string>('about');
-  const { id } = useParams<{ id: string }>();
-  const { isLoading, data, isError, error } = useGetDoctorById(id || '', initialDoctor);
+  // An id or a slug; the API accepts either.
+  const { slug } = useParams<{ slug: string }>();
+  const { isLoading, data, isError, error } = useGetDoctorById(slug || '', initialDoctor);
 
   const doctorData: doctorsInterface | undefined = data?.data;
 
