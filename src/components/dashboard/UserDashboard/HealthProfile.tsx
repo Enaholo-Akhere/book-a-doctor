@@ -113,13 +113,17 @@ const HealthProfile = ({ user }: { user: user }) => {
       <div className='flex items-start gap-3 rounded-2xl border border-primaryColor/20 bg-primaryColor/5 px-4 py-3 text-sm text-slate-600'>
         <Lock size={16} className='mt-0.5 shrink-0 text-primaryColor' />
         <p>
-          Only you and the doctors you book can see this information. Keeping it accurate helps them give you safe,
-          informed care.
+          Only you and the doctors you book can see this information. Keeping it accurate helps them
+          give you safe, informed care.
         </p>
       </div>
 
       <Card>
-        <CardHeader title='Vitals & body' description='Basic measurements and blood details' icon={<Ruler size={18} />} />
+        <CardHeader
+          title='Vitals & body'
+          description='Basic measurements and blood details'
+          icon={<Ruler size={18} />}
+        />
         <div className='grid gap-4 px-5 pb-5 sm:grid-cols-2 sm:px-6 lg:grid-cols-3'>
           <Field
             label='Date of birth'
@@ -136,10 +140,26 @@ const HealthProfile = ({ user }: { user: user }) => {
             />
           </Field>
           <Field label='Height (cm)' htmlFor='height' error={errors.heightCm?.message}>
-            <input id='height' type='number' inputMode='decimal' step='0.1' placeholder='e.g. 172' {...register('heightCm')} className={fieldClass} />
+            <input
+              id='height'
+              type='number'
+              inputMode='decimal'
+              step='0.1'
+              placeholder='e.g. 172'
+              {...register('heightCm')}
+              className={fieldClass}
+            />
           </Field>
           <Field label='Weight (kg)' htmlFor='weight' error={errors.weightKg?.message}>
-            <input id='weight' type='number' inputMode='decimal' step='0.1' placeholder='e.g. 68' {...register('weightKg')} className={fieldClass} />
+            <input
+              id='weight'
+              type='number'
+              inputMode='decimal'
+              step='0.1'
+              placeholder='e.g. 68'
+              {...register('weightKg')}
+              className={fieldClass}
+            />
           </Field>
           <Field label='Blood group' htmlFor='blood'>
             <select id='blood' {...register('bloodType')} className={fieldClass}>
@@ -166,7 +186,9 @@ const HealthProfile = ({ user }: { user: user }) => {
             <div className='flex h-[46px] items-center gap-2 rounded-xl bg-slate-50 px-3.5'>
               {bmi ? (
                 <>
-                  <span className='text-lg font-semibold text-headingColor tabular-nums'>{bmi.value}</span>
+                  <span className='text-lg font-semibold text-headingColor tabular-nums'>
+                    {bmi.value}
+                  </span>
                   <Badge tone={bmi.tone}>{bmi.label}</Badge>
                 </>
               ) : (
@@ -242,27 +264,70 @@ const HealthProfile = ({ user }: { user: user }) => {
         />
         <div className='grid gap-4 px-5 pb-5 sm:grid-cols-2 sm:px-6 lg:grid-cols-3'>
           <Field label='Full name' htmlFor='ec-name' error={errors.emergencyName?.message}>
-            <input id='ec-name' autoComplete='off' placeholder='e.g. Jane Doe' {...register('emergencyName')} className={fieldClass} />
+            <input
+              id='ec-name'
+              autoComplete='off'
+              placeholder='e.g. Jane Doe'
+              {...register('emergencyName')}
+              className={fieldClass}
+            />
           </Field>
-          <Field label='Relationship' htmlFor='ec-rel' error={errors.emergencyRelationship?.message}>
-            <input id='ec-rel' placeholder='e.g. Sister' {...register('emergencyRelationship')} className={fieldClass} />
+          <Field
+            label='Relationship'
+            htmlFor='ec-rel'
+            error={errors.emergencyRelationship?.message}
+          >
+            <input
+              id='ec-rel'
+              placeholder='e.g. Sister'
+              {...register('emergencyRelationship')}
+              className={fieldClass}
+            />
           </Field>
           <Field label='Phone number' htmlFor='ec-phone' error={errors.emergencyPhone?.message}>
-            <input id='ec-phone' type='tel' placeholder='+2349012345678' {...register('emergencyPhone')} className={fieldClass} />
+            <input
+              id='ec-phone'
+              type='tel'
+              placeholder='+2349012345678'
+              {...register('emergencyPhone')}
+              className={fieldClass}
+            />
           </Field>
-          <Field label='Home address' htmlFor='address' error={errors.address?.message} className='sm:col-span-2 lg:col-span-3'>
-            <input id='address' autoComplete='street-address' placeholder='Street, city, state, country' {...register('address')} className={fieldClass} />
+          <Field
+            label='Home address'
+            htmlFor='address'
+            error={errors.address?.message}
+            className='sm:col-span-2 lg:col-span-3'
+          >
+            <input
+              id='address'
+              autoComplete='street-address'
+              placeholder='Street, city, state, country'
+              {...register('address')}
+              className={fieldClass}
+            />
           </Field>
         </div>
       </Card>
 
-      <div className='sticky bottom-3 z-10 flex flex-col-reverse gap-2 rounded-2xl border border-slate-100 bg-white/95 p-3 shadow-lg backdrop-blur sm:flex-row sm:items-center sm:justify-between'>
-        <p className='px-1 text-sm text-slate-500'>{isDirty ? 'You have unsaved changes.' : 'All changes saved.'}</p>
+      <div className='sticky bottom-3 z-0 flex flex-col-reverse gap-2 rounded-2xl border border-slate-100 bg-white/95 p-3 shadow-lg backdrop-blur sm:flex-row sm:items-center sm:justify-between'>
+        <p className='px-1 text-sm text-slate-500'>
+          {isDirty ? 'You have unsaved changes.' : 'All changes saved.'}
+        </p>
         <div className='flex gap-2'>
-          <button type='button' disabled={!isDirty || isPending} onClick={() => reset(defaults)} className={`${secondaryBtn} flex-1 sm:flex-none`}>
+          <button
+            type='button'
+            disabled={!isDirty || isPending}
+            onClick={() => reset(defaults)}
+            className={`${secondaryBtn} flex-1 sm:flex-none`}
+          >
             Discard
           </button>
-          <button type='submit' disabled={!isDirty || isPending} className={`${primaryBtn} flex-1 sm:flex-none`}>
+          <button
+            type='submit'
+            disabled={!isDirty || isPending}
+            className={`${primaryBtn} flex-1 sm:flex-none`}
+          >
             {isPending ? 'Saving…' : 'Save health profile'}
           </button>
         </div>
@@ -288,12 +353,22 @@ const TAG_TONES = {
   teal: 'bg-primaryColor/10 text-primaryColor',
 };
 
-const TagInput = ({ id, label, icon, placeholder, value, onChange, suggestions = [], tone }: TagInputProps) => {
+const TagInput = ({
+  id,
+  label,
+  icon,
+  placeholder,
+  value,
+  onChange,
+  suggestions = [],
+  tone,
+}: TagInputProps) => {
   const [draft, setDraft] = useState('');
 
   const add = (raw: string) => {
     const item = raw.trim().replace(/,$/, '').slice(0, 60);
-    if (!item || value.some((v) => v.toLowerCase() === item.toLowerCase()) || value.length >= 30) return;
+    if (!item || value.some((v) => v.toLowerCase() === item.toLowerCase()) || value.length >= 30)
+      return;
     onChange([...value, item]);
   };
 
@@ -311,13 +386,19 @@ const TagInput = ({ id, label, icon, placeholder, value, onChange, suggestions =
 
   return (
     <div className='min-w-0'>
-      <label htmlFor={id} className='mb-1.5 flex items-center gap-1.5 text-[13px] font-medium text-slate-700'>
+      <label
+        htmlFor={id}
+        className='mb-1.5 flex items-center gap-1.5 text-[13px] font-medium text-slate-700'
+      >
         {icon}
         {label}
       </label>
       <div className='flex min-h-[46px] flex-wrap items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-2.5 py-2 transition focus-within:border-primaryColor focus-within:ring-4 focus-within:ring-primaryColor/10'>
         {value.map((item) => (
-          <span key={item} className={`inline-flex max-w-full items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium ${TAG_TONES[tone]}`}>
+          <span
+            key={item}
+            className={`inline-flex max-w-full items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium ${TAG_TONES[tone]}`}
+          >
             <span className='truncate'>{item}</span>
             <button
               type='button'

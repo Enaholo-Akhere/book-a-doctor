@@ -2,7 +2,15 @@ import { useEffect, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
-import { Briefcase, CalendarClock, Camera, GraduationCap, Plus, Trash2, UserRound } from 'lucide-react';
+import {
+  Briefcase,
+  CalendarClock,
+  Camera,
+  GraduationCap,
+  Plus,
+  Trash2,
+  UserRound,
+} from 'lucide-react';
 import avatarAsset from '@/assets/images/upload_avatar.png';
 import { editDoctorSchema, editDoctorType } from '@/utils/authSchema';
 import { queryClient } from '@/library/provider/reactQuery';
@@ -32,8 +40,10 @@ const SPECIALIZATIONS = [
 
 const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
 
-const toDate = (v: unknown) => (v instanceof Date ? v.toISOString().split('T')[0] : String(v ?? '').slice(0, 10));
-const toTime = (v: unknown) => (v instanceof Date ? v.toISOString().substring(11, 16) : String(v ?? ''));
+const toDate = (v: unknown) =>
+  v instanceof Date ? v.toISOString().split('T')[0] : String(v ?? '').slice(0, 10);
+const toTime = (v: unknown) =>
+  v instanceof Date ? v.toISOString().substring(11, 16) : String(v ?? '');
 
 const defaultsFrom = (d: doctorsInterface): editDoctorType => ({
   name: d.name ?? '',
@@ -125,18 +135,27 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
     );
   };
 
-
   return (
     <form onSubmit={handleSubmit(submitHandler)} noValidate className='space-y-6'>
       {/* Public profile */}
       <Card>
-        <CardHeader title='Public profile' description='What patients see when they find you' icon={<UserRound size={18} />} />
+        <CardHeader
+          title='Public profile'
+          description='What patients see when they find you'
+          icon={<UserRound size={18} />}
+        />
         <div className='px-5 pb-5 sm:px-6'>
           <div className='flex flex-wrap items-center gap-4 rounded-xl bg-slate-50 p-4'>
-            <img src={preview || avatar} alt='Profile' className='h-16 w-16 rounded-full object-cover ring-4 ring-white' />
+            <img
+              src={preview || avatar}
+              alt='Profile'
+              className='h-16 w-16 rounded-full object-cover ring-4 ring-white'
+            />
             <div className='min-w-[10rem] flex-1'>
               <p className='text-sm font-semibold text-headingColor'>Profile photo</p>
-              <p className='text-xs text-slate-500'>A clear, professional headshot. JPG, PNG, WEBP or HEIC, up to 5 MB.</p>
+              <p className='text-xs text-slate-500'>
+                A clear, professional headshot. JPG, PNG, WEBP or HEIC, up to 5 MB.
+              </p>
             </div>
             <Controller
               name='photo'
@@ -169,11 +188,28 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
             <Field label='Full name' htmlFor='name' error={errors.name?.message}>
               <input id='name' autoComplete='name' {...register('name')} className={fieldClass} />
             </Field>
-            <Field label='Email address' htmlFor='email' hint='Contact support to change your email.'>
-              <input id='email' type='email' disabled {...register('email')} className={fieldClass} />
+            <Field
+              label='Email address'
+              htmlFor='email'
+              hint='Contact support to change your email.'
+            >
+              <input
+                id='email'
+                type='email'
+                disabled
+                {...register('email')}
+                className={fieldClass}
+              />
             </Field>
             <Field label='Phone number' htmlFor='phone' error={errors.phone?.message}>
-              <input id='phone' type='tel' autoComplete='tel' placeholder='+2349012345678' {...register('phone')} className={fieldClass} />
+              <input
+                id='phone'
+                type='tel'
+                autoComplete='tel'
+                placeholder='+2349012345678'
+                {...register('phone')}
+                className={fieldClass}
+              />
             </Field>
             <Field label='Gender' htmlFor='gender' error={errors.gender?.message}>
               <select id='gender' {...register('gender')} className={fieldClass}>
@@ -183,7 +219,11 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
                 <option value='other'>Other</option>
               </select>
             </Field>
-            <Field label='Specialization' htmlFor='specialization' error={errors.specialization?.message}>
+            <Field
+              label='Specialization'
+              htmlFor='specialization'
+              error={errors.specialization?.message}
+            >
               <select id='specialization' {...register('specialization')} className={fieldClass}>
                 <option value=''>Select specialization</option>
                 {SPECIALIZATIONS.map(([value, label]) => (
@@ -193,10 +233,26 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
                 ))}
               </select>
             </Field>
-            <Field label='Consultation fee (USD)' htmlFor='fee' error={errors.ticketPrice?.message} hint='Patients pay the equivalent in their local currency.'>
+            <Field
+              label='Consultation fee (USD)'
+              htmlFor='fee'
+              error={errors.ticketPrice?.message}
+              hint='Patients pay the equivalent in their local currency.'
+            >
               <div className='relative'>
-                <span className='pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400'>$</span>
-                <input id='fee' type='number' inputMode='decimal' min='0' step='1' placeholder='0' {...register('ticketPrice')} className={`${fieldClass} pl-7`} />
+                <span className='pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400'>
+                  $
+                </span>
+                <input
+                  id='fee'
+                  type='number'
+                  inputMode='decimal'
+                  min='0'
+                  step='1'
+                  placeholder='0'
+                  {...register('ticketPrice')}
+                  className={`${fieldClass} pl-7`}
+                />
               </div>
             </Field>
             <Field
@@ -208,8 +264,20 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
             >
               <input id='bio' maxLength={50} {...register('bio')} className={fieldClass} />
             </Field>
-            <Field label='About you' htmlFor='about' className='sm:col-span-2' error={errors.about?.message} hint={`${aboutLength}/1500 · Your approach, areas of interest and languages spoken.`}>
-              <textarea id='about' rows={5} maxLength={1500} {...register('about')} className={`${fieldClass} resize-y`} />
+            <Field
+              label='About you'
+              htmlFor='about'
+              className='sm:col-span-2'
+              error={errors.about?.message}
+              hint={`${aboutLength}/1500 · Your approach, areas of interest and languages spoken.`}
+            >
+              <textarea
+                id='about'
+                rows={5}
+                maxLength={1500}
+                {...register('about')}
+                className={`${fieldClass} resize-y`}
+              />
             </Field>
           </div>
         </div>
@@ -222,16 +290,34 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
           description='Patients can only book you during these hours'
           icon={<CalendarClock size={18} />}
           action={
-            <button type='button' onClick={() => timeSlots.append({ day: '', startingTime: '09:00', endingTime: '17:00' })} className={`${secondaryBtn} py-2`}>
+            <button
+              type='button'
+              onClick={() =>
+                timeSlots.append({ day: '', startingTime: '09:00', endingTime: '17:00' })
+              }
+              className={`${secondaryBtn} py-2`}
+            >
               <Plus size={15} /> Add hours
             </button>
           }
         />
         <div className='space-y-3 px-5 pb-5 sm:px-6'>
-          {timeSlots.fields.length === 0 && <p className='rounded-xl bg-slate-50 p-4 text-sm text-slate-500'>No hours yet. Add the days and times you consult.</p>}
+          {timeSlots.fields.length === 0 && (
+            <p className='rounded-xl bg-slate-50 p-4 text-sm text-slate-500'>
+              No hours yet. Add the days and times you consult.
+            </p>
+          )}
           {timeSlots.fields.map((f, i) => (
-            <div key={f.id} className='grid grid-cols-[1fr_auto] items-start gap-3 rounded-xl border border-slate-100 p-3 sm:grid-cols-[1.2fr_1fr_1fr_auto]'>
-              <Field label='Day' htmlFor={`day-${i}`} error={errors.timeSlots?.[i]?.day?.message} className='col-span-1'>
+            <div
+              key={f.id}
+              className='grid grid-cols-[1fr_auto] items-start gap-3 rounded-xl border border-slate-100 p-3 sm:grid-cols-[1.2fr_1fr_1fr_auto]'
+            >
+              <Field
+                label='Day'
+                htmlFor={`day-${i}`}
+                error={errors.timeSlots?.[i]?.day?.message}
+                className='col-span-1'
+              >
                 <select id={`day-${i}`} {...register(`timeSlots.${i}.day`)} className={fieldClass}>
                   <option value=''>Select day</option>
                   {DAYS.map((d) => (
@@ -241,12 +327,34 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
                   ))}
                 </select>
               </Field>
-              <RemoveButton onClick={() => timeSlots.remove(i)} label='Remove hours' className='sm:order-last' />
-              <Field label='From' htmlFor={`start-${i}`} error={errors.timeSlots?.[i]?.startingTime?.message}>
-                <input id={`start-${i}`} type='time' {...register(`timeSlots.${i}.startingTime`)} className={fieldClass} />
+              <RemoveButton
+                onClick={() => timeSlots.remove(i)}
+                label='Remove hours'
+                className='sm:order-last'
+              />
+              <Field
+                label='From'
+                htmlFor={`start-${i}`}
+                error={errors.timeSlots?.[i]?.startingTime?.message}
+              >
+                <input
+                  id={`start-${i}`}
+                  type='time'
+                  {...register(`timeSlots.${i}.startingTime`)}
+                  className={fieldClass}
+                />
               </Field>
-              <Field label='To' htmlFor={`end-${i}`} error={errors.timeSlots?.[i]?.endingTime?.message}>
-                <input id={`end-${i}`} type='time' {...register(`timeSlots.${i}.endingTime`)} className={fieldClass} />
+              <Field
+                label='To'
+                htmlFor={`end-${i}`}
+                error={errors.timeSlots?.[i]?.endingTime?.message}
+              >
+                <input
+                  id={`end-${i}`}
+                  type='time'
+                  {...register(`timeSlots.${i}.endingTime`)}
+                  className={fieldClass}
+                />
               </Field>
             </div>
           ))}
@@ -260,31 +368,83 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
           description='Degrees, fellowships and certifications'
           icon={<GraduationCap size={18} />}
           action={
-            <button type='button' onClick={() => qualifications.append({ startDate: '', endDate: '', degree: '', university: '' })} className={`${secondaryBtn} py-2`}>
+            <button
+              type='button'
+              onClick={() =>
+                qualifications.append({ startDate: '', endDate: '', degree: '', university: '' })
+              }
+              className={`${secondaryBtn} py-2`}
+            >
               <Plus size={15} /> Add
             </button>
           }
         />
         <div className='space-y-3 px-5 pb-5 sm:px-6'>
-          {qualifications.fields.length === 0 && <p className='rounded-xl bg-slate-50 p-4 text-sm text-slate-500'>Add at least one qualification. It's required for approval.</p>}
+          {qualifications.fields.length === 0 && (
+            <p className='rounded-xl bg-slate-50 p-4 text-sm text-slate-500'>
+              Add at least one qualification. It's required for approval.
+            </p>
+          )}
           {qualifications.fields.map((f, i) => (
             <div key={f.id} className='rounded-xl border border-slate-100 p-4'>
               <div className='mb-3 flex items-center justify-between'>
-                <p className='text-xs font-semibold uppercase tracking-wide text-slate-400'>Qualification {i + 1}</p>
-                <RemoveButton onClick={() => qualifications.remove(i)} label='Remove qualification' className='!mt-0' />
+                <p className='text-xs font-semibold uppercase tracking-wide text-slate-400'>
+                  Qualification {i + 1}
+                </p>
+                <RemoveButton
+                  onClick={() => qualifications.remove(i)}
+                  label='Remove qualification'
+                  className='!mt-0'
+                />
               </div>
               <div className='grid gap-3 sm:grid-cols-2'>
-                <Field label='Degree / certificate' htmlFor={`deg-${i}`} error={errors.qualifications?.[i]?.degree?.message}>
-                  <input id={`deg-${i}`} placeholder='e.g. MBBS' {...register(`qualifications.${i}.degree`)} className={fieldClass} />
+                <Field
+                  label='Degree / certificate'
+                  htmlFor={`deg-${i}`}
+                  error={errors.qualifications?.[i]?.degree?.message}
+                >
+                  <input
+                    id={`deg-${i}`}
+                    placeholder='e.g. MBBS'
+                    {...register(`qualifications.${i}.degree`)}
+                    className={fieldClass}
+                  />
                 </Field>
-                <Field label='Institution' htmlFor={`uni-${i}`} error={errors.qualifications?.[i]?.university?.message}>
-                  <input id={`uni-${i}`} placeholder='e.g. University of Lagos' {...register(`qualifications.${i}.university`)} className={fieldClass} />
+                <Field
+                  label='Institution'
+                  htmlFor={`uni-${i}`}
+                  error={errors.qualifications?.[i]?.university?.message}
+                >
+                  <input
+                    id={`uni-${i}`}
+                    placeholder='e.g. University of Lagos'
+                    {...register(`qualifications.${i}.university`)}
+                    className={fieldClass}
+                  />
                 </Field>
-                <Field label='Start date' htmlFor={`qs-${i}`} error={errors.qualifications?.[i]?.startDate?.message}>
-                  <input id={`qs-${i}`} type='date' {...register(`qualifications.${i}.startDate`)} className={fieldClass} />
+                <Field
+                  label='Start date'
+                  htmlFor={`qs-${i}`}
+                  error={errors.qualifications?.[i]?.startDate?.message}
+                >
+                  <input
+                    id={`qs-${i}`}
+                    type='date'
+                    {...register(`qualifications.${i}.startDate`)}
+                    className={fieldClass}
+                  />
                 </Field>
-                <Field label='End date' htmlFor={`qe-${i}`} error={errors.qualifications?.[i]?.endDate?.message}>
-                  <input id={`qe-${i}`} type='date' {...register(`qualifications.${i}.endDate`)} className={fieldClass} />
+                <Field
+                  label='End date'
+                  htmlFor={`qe-${i}`}
+                  error={errors.qualifications?.[i]?.endDate?.message}
+                >
+                  <input
+                    id={`qe-${i}`}
+                    type='date'
+                    {...register(`qualifications.${i}.endDate`)}
+                    className={fieldClass}
+                  />
                 </Field>
               </div>
             </div>
@@ -299,31 +459,83 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
           description='Hospitals and clinics you have worked at'
           icon={<Briefcase size={18} />}
           action={
-            <button type='button' onClick={() => experiences.append({ startDate: '', endDate: '', position: '', hospital: '' })} className={`${secondaryBtn} py-2`}>
+            <button
+              type='button'
+              onClick={() =>
+                experiences.append({ startDate: '', endDate: '', position: '', hospital: '' })
+              }
+              className={`${secondaryBtn} py-2`}
+            >
               <Plus size={15} /> Add
             </button>
           }
         />
         <div className='space-y-3 px-5 pb-5 sm:px-6'>
-          {experiences.fields.length === 0 && <p className='rounded-xl bg-slate-50 p-4 text-sm text-slate-500'>Add your work history so patients know your background.</p>}
+          {experiences.fields.length === 0 && (
+            <p className='rounded-xl bg-slate-50 p-4 text-sm text-slate-500'>
+              Add your work history so patients know your background.
+            </p>
+          )}
           {experiences.fields.map((f, i) => (
             <div key={f.id} className='rounded-xl border border-slate-100 p-4'>
               <div className='mb-3 flex items-center justify-between'>
-                <p className='text-xs font-semibold uppercase tracking-wide text-slate-400'>Role {i + 1}</p>
-                <RemoveButton onClick={() => experiences.remove(i)} label='Remove role' className='!mt-0' />
+                <p className='text-xs font-semibold uppercase tracking-wide text-slate-400'>
+                  Role {i + 1}
+                </p>
+                <RemoveButton
+                  onClick={() => experiences.remove(i)}
+                  label='Remove role'
+                  className='!mt-0'
+                />
               </div>
               <div className='grid gap-3 sm:grid-cols-2'>
-                <Field label='Position' htmlFor={`pos-${i}`} error={errors.experiences?.[i]?.position?.message}>
-                  <input id={`pos-${i}`} placeholder='e.g. Senior registrar' {...register(`experiences.${i}.position`)} className={fieldClass} />
+                <Field
+                  label='Position'
+                  htmlFor={`pos-${i}`}
+                  error={errors.experiences?.[i]?.position?.message}
+                >
+                  <input
+                    id={`pos-${i}`}
+                    placeholder='e.g. Senior registrar'
+                    {...register(`experiences.${i}.position`)}
+                    className={fieldClass}
+                  />
                 </Field>
-                <Field label='Hospital / clinic' htmlFor={`hos-${i}`} error={errors.experiences?.[i]?.hospital?.message}>
-                  <input id={`hos-${i}`} placeholder='e.g. Lagos University Teaching Hospital' {...register(`experiences.${i}.hospital`)} className={fieldClass} />
+                <Field
+                  label='Hospital / clinic'
+                  htmlFor={`hos-${i}`}
+                  error={errors.experiences?.[i]?.hospital?.message}
+                >
+                  <input
+                    id={`hos-${i}`}
+                    placeholder='e.g. Lagos University Teaching Hospital'
+                    {...register(`experiences.${i}.hospital`)}
+                    className={fieldClass}
+                  />
                 </Field>
-                <Field label='Start date' htmlFor={`es-${i}`} error={errors.experiences?.[i]?.startDate?.message}>
-                  <input id={`es-${i}`} type='date' {...register(`experiences.${i}.startDate`)} className={fieldClass} />
+                <Field
+                  label='Start date'
+                  htmlFor={`es-${i}`}
+                  error={errors.experiences?.[i]?.startDate?.message}
+                >
+                  <input
+                    id={`es-${i}`}
+                    type='date'
+                    {...register(`experiences.${i}.startDate`)}
+                    className={fieldClass}
+                  />
                 </Field>
-                <Field label='End date' htmlFor={`ee-${i}`} error={errors.experiences?.[i]?.endDate?.message}>
-                  <input id={`ee-${i}`} type='date' {...register(`experiences.${i}.endDate`)} className={fieldClass} />
+                <Field
+                  label='End date'
+                  htmlFor={`ee-${i}`}
+                  error={errors.experiences?.[i]?.endDate?.message}
+                >
+                  <input
+                    id={`ee-${i}`}
+                    type='date'
+                    {...register(`experiences.${i}.endDate`)}
+                    className={fieldClass}
+                  />
                 </Field>
               </div>
             </div>
@@ -331,9 +543,15 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
         </div>
       </Card>
 
-      <div className='sticky bottom-3 z-10 flex flex-col-reverse gap-2 rounded-2xl border border-slate-100 bg-white/95 p-3 shadow-lg backdrop-blur sm:flex-row sm:items-center sm:justify-between'>
+      <div className='sticky bottom-3 z-0 flex flex-col-reverse gap-2 rounded-2xl border border-slate-100 bg-white/95 p-3 shadow-lg backdrop-blur sm:flex-row sm:items-center sm:justify-between'>
         <p className='px-1 text-sm text-slate-500'>
-          {Object.keys(errors).length ? <span className='text-red-600'>Please fix the highlighted fields.</span> : isDirty ? 'You have unsaved changes.' : 'All changes saved.'}
+          {Object.keys(errors).length ? (
+            <span className='text-red-600'>Please fix the highlighted fields.</span>
+          ) : isDirty ? (
+            'You have unsaved changes.'
+          ) : (
+            'All changes saved.'
+          )}
         </p>
         <div className='flex gap-2'>
           <button
@@ -347,7 +565,11 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
           >
             Discard
           </button>
-          <button type='submit' disabled={!isDirty || isPending} className={`${primaryBtn} flex-1 sm:flex-none`}>
+          <button
+            type='submit'
+            disabled={!isDirty || isPending}
+            className={`${primaryBtn} flex-1 sm:flex-none`}
+          >
             {isPending ? 'Saving…' : 'Save profile'}
           </button>
         </div>
@@ -356,7 +578,15 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
   );
 };
 
-const RemoveButton = ({ onClick, label, className = '' }: { onClick: () => void; label: string; className?: string }) => (
+const RemoveButton = ({
+  onClick,
+  label,
+  className = '',
+}: {
+  onClick: () => void;
+  label: string;
+  className?: string;
+}) => (
   <button
     type='button'
     onClick={onClick}
