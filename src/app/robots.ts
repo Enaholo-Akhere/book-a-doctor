@@ -15,6 +15,7 @@ export default function robots(): MetadataRoute.Robots {
       disallow: [
         '/api/',
         '/dashboard/',
+        '/admin',
         '/users/',
         '/payment-success-st',
         '/payment-success-fl',

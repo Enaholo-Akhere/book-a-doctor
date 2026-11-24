@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   LogOut,
   MessageCircle,
+  ShieldCheck,
   Star,
   UserCog,
   Users,
@@ -35,6 +36,7 @@ import Reviews from './Reviews';
 import Profile from './Profile';
 import PatientDrawer from './PatientDrawer';
 import Records from './Records';
+import Verification from './Verification';
 import { useConsultations } from '@/Hook/useConsultations';
 import { DoctorTab, patientsFrom } from './doctorUtils';
 
@@ -44,6 +46,7 @@ const TABS: { key: DoctorTab; label: string; short: string; icon: typeof LayoutD
   { key: 'patients', label: 'Patients', short: 'Patients', icon: Users },
   { key: 'records', label: 'Consultation records', short: 'Records', icon: FileText },
   { key: 'reviews', label: 'Reviews', short: 'Reviews', icon: Star },
+  { key: 'verification', label: 'Verification', short: 'Verify', icon: ShieldCheck },
   { key: 'profile', label: 'Profile & settings', short: 'Profile', icon: UserCog },
 ];
 
@@ -53,6 +56,7 @@ const TITLES: Record<DoctorTab, { title: string; subtitle: string }> = {
   patients: { title: 'Patients', subtitle: 'Everyone who has booked you, with their health summary' },
   records: { title: 'Consultation records', subtitle: 'Review AI-drafted summaries of recorded calls' },
   reviews: { title: 'Reviews', subtitle: 'Feedback from your patients' },
+  verification: { title: 'Verification', subtitle: 'Documents we check before patients can find and book you' },
   profile: { title: 'Profile & settings', subtitle: 'Your public profile, availability and account' },
 };
 
@@ -130,9 +134,13 @@ const DoctorDashboard = () => {
                       <BadgeCheck size={13} /> Verified doctor
                     </span>
                   ) : (
-                    <span className='inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700'>
-                      <Clock3 size={13} /> Pending approval
-                    </span>
+                    <button
+                      type='button'
+                      onClick={() => goTo('verification')}
+                      className='inline-flex cursor-pointer items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700 hover:bg-amber-100'
+                    >
+                      <Clock3 size={13} /> {doctor.isApproved === 'cancelled' ? 'Not approved' : 'Pending approval'}
+                    </button>
                   )}
                 </div>
                 {approved && (
@@ -164,6 +172,9 @@ const DoctorDashboard = () => {
                       <span className={`rounded-full px-2 py-0.5 text-xs font-semibold tabular-nums ${tab === key ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800'}`}>
                         {toReview}
                       </span>
+                    )}
+                    {key === 'verification' && !approved && (
+                      <span className={`h-2 w-2 rounded-full ${tab === key ? 'bg-white' : 'bg-amber-500'}`} aria-label='Action needed' />
                     )}
                   </button>
                 ))}
@@ -200,7 +211,7 @@ const DoctorDashboard = () => {
               </div>
               {approved ? <BadgeCheck size={20} className='text-emerald-600' aria-label='Verified' /> : <Clock3 size={20} className='text-amber-600' aria-label='Pending approval' />}
             </div>
-            <nav aria-label='Dashboard' className='mb-6 grid grid-cols-6 gap-1 rounded-2xl border border-slate-100 bg-white p-1 lg:hidden'>
+            <nav aria-label='Dashboard' className='mb-6 grid grid-cols-7 gap-1 rounded-2xl border border-slate-100 bg-white p-1 lg:hidden'>
               {TABS.map(({ key, short, icon: Icon }) => (
                 <button
                   key={key}
@@ -218,6 +229,9 @@ const DoctorDashboard = () => {
                   )}
                   {key === 'records' && toReview > 0 && (
                     <span className='absolute right-1.5 top-1 h-2 w-2 rounded-full bg-amber-500' aria-label={`${toReview} to review`} />
+                  )}
+                  {key === 'verification' && !approved && (
+                    <span className='absolute right-1.5 top-1 h-2 w-2 rounded-full bg-amber-500' aria-label='Action needed' />
                   )}
                 </button>
               ))}
@@ -244,6 +258,7 @@ const DoctorDashboard = () => {
             {tab === 'patients' && <Patients appointments={doctor.appointments} onOpenPatient={setPatientId} />}
             {tab === 'records' && <Records />}
             {tab === 'reviews' && <Reviews doctor={doctor} />}
+            {tab === 'verification' && <Verification />}
             {tab === 'profile' && (
               <div className='space-y-6'>
                 <Profile key={doctor._id} data={doctor} />

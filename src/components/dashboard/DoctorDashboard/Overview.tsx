@@ -18,7 +18,7 @@ import { doctorsInterface } from '@/types/doctors.ds';
 import { formatDate } from '@/utils/formatDate';
 import { useChatUIStore } from '@/store/chatUIStore';
 import { appointmentStats, greeting, newestFirst } from '../shared/healthUtils';
-import { Avatar, Badge, Card, CardHeader, EmptyState, StatTile, secondaryBtn } from '../shared/ui';
+import { Avatar, Badge, Card, CardHeader, EmptyState, StatTile, primaryBtn, secondaryBtn } from '../shared/ui';
 import StatusActions from './StatusActions';
 import BookingsChart from './BookingsChart';
 import {
@@ -108,15 +108,22 @@ const Overview = ({ doctor, onNavigate, onOpenPatient, updatedAt, onRefresh, isR
         <Card className='border-amber-200 bg-amber-50/60'>
           <div className='flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6'>
             <div>
-              <p className='font-semibold text-amber-900'>Your profile is under review</p>
+              <p className='font-semibold text-amber-900'>
+                {doctor.isApproved === 'cancelled' ? 'Your profile wasn’t approved yet' : 'Get verified to start seeing patients'}
+              </p>
               <p className='mt-1 text-sm text-amber-800'>
-                Patients can find and book you once an admin approves your profile, usually within 3 days. Completing every
-                item below speeds this up ({done} of {checklist.length} done).
+                Patients can find and book you once we’ve checked your ID, practising licence and medical degree. Upload them
+                in Verification. Completing your profile below helps too ({done} of {checklist.length} done).
               </p>
             </div>
-            <button type='button' onClick={() => onNavigate('profile')} className={`${secondaryBtn} shrink-0`}>
-              Complete profile
-            </button>
+            <div className='flex shrink-0 gap-2'>
+              <button type='button' onClick={() => onNavigate('verification')} className={primaryBtn}>
+                Upload documents
+              </button>
+              <button type='button' onClick={() => onNavigate('profile')} className={secondaryBtn}>
+                Complete profile
+              </button>
+            </div>
           </div>
         </Card>
       )}
