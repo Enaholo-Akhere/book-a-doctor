@@ -1,19 +1,14 @@
-import type { Metadata } from 'next';
-import { pageMetadata } from '@/constants/site';
-import DoctorDetails from '@/views/doctors/DoctorDetails';
+import { permanentRedirect } from 'next/navigation';
+import { fetchDoctor, isDoctorKey } from '@/library/api/server';
+import { doctorPath } from '@/utils/doctorPath';
 
-// Generic for now; Phase 2 renders the profile on the server and adds the
-// doctor's name and specialty here.
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+/**
+ * Old profile URL (/doctor/<id>), kept so existing links and bookmarks still
+ * work. Profiles now live at /doctors/<slug>.
+ */
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  return pageMetadata({
-    title: 'Doctor Profile',
-    description:
-      "View this doctor's specialty, qualifications, experience, availability and patient reviews, and book an online consultation on CareConnect.",
-    path: `/doctor/${id}`,
-  });
-}
-
-export default function Page() {
-  return <DoctorDetails />;
+  const doctor = isDoctorKey(id) ? await fetchDoctor(id) : undefined;
+  // Without the doctor's slug, /doctors/<id> still works and redirects on from there.
+  permanentRedirect(doctor ? doctorPath(doctor.data) : `/doctors/${encodeURIComponent(id)}`);
 }

@@ -10,13 +10,15 @@ import { useParams } from 'next/navigation';
 import Loading from '@/components/Loader';
 import Error from '@/components/Error';
 import { handleAxiosError } from '@/utils/axiosError';
+import type { DoctorResponse } from '@/library/api/server';
 
 const starIcon: string = starIconAsset.src;
 
-const DoctorDetails = () => {
+const DoctorDetails = ({ initialDoctor }: { initialDoctor?: DoctorResponse }) => {
   const [tab, setTab] = useState<string>('about');
-  const { id } = useParams<{ id: string }>();
-  const { isLoading, data, isError, error } = useGetDoctorById(id || '');
+  // An id or a slug; the API accepts either.
+  const { slug } = useParams<{ slug: string }>();
+  const { isLoading, data, isError, error } = useGetDoctorById(slug || '', initialDoctor);
 
   const doctorData: doctorsInterface | undefined = data?.data;
 
@@ -32,7 +34,7 @@ const DoctorDetails = () => {
                 <figure className='max-w-[200px] max-h-[200px] '>
                   <img
                     src={doctorData?.photo?.imageUrl}
-                    alt='find a doctor'
+                    alt={`${doctorData.name}, ${doctorData.specialization}`}
                     className='full'
                   />
                 </figure>
@@ -40,9 +42,9 @@ const DoctorDetails = () => {
                   <span className='bg-primary-50 text-primary-700 py-1 px-6 lg:py-2 lg:px-6 text-[12px] rounded leading-4 lg:text-[16px] lg:leading-7 font-semibold '>
                     {doctorData?.specialization}
                   </span>
-                  <h3 className='text-headingColor text-[22px] leading-9 mt-3 font-bold  '>
+                  <h1 className='text-headingColor text-[22px] leading-9 mt-3 font-bold  '>
                     {doctorData?.name}
-                  </h3>
+                  </h1>
                   <div className='flex items-center gap-[6px] '>
                     <span className='flex items-center gap-[6px] text-[14px] leading-5 lg:text-[16px] lg:leading-7 font-semibold text-headingColor '>
                       <img src={starIcon} alt='Doctors' />

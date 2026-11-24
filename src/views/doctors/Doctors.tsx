@@ -5,8 +5,9 @@ import Testimonial from '@/components/Testimonial';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
+import type { DoctorsResponse } from '@/library/api/server';
 
-const Doctors = () => {
+const Doctors = ({ initialDoctors }: { initialDoctors?: DoctorsResponse }) => {
   const { register, watch } = useForm({
     defaultValues: {
       search: '',
@@ -25,13 +26,17 @@ const Doctors = () => {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  const { isLoading, isError, data, error } = useGetAllDoctors(debouncedSearch);
+  const { isLoading, isError, data, error } = useGetAllDoctors(
+    debouncedSearch,
+    // The server only fetched the unfiltered list.
+    debouncedSearch === '' ? initialDoctors : undefined,
+  );
 
   return (
     <>
       <section className='bg-[#fff9ea]'>
         <div className='container text-center'>
-          <h2 className='heading'>Find a Doctor</h2>
+          <h1 className='heading'>Find a Doctor</h1>
           <div className='max-w-[570px] mt-[30px] mx-auto bg-[#0066ff2c] rounded-md flex items-center justify-between '>
             <input
               type='search'

@@ -32,14 +32,18 @@ export const pageMetadata = ({
   description,
   path,
   absoluteTitle = false,
+  image,
 }: {
   title: string;
   description: string;
   path: string;
   /** Use `title` as-is instead of appending " | CareConnect". */
   absoluteTitle?: boolean;
+  /** A page-specific preview image (e.g. a doctor's photo). Defaults to the branded one. */
+  image?: { url: string; alt: string };
 }): Metadata => {
   const fullTitle = absoluteTitle ? title : `${title} | ${SITE_NAME}`;
+  const ogImage = image ?? DEFAULT_OG_IMAGE;
   return {
     title: absoluteTitle ? { absolute: title } : title,
     description,
@@ -53,13 +57,14 @@ export const pageMetadata = ({
       description,
       // A page-level openGraph object replaces the inherited one, image
       // included, so point back at app/opengraph-image.tsx explicitly.
-      images: [DEFAULT_OG_IMAGE],
+      images: [ogImage],
     },
     twitter: {
-      card: 'summary_large_image',
+      // A portrait photo is cropped badly by the large card.
+      card: image ? 'summary' : 'summary_large_image',
       title: fullTitle,
       description,
-      images: [DEFAULT_OG_IMAGE.url],
+      images: [ogImage.url],
     },
   };
 };

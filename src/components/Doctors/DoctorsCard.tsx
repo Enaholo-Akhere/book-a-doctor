@@ -29,7 +29,7 @@ const DoctorCard = ({
         <div>
           <img
             src={photo.imageUrl}
-            alt='doctor specialization'
+            alt={`${name}, ${specialization}`}
             className='w-full rounded'
           />
         </div>
@@ -55,7 +55,7 @@ const DoctorCard = ({
               +{totalPatients} patients
             </h3>
             <p
-              className={`truncate ${url.includes('/doctor/') ? 'md:w-[100px] lg:w-[100px] xl:w-[100px]' : 'md:w-[100px] lg:w-[150px] xl:w-full'} w-full  text-[13px] lg:text-[15] leading-6 font-[400] text-textColor flex-wrap`}
+              className={`truncate ${url.startsWith('/doctors/') ? 'md:w-[100px] lg:w-[100px] xl:w-[100px]' : 'md:w-[100px] lg:w-[150px] xl:w-full'} w-full  text-[13px] lg:text-[15] leading-6 font-[400] text-textColor flex-wrap`}
             >
               At {experiences[experiences.length - 1].hospital}
             </p>

@@ -78,6 +78,8 @@ export interface appointments {
 }
 export interface doctorsInterface {
     _id: string;
+    /** Readable profile URL segment, e.g. "ada-obi-cardiologist". Missing on older backends. */
+    slug?: string;
     name: string;
     specialization: string;
     averageRating: number;
