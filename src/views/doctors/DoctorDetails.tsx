@@ -10,7 +10,6 @@ import { useParams } from 'next/navigation';
 import Loading from '@/components/Loader';
 import Error from '@/components/Error';
 import { handleAxiosError } from '@/utils/axiosError';
-import { usePageTitle } from '@/Hook/useTitle';
 
 const starIcon: string = starIconAsset.src;
 
@@ -18,8 +17,6 @@ const DoctorDetails = () => {
   const [tab, setTab] = useState<string>('about');
   const { id } = useParams<{ id: string }>();
   const { isLoading, data, isError, error } = useGetDoctorById(id || '');
-
-  usePageTitle('Doctor Details - CareConnect');
 
   const doctorData: doctorsInterface | undefined = data?.data;
 

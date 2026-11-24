@@ -2,7 +2,6 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight, CalendarCheck, Hospital, Search, Siren, Video } from 'lucide-react';
-import { usePageTitle } from '@/Hook/useTitle';
 import { IN_PERSON_ONLY, SERVICE_CATEGORIES, ServiceCategory, services } from '@/assets/data/services';
 import ServiceList from '@/components/Services/ServiceList';
 import ServicesShowcase from '@/components/Services/ServicesShowcase';
@@ -14,7 +13,6 @@ const STEPS = [
 ];
 
 const Services = () => {
-  usePageTitle('Services - CareConnect');
   const [category, setCategory] = useState<ServiceCategory | 'all'>('all');
 
   const visible = useMemo(() => (category === 'all' ? services : services.filter((s) => s.category === category)), [category]);
