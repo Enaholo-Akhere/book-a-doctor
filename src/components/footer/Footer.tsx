@@ -93,11 +93,11 @@ const Footer = () => {
               </ul>
             </div>
           </div>
-          <div className='border-t border-solid border-gray-100 pt-5 flex items-center justify-between flex-wrap gap-2'>
-            <p className='text-[13px] text-gray-400'>
+          <div className='border-t border-solid border-slate-100 pt-5 flex items-center justify-between flex-wrap gap-2'>
+            <p className='text-[13px] text-slate-400'>
               © {year} CareConnect. Developed by Enaholo Akhere.
             </p>
-            <div className='flex items-center gap-1 text-[13px] text-gray-400'>
+            <div className='flex items-center gap-1 text-[13px] text-slate-400'>
               <span>🔒</span> HIPAA compliant
             </div>
           </div>

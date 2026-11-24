@@ -44,7 +44,7 @@ const LoginComp = () => {
               autoComplete='on'
               placeholder='Enter your email'
               {...register('email')}
-              className='w-full py-3 border-b border-solid border-[#0066FF61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer '
+              className='w-full py-3 border-b border-solid border-primary-200 focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer '
             />
             {errors.email && (
               <p className='text-red-500 text-sm'>{errors.email.message}</p>
@@ -56,12 +56,12 @@ const LoginComp = () => {
                 type={showPassword ? 'text' : 'password'}
                 placeholder='Password'
                 {...register('password')}
-                className='w-full pr-4 py-3 border-solid border-[#0066FF61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor'
+                className='w-full pr-4 py-3 border-solid border-primary-200 focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor'
               />
               <button
                 type='button'
                 onClick={() => setShowPassword((prev) => !prev)}
-                className='text-gray-600 hover:text-gray-800'
+                className='text-slate-600 hover:text-slate-800'
               >
                 {showPassword ? <FaEye /> : <FaEyeSlash />}
               </button>

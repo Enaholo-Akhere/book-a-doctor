@@ -42,12 +42,12 @@ const ChatList = () => {
 
           {isLoading && (
             <div className='flex flex-1 items-center justify-center'>
-              <HashLoader size={25} color='#0d8c81' />
+              <HashLoader size={25} color='#0c8075' />
             </div>
           )}
 
           {isError && (
-            <div className='flex flex-1 flex-col items-center justify-center gap-2 text-sm text-gray-500'>
+            <div className='flex flex-1 flex-col items-center justify-center gap-2 text-sm text-slate-500'>
               <p>Couldn&apos;t load your conversations.</p>
               <button className='text-primaryColor font-semibold cursor-pointer' onClick={() => refetch()}>
                 Try again
@@ -56,7 +56,7 @@ const ChatList = () => {
           )}
 
           {conversations?.length === 0 && (
-            <div className='flex flex-1 flex-col items-center justify-center text-center gap-2 px-6 text-sm text-gray-500'>
+            <div className='flex flex-1 flex-col items-center justify-center text-center gap-2 px-6 text-sm text-slate-500'>
               <GoBell className='size-6 text-primaryColor' />
               {user?.role === 'doctor' ? (
                 <p>Patients who book an appointment with you will appear here.</p>
@@ -71,7 +71,7 @@ const ChatList = () => {
               key={c.peer._id}
               role='button'
               tabIndex={0}
-              className='cursor-pointer bg-gray-100 rounded-xl mt-3 flex flex-col gap-2 p-2 '
+              className='cursor-pointer bg-slate-100 rounded-xl mt-3 flex flex-col gap-2 p-2 '
               onClick={() => openRoom(c.peer._id)}
               onKeyDown={(e) => e.key === 'Enter' && openRoom(c.peer._id)}
             >
@@ -84,8 +84,8 @@ const ChatList = () => {
                   />
                 </div>
                 <div className='flex flex-col justify-center items-end'>
-                  <p className='text-gray-700 text-[13px] '>{c.peer.name}</p>
-                  <p className={`text-[12px] ${c.online ? 'text-primaryColor' : 'text-gray-500'}`}>
+                  <p className='text-slate-700 text-[13px] '>{c.peer.name}</p>
+                  <p className={`text-[12px] ${c.online ? 'text-primaryColor' : 'text-slate-500'}`}>
                     {c.online ? 'Online' : 'Offline'}
                   </p>
                 </div>
@@ -93,7 +93,7 @@ const ChatList = () => {
               <div className='flex flex-col'>
                 <div className='flex items-center justify-between gap-2'>
                   <p
-                    className={`text-[12px] italic ${c.unreadCount ? 'text-primaryColor font-extrabold' : 'text-gray-600'}`}
+                    className={`text-[12px] italic ${c.unreadCount ? 'text-primaryColor font-extrabold' : 'text-slate-600'}`}
                   >
                     {truncateText(preview(c, user?._id), 40)}
                   </p>
@@ -110,7 +110,7 @@ const ChatList = () => {
                   )}
                 </div>
                 {c.lastMessage && (
-                  <p className='text-gray-500 text-[10px] '>{dayjs(c.lastMessage.createdAt).fromNow()}</p>
+                  <p className='text-slate-500 text-[10px] '>{dayjs(c.lastMessage.createdAt).fromNow()}</p>
                 )}
               </div>
             </div>

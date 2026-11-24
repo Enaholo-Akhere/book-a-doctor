@@ -28,7 +28,7 @@ const AccountSecurity = ({ user, onLogout, isLoggingOut, deleteAccount, deleteNo
     <div className='space-y-6'>
       <Card>
         <CardHeader title='Account & security' description='Sign-in details and session' icon={<ShieldCheck size={18} />} />
-        <ul className='divide-y divide-gray-100 border-t border-gray-100'>
+        <ul className='divide-y divide-slate-100 border-t border-slate-100'>
           <Row
             title='Email'
             description={user.email}
@@ -92,7 +92,7 @@ const Row = ({ title, description, action }: { title: string; description: strin
   <li className='flex flex-wrap items-center justify-between gap-3 px-5 py-4 sm:px-6'>
     <div className='min-w-0'>
       <p className='text-sm font-medium text-headingColor'>{title}</p>
-      <p className='break-words text-sm text-gray-500'>{description}</p>
+      <p className='break-words text-sm text-slate-500'>{description}</p>
     </div>
     {action}
   </li>
@@ -149,10 +149,10 @@ const DeleteAccountDialog = ({
         <h3 id='delete-title' className='mt-4 text-lg font-semibold text-headingColor'>
           Delete your account?
         </h3>
-        <p id='delete-desc' className='mt-2 text-sm text-gray-500'>
+        <p id='delete-desc' className='mt-2 text-sm text-slate-500'>
           {note ?? 'Your profile and saved settings will be permanently removed and you will be signed out.'}
         </p>
-        <label htmlFor='confirm-delete' className='mt-5 block text-[13px] font-medium text-gray-700'>
+        <label htmlFor='confirm-delete' className='mt-5 block text-[13px] font-medium text-slate-700'>
           Type <span className='font-mono font-semibold text-red-600'>{CONFIRM_WORD}</span> to confirm
         </label>
         <input

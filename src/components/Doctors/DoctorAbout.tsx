@@ -7,7 +7,7 @@ const DoctorAbout = ({ data }: { data: Partial<doctorsInterface> }) => {
       <div>
         <h3 className='text-[20px ] leading-[30px] text-headingColor font-semibold flex items-center gap-2 '>
           About of
-          <span className='text-irisBlueColor font-bold text-[22 px] leading-9 '>
+          <span className='text-primaryColor font-bold text-[22 px] leading-9 '>
             {data.name}
           </span>
         </h3>
@@ -24,7 +24,7 @@ const DoctorAbout = ({ data }: { data: Partial<doctorsInterface> }) => {
               className='flex flex-col sm:flex-row sm:justify-between sm:items-end md:gap-5 mb-[30px] '
             >
               <div>
-                <span className='text-irisBlueColor text-[15px] leading-6 font-semibold '>
+                <span className='text-primaryColor text-[15px] leading-6 font-semibold '>
                   {formatDate({ date: qualification.startDate.toString() })} -{' '}
                   {formatDate({ date: qualification.endDate.toString() })}
                 </span>

@@ -27,7 +27,7 @@ const withPhoneLinks = (text: string, key: number): ReactNode =>
 const inline = (text: string, phones = false): ReactNode[] =>
   text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
     part.startsWith('**') && part.endsWith('**') ? (
-      <strong key={i} className='font-semibold text-gray-900'>
+      <strong key={i} className='font-semibold text-slate-900'>
         {phones ? withPhoneLinks(part.slice(2, -2), i) : part.slice(2, -2)}
       </strong>
     ) : (
@@ -46,7 +46,7 @@ const AiChatFormatted = ({ text, phones = false }: { text: string; phones?: bool
   const flushList = () => {
     if (!list.length) return;
     blocks.push(
-      <ul key={blocks.length} className='list-disc space-y-1 pl-5 marker:text-violet-400'>
+      <ul key={blocks.length} className='list-disc space-y-1 pl-5 marker:text-secondary-400'>
         {list.map((item, i) => (
           <li key={i}>{inline(item, phones)}</li>
         ))}
@@ -93,7 +93,7 @@ const AiChatMessage = ({ entry, disclaimer, bookingUrl = '/doctors', onNavigate,
       <div className='flex justify-end'>
         <p
           className={`max-w-[85%] whitespace-pre-wrap break-words rounded-2xl rounded-br-md px-3.5 py-2.5 text-sm leading-6 ${
-            entry.blocked ? 'bg-violet-100 text-violet-900' : 'bg-violet-600 text-white'
+            entry.blocked ? 'bg-secondary-100 text-secondary-900' : 'bg-secondary-600 text-white'
           }`}
         >
           {entry.content}
@@ -104,7 +104,7 @@ const AiChatMessage = ({ entry, disclaimer, bookingUrl = '/doctors', onNavigate,
 
   return (
     <div className='flex gap-2.5'>
-      <span aria-hidden className='mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 text-white'>
+      <span aria-hidden className='mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-secondary-500 to-secondary-700 text-white'>
         <Sparkles size={14} />
       </span>
       <div className='min-w-0 max-w-[85%]'>
@@ -122,9 +122,9 @@ const AiChatMessage = ({ entry, disclaimer, bookingUrl = '/doctors', onNavigate,
             )}
           </div>
         ) : entry.type === 'limit' ? (
-          <div className='rounded-2xl rounded-tl-md border border-violet-200 bg-violet-50 px-3.5 py-3 text-sm leading-6 text-violet-950'>
+          <div className='rounded-2xl rounded-tl-md border border-secondary-200 bg-secondary-50 px-3.5 py-3 text-sm leading-6 text-secondary-950'>
             <p className='font-semibold'>Daily limit reached</p>
-            <p className='mt-0.5 text-violet-900/90'>{entry.content}</p>
+            <p className='mt-0.5 text-secondary-900/90'>{entry.content}</p>
             <Link
               href={bookingUrl}
               onClick={onNavigate}
@@ -134,7 +134,7 @@ const AiChatMessage = ({ entry, disclaimer, bookingUrl = '/doctors', onNavigate,
             </Link>
           </div>
         ) : entry.type === 'emergency' ? (
-          <div role='alert' className='break-words rounded-2xl rounded-tl-md border border-red-200 bg-red-50 px-3.5 py-3 text-sm leading-6 text-gray-800'>
+          <div role='alert' className='break-words rounded-2xl rounded-tl-md border border-red-200 bg-red-50 px-3.5 py-3 text-sm leading-6 text-slate-800'>
             <p className='mb-1.5 flex items-center gap-1.5 font-semibold text-red-700'>
               <Siren size={16} aria-hidden /> Get help now
             </p>
@@ -142,7 +142,7 @@ const AiChatMessage = ({ entry, disclaimer, bookingUrl = '/doctors', onNavigate,
           </div>
         ) : (
           <>
-            <div className='break-words rounded-2xl rounded-tl-md border border-violet-100 bg-white px-3.5 py-2.5 text-sm leading-6 text-gray-700 shadow-sm'>
+            <div className='break-words rounded-2xl rounded-tl-md border border-secondary-100 bg-white px-3.5 py-2.5 text-sm leading-6 text-slate-700 shadow-sm'>
               <AiChatFormatted text={entry.content} />
 
               {/* Booking buttons from the agent (internal routes only) */}
@@ -156,7 +156,7 @@ const AiChatMessage = ({ entry, disclaimer, bookingUrl = '/doctors', onNavigate,
                         href={a.url}
                         onClick={onNavigate}
                         className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-                          i === 0 ? 'bg-primaryColor text-white hover:bg-primaryColor2' : 'border border-gray-200 text-gray-700 hover:bg-gray-50'
+                          i === 0 ? 'bg-primaryColor text-white hover:bg-primaryColor2' : 'border border-slate-200 text-slate-700 hover:bg-slate-50'
                         }`}
                       >
                         {i === 0 && <CalendarPlus size={14} />} {a.label}
@@ -167,8 +167,8 @@ const AiChatMessage = ({ entry, disclaimer, bookingUrl = '/doctors', onNavigate,
 
               {/* Trusted references (https only, open in a new tab) */}
               {!!entry.sources?.filter((s) => s.url.startsWith('https://')).length && (
-                <div className='mt-3 border-t border-gray-100 pt-2'>
-                  <p className='flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide text-gray-400'>
+                <div className='mt-3 border-t border-slate-100 pt-2'>
+                  <p className='flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400'>
                     <BookOpen size={12} /> Sources
                   </p>
                   <ul className='mt-1 space-y-0.5'>
@@ -180,10 +180,10 @@ const AiChatMessage = ({ entry, disclaimer, bookingUrl = '/doctors', onNavigate,
                             href={s.url}
                             target='_blank'
                             rel='noopener noreferrer'
-                            className='inline-flex items-center gap-1 text-xs text-violet-700 hover:underline'
+                            className='inline-flex items-center gap-1 text-xs text-secondary-700 hover:underline'
                           >
-                            {s.title} <span className='text-gray-400'>· {s.publisher.split(' (')[0]}</span>
-                            <ExternalLink size={11} className='shrink-0 text-gray-400' />
+                            {s.title} <span className='text-slate-400'>· {s.publisher.split(' (')[0]}</span>
+                            <ExternalLink size={11} className='shrink-0 text-slate-400' />
                           </a>
                         </li>
                       ))}
@@ -191,7 +191,7 @@ const AiChatMessage = ({ entry, disclaimer, bookingUrl = '/doctors', onNavigate,
                 </div>
               )}
             </div>
-            {disclaimer && <p className='mt-1 pl-1 text-[11px] text-gray-400'>{disclaimer}</p>}
+            {disclaimer && <p className='mt-1 pl-1 text-[11px] text-slate-400'>{disclaimer}</p>}
           </>
         )}
       </div>

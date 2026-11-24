@@ -86,7 +86,7 @@ const AiCard = () => {
   return (
     <article className={`${cardBase} bg-headingColor p-7 text-white`}>
       <Glow color='rgba(151,113,255,0.7)' className='-top-24 left-1/2 h-80 w-80 -translate-x-1/2' />
-      <Glow color='rgba(1,181,197,0.35)' className='-left-16 top-24 h-48 w-48' />
+      <Glow color='rgba(71,180,170,0.35)' className='-left-16 top-24 h-48 w-48' />
 
       <div className='relative rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md'>
         <p className='flex items-center gap-1.5 text-xs font-semibold text-white/70'>
@@ -96,7 +96,7 @@ const AiCard = () => {
       </div>
 
       {/* Quota pill, echoing the reference slider */}
-      <div className='relative mt-5 flex items-center justify-between rounded-full border border-white/15 bg-gradient-to-r from-purpleColor to-irisBlueColor p-1.5 text-xs font-bold'>
+      <div className='relative mt-5 flex items-center justify-between rounded-full border border-white/15 bg-gradient-to-r from-secondary-600 to-primary-600 p-1.5 text-xs font-bold'>
         <span className='px-3'>3 free / day</span>
         <span className='flex h-8 w-8 items-center justify-center rounded-full bg-white text-headingColor'>
           <Sparkles size={14} />
@@ -134,9 +134,9 @@ const AiCard = () => {
 /** 3. Dark card: specialists orbit. */
 const orbit = [
   { icon: Brain, label: 'Mental health', className: 'left-2 top-10', color: '#9771FF' },
-  { icon: Baby, label: 'Paediatrics', className: 'right-0 top-4', color: '#01B5C5' },
+  { icon: Baby, label: 'Paediatrics', className: 'right-0 top-4', color: '#47b4aa' },
   { icon: ScanFace, label: 'Dermatology', className: 'left-6 bottom-6', color: '#FEB60D' },
-  { icon: HeartPulse, label: 'Heart health', className: 'right-4 bottom-12', color: '#0D8C81' },
+  { icon: HeartPulse, label: 'Heart health', className: 'right-4 bottom-12', color: '#0c8075' },
 ];
 
 const SpecialistsCard = () => (
@@ -174,13 +174,13 @@ const SpecialistsCard = () => (
     </div>
 
     <h2 className='relative mt-auto text-[2.1rem] font-medium leading-[1.1] tracking-tight'>
-      Find the <span className='text-irisBlueColor'>right</span> doctor, right here
+      Find the <span className='text-primary-300'>right</span> doctor, right here
     </h2>
     <p className='relative mt-3 text-[15px] leading-6 text-white/60'>
       Verified specialists for skin, children, women's and men's health, mental health and more.
     </p>
     <Footer dark>
-      <Link href='/doctors' className='inline-flex items-center gap-1.5 hover:text-irisBlueColor'>
+      <Link href='/doctors' className='inline-flex items-center gap-1.5 hover:text-primary-300'>
         Find a doctor <ArrowUpRight size={16} />
       </Link>
     </Footer>

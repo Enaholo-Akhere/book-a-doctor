@@ -124,7 +124,7 @@ const SidePanel = ({ data }: { data: doctorsInterface }) => {
                 ? handleBookingFNStripe
                 : handleBookingFNFlutterwave
             }
-            bgColor={`${isPending || disabledButton ? 'bg-gray-500 ' : 'bg-primaryColor'}`}
+            bgColor={`${isPending || disabledButton ? 'bg-slate-500 ' : 'bg-primaryColor'}`}
             disabled={isPending || disabledButton}
           />
         </div>

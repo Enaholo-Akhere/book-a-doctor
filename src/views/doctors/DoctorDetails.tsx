@@ -40,7 +40,7 @@ const DoctorDetails = () => {
                   />
                 </figure>
                 <div>
-                  <span className='bg-[#CCF0F3] text-irisBlueColor py-1 px-6 lg:py-2 lg:px-6 text-[12px] rounded leading-4 lg:text-[16px] lg:leading-7 font-semibold '>
+                  <span className='bg-primary-50 text-primary-700 py-1 px-6 lg:py-2 lg:px-6 text-[12px] rounded leading-4 lg:text-[16px] lg:leading-7 font-semibold '>
                     {doctorData?.specialization}
                   </span>
                   <h3 className='text-headingColor text-[22px] leading-9 mt-3 font-bold  '>

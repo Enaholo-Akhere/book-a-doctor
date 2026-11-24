@@ -52,14 +52,14 @@ const CallLogBubble = ({ msg }: { msg: ChatMessage }) => {
   return (
     <div className='flex justify-center'>
       <div
-        className={`flex items-center gap-2 rounded-full bg-white/90 px-3 py-1 text-[12px] shadow-sm ${missed ? 'text-red-600' : 'text-gray-700'}`}
+        className={`flex items-center gap-2 rounded-full bg-white/90 px-3 py-1 text-[12px] shadow-sm ${missed ? 'text-red-600' : 'text-slate-700'}`}
       >
         <Icon size={14} />
         <span>{msg.content}</span>
         {msg.call?.status === 'completed' && msg.call.durationSec > 0 && (
-          <span className='text-gray-500'>· {formatCallDuration(msg.call.durationSec)}</span>
+          <span className='text-slate-500'>· {formatCallDuration(msg.call.durationSec)}</span>
         )}
-        <span className='text-gray-400'>{dayjs(msg.createdAt).format('HH:mm')}</span>
+        <span className='text-slate-400'>{dayjs(msg.createdAt).format('HH:mm')}</span>
       </div>
     </div>
   );
@@ -199,18 +199,18 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
       <div className='fixed'>
         <div className='w-[420px] max-w-[100vw] h-fit fixed bottom-0 right-0 px-5 z-10'>
           <div className='flex flex-col h-[500px] '>
-            <div className='flex justify-between p-4 bg-gray-50 items-center h-[50px] rounded-t-xl'>
+            <div className='flex justify-between p-4 bg-slate-50 items-center h-[50px] rounded-t-xl'>
               <div className='flex gap-3 items-center '>
                 <div>
                   <FaArrowLeftLong
-                    className='text-gray-400 cursor-pointer'
+                    className='text-slate-400 cursor-pointer'
                     aria-label='Back to conversations'
                     onClick={openList}
                   />
                 </div>
                 <div className='h-[40px] w-[40px] relative'>
                   <FaCircle
-                    className={`${conversation?.online ? 'text-primaryColor2' : 'text-gray-300'} absolute right-[-2px] top-1 size-3 rounded-full border-2 border-[#fff]`}
+                    className={`${conversation?.online ? 'text-primaryColor2' : 'text-slate-300'} absolute right-[-2px] top-1 size-3 rounded-full border-2 border-[#fff]`}
                   />
                   <img
                     src={peer?.photo || avatarIcon}
@@ -219,11 +219,11 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
                   />
                 </div>
                 <div className='flex flex-col justify-center'>
-                  <p className='font-semibold text-gray-500 text-[15px] '>{peer?.name ?? 'Conversation'}</p>
+                  <p className='font-semibold text-slate-500 text-[15px] '>{peer?.name ?? 'Conversation'}</p>
                   <p className='text-primaryColor text-[12px] font-light '>{peer ? subtitle : ''}</p>
                 </div>
               </div>
-              <div className='flex gap-5 flex-row text-gray-600 [&>button]:cursor-pointer [&>button:disabled]:cursor-not-allowed [&>button:disabled]:opacity-40'>
+              <div className='flex gap-5 flex-row text-slate-600 [&>button]:cursor-pointer [&>button:disabled]:cursor-not-allowed [&>button:disabled]:opacity-40'>
                 <button
                   type='button'
                   aria-label='Start voice call'
@@ -255,7 +255,7 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
             <div
               ref={scrollRef}
               onScroll={handleScroll}
-              className='overflow-y-auto p-4 h-[400px] space-y-2 bg-irisBlueColor'
+              className='overflow-y-auto p-4 h-[400px] space-y-2 bg-primary-50'
               style={{
                 backgroundImage: `url(${chatBg})`,
                 backgroundSize: 'cover',
@@ -265,7 +265,7 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
             >
               {(notAllowed || openError) && (
                 <div className='flex h-full items-center justify-center text-center px-6'>
-                  <p className='bg-white/90 rounded-xl px-4 py-3 text-sm text-gray-700'>
+                  <p className='bg-white/90 rounded-xl px-4 py-3 text-sm text-slate-700'>
                     {openError ?? 'You can only chat with a doctor after booking an appointment.'}
                   </p>
                 </div>
@@ -273,7 +273,7 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
 
               {(isLoading || loadingConversations) && (
                 <div className='flex h-full items-center justify-center'>
-                  <HashLoader size={25} color='#0d8c81' />
+                  <HashLoader size={25} color='#0c8075' />
                 </div>
               )}
 
@@ -283,12 +283,12 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
 
               {isFetchingNextPage && (
                 <div className='flex justify-center py-1'>
-                  <HashLoader size={15} color='#0d8c81' />
+                  <HashLoader size={15} color='#0c8075' />
                 </div>
               )}
 
               {!isLoading && !notAllowed && !openError && messages.length === 0 && peer && (
-                <p className='text-center text-[12px] text-gray-700 bg-white/80 rounded-xl px-3 py-2 mx-auto w-fit'>
+                <p className='text-center text-[12px] text-slate-700 bg-white/80 rounded-xl px-3 py-2 mx-auto w-fit'>
                   This is the start of your conversation with {peer.name}.
                 </p>
               )}
@@ -302,7 +302,7 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
                   <Fragment key={msg._id}>
                     {showDay && (
                       <div className='flex justify-center'>
-                        <span className='rounded-full bg-white/80 px-3 py-0.5 text-[11px] text-gray-600'>
+                        <span className='rounded-full bg-white/80 px-3 py-0.5 text-[11px] text-slate-600'>
                           {dayLabel(msg.createdAt)}
                         </span>
                       </div>
@@ -332,7 +332,7 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
                             </div>
                           )}
                           <span
-                            className={`text-[10px] text-gray-700 flex gap-2 ${mine ? 'justify-between' : 'justify-start'}`}
+                            className={`text-[10px] text-slate-700 flex gap-2 ${mine ? 'justify-between' : 'justify-start'}`}
                           >
                             {mine && (
                               <p aria-label={msg.failed ? 'Failed' : msg.pending ? 'Sending' : read ? 'Read' : 'Sent'}>
@@ -341,7 +341,7 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
                                 ) : msg.pending ? (
                                   <LuClock size={13} />
                                 ) : read ? (
-                                  <LuCheckCheck color='#0d8c81' size={15} />
+                                  <LuCheckCheck color='#0c8075' size={15} />
                                 ) : (
                                   <LuCheck size={15} />
                                 )}
@@ -358,7 +358,7 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
 
               {isPeerTyping && peer && (
                 <div className='flex justify-start'>
-                  <div className='bg-gray-100 px-4 py-2 rounded-2xl text-sm text-gray-500'>{peer.name} is typing…</div>
+                  <div className='bg-slate-100 px-4 py-2 rounded-2xl text-sm text-slate-500'>{peer.name} is typing…</div>
                 </div>
               )}
             </div>
@@ -379,12 +379,12 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
                   onClick={() => void finishRecording(false)}
                   aria-label='Discard recording'
                   title='Discard'
-                  className='cursor-pointer text-gray-500 hover:text-red-600'
+                  className='cursor-pointer text-slate-500 hover:text-red-600'
                 >
                   <RiDeleteBin6Line className='size-6' />
                 </button>
                 <span className='size-2.5 rounded-full bg-red-600 animate-pulse' aria-hidden />
-                <span className='flex-1 text-sm tabular-nums text-gray-700' aria-live='polite'>
+                <span className='flex-1 text-sm tabular-nums text-slate-700' aria-live='polite'>
                   Recording… {formatSeconds(recorder.elapsed)}
                 </span>
                 <button
@@ -425,7 +425,7 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
                     aria-label='Send message'
                     className='cursor-pointer disabled:cursor-not-allowed disabled:opacity-40'
                   >
-                    <IoMdSend className='text-gray-500 size-8' />
+                    <IoMdSend className='text-slate-500 size-8' />
                   </button>
                 ) : (
                   <>
@@ -437,7 +437,7 @@ const ChatWindow = ({ peerId }: { peerId: string }) => {
                       title='Attach a file (max 10 MB)'
                       className='cursor-pointer disabled:cursor-not-allowed disabled:opacity-40'
                     >
-                      <GrAttachment className='text-gray-500 size-full p-1' />
+                      <GrAttachment className='text-slate-500 size-full p-1' />
                     </button>
                     <button
                       type='button'

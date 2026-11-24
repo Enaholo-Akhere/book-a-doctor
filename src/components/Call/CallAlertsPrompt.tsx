@@ -49,7 +49,7 @@ const CallAlertsPrompt = () => {
   };
 
   return (
-    <div className='mt-3 flex items-start gap-3 rounded-xl bg-primaryColor/10 p-3 text-[13px] text-gray-700'>
+    <div className='mt-3 flex items-start gap-3 rounded-xl bg-primaryColor/10 p-3 text-[13px] text-slate-700'>
       <GoBell className='mt-0.5 size-5 shrink-0 text-primaryColor' />
       <div className='flex-1'>
         {iosNeedsInstall ? (
@@ -71,7 +71,7 @@ const CallAlertsPrompt = () => {
           </>
         )}
       </div>
-      <button type='button' onClick={dismiss} aria-label='Dismiss' className='cursor-pointer text-gray-500'>
+      <button type='button' onClick={dismiss} aria-label='Dismiss' className='cursor-pointer text-slate-500'>
         <IoClose size={18} />
       </button>
     </div>

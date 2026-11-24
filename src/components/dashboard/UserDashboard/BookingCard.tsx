@@ -75,7 +75,7 @@ export default function BookingCard({
   const { price } = useAmount(paymentDetail?.amountPaid);
 
   return (
-    <div className='bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-gray-200 transition-all duration-200 p-5'>
+    <div className='bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200 transition-all duration-200 p-5'>
       {/* Doctor row */}
       <div className='flex items-center gap-3 mb-4'>
         <AvatarImage
@@ -85,10 +85,10 @@ export default function BookingCard({
           initials={getInitials(doctor.name)}
         />
         <div className='flex-1 min-w-0'>
-          <p className='font-semibold text-gray-900 text-[15px] truncate'>
+          <p className='font-semibold text-slate-900 text-[15px] truncate'>
             {doctor.name}
           </p>
-          <p className='text-xs text-gray-500 capitalize mt-0.5'>
+          <p className='text-xs text-slate-500 capitalize mt-0.5'>
             {doctor.specialization}
           </p>
         </div>
@@ -108,23 +108,23 @@ export default function BookingCard({
         </div>
       </div>
 
-      <div className='h-px bg-gray-100 mb-4' />
+      <div className='h-px bg-slate-100 mb-4' />
 
       {/* Price + date */}
       <div className='flex items-center justify-between mb-4'>
         <div>
-          <p className='text-[11px] font-medium text-gray-400 uppercase tracking-widest mb-0.5'>
+          <p className='text-[11px] font-medium text-slate-400 uppercase tracking-widest mb-0.5'>
             Ticket price
           </p>
-          <p className='text-2xl font-semibold text-gray-900'>
+          <p className='text-2xl font-semibold text-slate-900'>
             {formatCurrency(price, paymentDetail?.customerCurrency ?? 'USD')}
           </p>
         </div>
         <div className='text-right'>
-          <p className='text-[11px] font-medium text-gray-400 uppercase tracking-widest mb-0.5'>
+          <p className='text-[11px] font-medium text-slate-400 uppercase tracking-widest mb-0.5'>
             Booked on
           </p>
-          <div className='flex items-center gap-1.5 text-gray-500 text-sm justify-end'>
+          <div className='flex items-center gap-1.5 text-slate-500 text-sm justify-end'>
             <Calendar size={13} />
             <span>{formatDate({ date: createdAt })}</span>
           </div>
@@ -134,7 +134,7 @@ export default function BookingCard({
       {/* CTA */}
       <button
         onClick={handleBookingDetails}
-        className='w-full cursor-pointer flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 active:scale-[0.98] transition-all duration-150'
+        className='w-full cursor-pointer flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 active:scale-[0.98] transition-all duration-150'
       >
         View booking details
         <ArrowRight size={15} />

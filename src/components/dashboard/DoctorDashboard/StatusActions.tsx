@@ -46,7 +46,7 @@ const StatusActions = ({ appointment, compact = false }: { appointment: appointm
         disabled={isPending}
         onClick={() => update('cancelled')}
         aria-label='Decline booking'
-        className={`${base} border border-gray-200 bg-white text-gray-600 hover:border-red-200 hover:bg-red-50 hover:text-red-600`}
+        className={`${base} border border-slate-200 bg-white text-slate-600 hover:border-red-200 hover:bg-red-50 hover:text-red-600`}
       >
         <X size={15} /> {compact ? '' : busy('cancelled') ? 'Declining…' : 'Decline'}
       </button>

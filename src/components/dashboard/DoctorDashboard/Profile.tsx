@@ -132,11 +132,11 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
       <Card>
         <CardHeader title='Public profile' description='What patients see when they find you' icon={<UserRound size={18} />} />
         <div className='px-5 pb-5 sm:px-6'>
-          <div className='flex flex-wrap items-center gap-4 rounded-xl bg-gray-50 p-4'>
+          <div className='flex flex-wrap items-center gap-4 rounded-xl bg-slate-50 p-4'>
             <img src={preview || avatar} alt='Profile' className='h-16 w-16 rounded-full object-cover ring-4 ring-white' />
             <div className='min-w-[10rem] flex-1'>
               <p className='text-sm font-semibold text-headingColor'>Profile photo</p>
-              <p className='text-xs text-gray-500'>A clear, professional headshot. JPG, PNG, WEBP or HEIC, up to 5 MB.</p>
+              <p className='text-xs text-slate-500'>A clear, professional headshot. JPG, PNG, WEBP or HEIC, up to 5 MB.</p>
             </div>
             <Controller
               name='photo'
@@ -195,7 +195,7 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
             </Field>
             <Field label='Consultation fee (USD)' htmlFor='fee' error={errors.ticketPrice?.message} hint='Patients pay the equivalent in their local currency.'>
               <div className='relative'>
-                <span className='pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400'>$</span>
+                <span className='pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400'>$</span>
                 <input id='fee' type='number' inputMode='decimal' min='0' step='1' placeholder='0' {...register('ticketPrice')} className={`${fieldClass} pl-7`} />
               </div>
             </Field>
@@ -228,9 +228,9 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
           }
         />
         <div className='space-y-3 px-5 pb-5 sm:px-6'>
-          {timeSlots.fields.length === 0 && <p className='rounded-xl bg-gray-50 p-4 text-sm text-gray-500'>No hours yet. Add the days and times you consult.</p>}
+          {timeSlots.fields.length === 0 && <p className='rounded-xl bg-slate-50 p-4 text-sm text-slate-500'>No hours yet. Add the days and times you consult.</p>}
           {timeSlots.fields.map((f, i) => (
-            <div key={f.id} className='grid grid-cols-[1fr_auto] items-start gap-3 rounded-xl border border-gray-100 p-3 sm:grid-cols-[1.2fr_1fr_1fr_auto]'>
+            <div key={f.id} className='grid grid-cols-[1fr_auto] items-start gap-3 rounded-xl border border-slate-100 p-3 sm:grid-cols-[1.2fr_1fr_1fr_auto]'>
               <Field label='Day' htmlFor={`day-${i}`} error={errors.timeSlots?.[i]?.day?.message} className='col-span-1'>
                 <select id={`day-${i}`} {...register(`timeSlots.${i}.day`)} className={fieldClass}>
                   <option value=''>Select day</option>
@@ -266,11 +266,11 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
           }
         />
         <div className='space-y-3 px-5 pb-5 sm:px-6'>
-          {qualifications.fields.length === 0 && <p className='rounded-xl bg-gray-50 p-4 text-sm text-gray-500'>Add at least one qualification. It's required for approval.</p>}
+          {qualifications.fields.length === 0 && <p className='rounded-xl bg-slate-50 p-4 text-sm text-slate-500'>Add at least one qualification. It's required for approval.</p>}
           {qualifications.fields.map((f, i) => (
-            <div key={f.id} className='rounded-xl border border-gray-100 p-4'>
+            <div key={f.id} className='rounded-xl border border-slate-100 p-4'>
               <div className='mb-3 flex items-center justify-between'>
-                <p className='text-xs font-semibold uppercase tracking-wide text-gray-400'>Qualification {i + 1}</p>
+                <p className='text-xs font-semibold uppercase tracking-wide text-slate-400'>Qualification {i + 1}</p>
                 <RemoveButton onClick={() => qualifications.remove(i)} label='Remove qualification' className='!mt-0' />
               </div>
               <div className='grid gap-3 sm:grid-cols-2'>
@@ -305,11 +305,11 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
           }
         />
         <div className='space-y-3 px-5 pb-5 sm:px-6'>
-          {experiences.fields.length === 0 && <p className='rounded-xl bg-gray-50 p-4 text-sm text-gray-500'>Add your work history so patients know your background.</p>}
+          {experiences.fields.length === 0 && <p className='rounded-xl bg-slate-50 p-4 text-sm text-slate-500'>Add your work history so patients know your background.</p>}
           {experiences.fields.map((f, i) => (
-            <div key={f.id} className='rounded-xl border border-gray-100 p-4'>
+            <div key={f.id} className='rounded-xl border border-slate-100 p-4'>
               <div className='mb-3 flex items-center justify-between'>
-                <p className='text-xs font-semibold uppercase tracking-wide text-gray-400'>Role {i + 1}</p>
+                <p className='text-xs font-semibold uppercase tracking-wide text-slate-400'>Role {i + 1}</p>
                 <RemoveButton onClick={() => experiences.remove(i)} label='Remove role' className='!mt-0' />
               </div>
               <div className='grid gap-3 sm:grid-cols-2'>
@@ -331,8 +331,8 @@ const Profile = ({ data: doctor }: { data: doctorsInterface }) => {
         </div>
       </Card>
 
-      <div className='sticky bottom-3 z-10 flex flex-col-reverse gap-2 rounded-2xl border border-gray-100 bg-white/95 p-3 shadow-lg backdrop-blur sm:flex-row sm:items-center sm:justify-between'>
-        <p className='px-1 text-sm text-gray-500'>
+      <div className='sticky bottom-3 z-10 flex flex-col-reverse gap-2 rounded-2xl border border-slate-100 bg-white/95 p-3 shadow-lg backdrop-blur sm:flex-row sm:items-center sm:justify-between'>
+        <p className='px-1 text-sm text-slate-500'>
           {Object.keys(errors).length ? <span className='text-red-600'>Please fix the highlighted fields.</span> : isDirty ? 'You have unsaved changes.' : 'All changes saved.'}
         </p>
         <div className='flex gap-2'>
@@ -362,7 +362,7 @@ const RemoveButton = ({ onClick, label, className = '' }: { onClick: () => void;
     onClick={onClick}
     aria-label={label}
     title={label}
-    className={`mt-6 flex h-10 w-10 cursor-pointer items-center justify-center self-start rounded-lg text-gray-400 transition hover:bg-red-50 hover:text-red-600 ${className}`}
+    className={`mt-6 flex h-10 w-10 cursor-pointer items-center justify-center self-start rounded-lg text-slate-400 transition hover:bg-red-50 hover:text-red-600 ${className}`}
   >
     <Trash2 size={16} />
   </button>

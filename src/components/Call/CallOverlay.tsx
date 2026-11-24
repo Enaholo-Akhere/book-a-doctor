@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IoCall, IoMicOffOutline, IoMicOutline, IoVideocam, IoVideocamOffOutline, IoVideocamOutline } from 'react-icons/io5';
 import { MdCallEnd } from 'react-icons/md';
+import { Circle, Square } from 'lucide-react';
+import { useRecordingConfig } from '@/Hook/useConsultations';
 import avatarIconAsset from '@/assets/images/avatar-icon.png';
-import { useCall } from './callContext';
+import { RecordingPrompt, useCall } from './callContext';
 
 const avatarIcon: string = avatarIconAsset.src;
 
@@ -144,6 +146,47 @@ const ControlButton = ({
   </div>
 );
 
+/** Asks the patient, in-call, whether the doctor may record. */
+const RecordingConsentDialog = ({
+  prompt,
+  onAnswer,
+}: {
+  prompt: RecordingPrompt;
+  onAnswer: (accept: boolean) => void;
+}) => (
+  <div className='absolute inset-0 z-40 flex items-end sm:items-center justify-center bg-black/60 p-4'>
+    <div
+      role='alertdialog'
+      aria-labelledby='rec-consent-title'
+      aria-describedby='rec-consent-text'
+      className='w-full max-w-md rounded-2xl bg-white p-6 text-slate-800 shadow-2xl'
+    >
+      <h3 id='rec-consent-title' className='text-lg font-semibold text-headingColor'>
+        {prompt.doctorName} would like to record this call
+      </h3>
+      <p id='rec-consent-text' className='mt-3 text-sm leading-6 text-slate-600'>
+        {prompt.notice.text}
+      </p>
+      <div className='mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end'>
+        <button
+          type='button'
+          onClick={() => onAnswer(false)}
+          className='cursor-pointer rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50'
+        >
+          Don&apos;t record
+        </button>
+        <button
+          type='button'
+          onClick={() => onAnswer(true)}
+          className='cursor-pointer rounded-xl bg-primaryColor px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90'
+        >
+          Allow recording
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
 const CallOverlay = () => {
   const {
     status,
@@ -159,10 +202,17 @@ const CallOverlay = () => {
     endCall,
     toggleMute,
     toggleCamera,
+    recording,
+    recordingPrompt,
+    requestRecording,
+    answerRecording,
+    stopRecording,
   } = useCall();
 
   // Hooks must run before the early return below.
   const remoteHasVideo = useHasLiveVideo(remoteStream);
+  const isDoctor = session?.peer.role === 'patient';
+  const { data: recordingConfig } = useRecordingConfig(isDoctor && status === 'active');
 
   if (status === 'idle' || !session) return null;
 
@@ -191,7 +241,7 @@ const CallOverlay = () => {
       role='dialog'
       aria-modal='true'
       aria-label={`${isVideo ? 'Video' : 'Voice'} call with ${peer.name}`}
-      className='fixed inset-0 z-[1000] bg-gradient-to-b from-gray-900 to-[#0b3d39] text-white overflow-hidden'
+      className='fixed inset-0 z-[1000] bg-gradient-to-b from-slate-900 to-[#0b3d39] text-white overflow-hidden'
     >
       {/* Remote media */}
       {/* Video calls keep ONE element for the remote stream (it also plays the
@@ -251,6 +301,27 @@ const CallOverlay = () => {
         </div>
       )}
 
+      {/* Recording indicator, shown to both people on the call */}
+      {(recording === 'on' || recording === 'requesting') && (
+        <div
+          role='status'
+          className='absolute left-1/2 top-4 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/50 px-4 py-1.5 text-sm font-medium backdrop-blur'
+        >
+          {recording === 'on' ? (
+            <>
+              <span className='h-2.5 w-2.5 animate-pulse rounded-full bg-red-500' />
+              {isDoctor ? 'Recording for the patient’s health record' : 'Recording for your health record'}
+            </>
+          ) : (
+            'Waiting for the patient to allow recording…'
+          )}
+        </div>
+      )}
+
+      {recording === 'prompt' && recordingPrompt && (
+        <RecordingConsentDialog prompt={recordingPrompt} onAnswer={answerRecording} />
+      )}
+
       {/* Controls */}
       <div className='absolute inset-x-0 bottom-0 z-20 flex justify-center gap-8 md:gap-12 pb-10 pt-6 bg-gradient-to-t from-black/60 to-transparent'>
         {status === 'incoming' ? (
@@ -267,7 +338,7 @@ const CallOverlay = () => {
             <ControlButton
               label={isMuted ? 'Unmute' : 'Mute'}
               onClick={toggleMute}
-              className={isMuted ? 'bg-white text-gray-900' : 'bg-white/15 hover:bg-white/25'}
+              className={isMuted ? 'bg-white text-slate-900' : 'bg-white/15 hover:bg-white/25'}
             >
               {isMuted ? <IoMicOffOutline /> : <IoMicOutline />}
             </ControlButton>
@@ -275,11 +346,28 @@ const CallOverlay = () => {
               <ControlButton
                 label={isCameraOff ? 'Camera on' : 'Camera off'}
                 onClick={toggleCamera}
-                className={isCameraOff ? 'bg-white text-gray-900' : 'bg-white/15 hover:bg-white/25'}
+                className={isCameraOff ? 'bg-white text-slate-900' : 'bg-white/15 hover:bg-white/25'}
               >
                 {isCameraOff ? <IoVideocamOffOutline /> : <IoVideocamOutline />}
               </ControlButton>
             )}
+            {status === 'active' &&
+              (recording === 'on' || recording === 'requesting' ? (
+                <ControlButton
+                  label={recording === 'on' ? 'Stop recording' : 'Cancel request'}
+                  onClick={stopRecording}
+                  className='bg-white text-red-600'
+                >
+                  <Square size={22} fill='currentColor' />
+                </ControlButton>
+              ) : (
+                isDoctor &&
+                recordingConfig?.enabled && (
+                  <ControlButton label='Record' onClick={requestRecording} className='bg-white/15 hover:bg-white/25'>
+                    <Circle size={24} className='text-red-400' fill='currentColor' />
+                  </ControlButton>
+                )
+              ))}
             <ControlButton label='End' onClick={endCall} className='bg-red-600 hover:bg-red-700'>
               <MdCallEnd />
             </ControlButton>

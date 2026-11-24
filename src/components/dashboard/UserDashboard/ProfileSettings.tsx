@@ -77,7 +77,7 @@ const ProfileSettings = ({ user }: { user: user }) => {
         icon={<UserRound size={18} />}
       />
       <form onSubmit={handleSubmit(submitHandler)} noValidate className='px-5 pb-5 sm:px-6'>
-        <div className='flex flex-wrap items-center gap-4 rounded-xl bg-gray-50 p-4'>
+        <div className='flex flex-wrap items-center gap-4 rounded-xl bg-slate-50 p-4'>
           <img
             src={preview || avatar}
             alt='Profile'
@@ -85,7 +85,7 @@ const ProfileSettings = ({ user }: { user: user }) => {
           />
           <div className='min-w-[10rem] flex-1'>
             <p className='text-sm font-semibold text-headingColor'>Profile photo</p>
-            <p className='text-xs text-gray-500'>JPG, PNG, WEBP or HEIC, up to 5 MB</p>
+            <p className='text-xs text-slate-500'>JPG, PNG, WEBP or HEIC, up to 5 MB</p>
           </div>
           <Controller
             name='photo'
@@ -134,7 +134,7 @@ const ProfileSettings = ({ user }: { user: user }) => {
           </Field>
         </div>
 
-        <div className='mt-6 flex flex-col-reverse gap-2 border-t border-gray-100 pt-5 sm:flex-row sm:justify-end'>
+        <div className='mt-6 flex flex-col-reverse gap-2 border-t border-slate-100 pt-5 sm:flex-row sm:justify-end'>
           <button
             type='button'
             disabled={!isDirty || isPending}

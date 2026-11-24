@@ -40,16 +40,16 @@ const AiChatConsent = ({ signedIn, onAccept, onDecline }: Props) => {
 
   return (
     <div className='flex-1 overflow-y-auto bg-[#faf9ff] px-4 py-5'>
-      <div className='mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-100 text-violet-700'>
+      <div className='mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-secondary-100 text-secondary-700'>
         <ShieldCheck size={22} />
       </div>
       <h2 className='mt-3 text-center font-semibold text-headingColor'>Before you start</h2>
-      <p className='mt-1 text-center text-sm text-gray-500'>How the AI health assistant handles your information</p>
+      <p className='mt-1 text-center text-sm text-slate-500'>How the AI health assistant handles your information</p>
 
       <ul className='mt-4 space-y-3'>
         {points.map(({ icon: Icon, text }) => (
-          <li key={text} className='flex gap-3 rounded-xl border border-violet-100 bg-white p-3 text-[13px] leading-5 text-gray-700'>
-            <Icon size={16} className='mt-0.5 shrink-0 text-violet-600' aria-hidden />
+          <li key={text} className='flex gap-3 rounded-xl border border-secondary-100 bg-white p-3 text-[13px] leading-5 text-slate-700'>
+            <Icon size={16} className='mt-0.5 shrink-0 text-secondary-600' aria-hidden />
             <span>{text}</span>
           </li>
         ))}
@@ -59,7 +59,7 @@ const AiChatConsent = ({ signedIn, onAccept, onDecline }: Props) => {
         <button
           type='button'
           onClick={onDecline}
-          className='flex-1 cursor-pointer rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50'
+          className='flex-1 cursor-pointer rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50'
         >
           Not now
         </button>
@@ -74,7 +74,7 @@ const AiChatConsent = ({ signedIn, onAccept, onDecline }: Props) => {
               setBusy(false);
             }
           }}
-          className='flex-[1.4] cursor-pointer rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:opacity-60'
+          className='flex-[1.4] cursor-pointer rounded-xl bg-secondary-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-secondary-700 disabled:opacity-60'
         >
           {busy ? 'Saving…' : 'I understand, continue'}
         </button>

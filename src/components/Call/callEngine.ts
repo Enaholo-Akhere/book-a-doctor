@@ -5,6 +5,12 @@ import type { CallType, ChatPeer } from '@/types/chat';
 import type { CallSession, CallStatus } from './callContext';
 import { playTone, startVibration } from './tones';
 import { showLocalNotification } from '@/library/push/notifications';
+import { uploadConsultationAudio } from '@/services/consultation.service';
+import { queryClient } from '@/library/provider/reactQuery';
+import { CONSULTATION_LIST_KEY } from '@/Hook/useConsultations';
+import { handleAxiosError } from '@/utils/axiosError';
+import type { RecordingPrompt, RecordingStatus } from './callContext';
+import { ConsultRecorder } from './consultRecorder';
 
 /**
  * Framework-agnostic WebRTC call controller (1:1 calls).
@@ -26,6 +32,8 @@ export interface CallState {
   isCameraOff: boolean;
   connectedAt: number | null;
   isReconnecting: boolean;
+  recording: RecordingStatus;
+  recordingPrompt: RecordingPrompt | null;
 }
 
 const IDLE: CallState = {
@@ -37,6 +45,8 @@ const IDLE: CallState = {
   isCameraOff: false,
   connectedAt: null,
   isReconnecting: false,
+  recording: 'off',
+  recordingPrompt: null,
 };
 
 const FALLBACK_ICE: RTCIceServer[] = [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }];
@@ -143,6 +153,8 @@ export class CallEngine {
   private awaitingResume = false;
   private iceRetryTimer: ReturnType<typeof setInterval> | undefined;
   private slowConnectTimer: ReturnType<typeof setTimeout> | undefined;
+  /** Doctor side only: the active consultation recording. */
+  private recorder: { consultationId: string; rec: ConsultRecorder } | null = null;
 
   // ── store ─────────────────────────────────────────────────────────
   subscribe = (listener: () => void) => {
@@ -175,7 +187,15 @@ export class CallEngine {
     socket.on('call:signal', this.onSignal);
     socket.on('disconnect', this.onDisconnect);
     socket.on('connect', this.onReconnect);
+    socket.on('call:record-consent-request', this.onRecordConsentRequest);
+    socket.on('call:record-declined', this.onRecordDeclined);
+    socket.on('call:record-started', this.onRecordStarted);
+    socket.on('call:record-stopped', this.onRecordStopped);
     this.detachSocket = () => {
+      socket.off('call:record-consent-request', this.onRecordConsentRequest);
+      socket.off('call:record-declined', this.onRecordDeclined);
+      socket.off('call:record-started', this.onRecordStarted);
+      socket.off('call:record-stopped', this.onRecordStopped);
       socket.off('call:incoming', this.onIncoming);
       socket.off('call:accepted', this.onAccepted);
       socket.off('call:dismissed', this.onDismissed);
@@ -285,6 +305,104 @@ export class CallEngine {
     const off = !this.state.isCameraOff;
     tracks.forEach((t) => (t.enabled = !off));
     this.set({ isCameraOff: off });
+  };
+
+  // ── consultation recording ────────────────────────────────────────
+  // Consent is brokered by the server: the doctor requests, the patient
+  // answers, and only then does the doctor's browser start recording.
+
+  requestRecording = () => {
+    const { status, session, recording } = this.state;
+    if (status !== 'active' || !session?.callId || recording !== 'off') return;
+    const { callId } = session;
+    this.set({ recording: 'requesting' });
+    this.socket?.timeout(SIGNAL_TIMEOUT_MS).emit('call:record-request', { callId }, (err, res) => {
+      if (this.state.session?.callId !== callId || this.state.recording !== 'requesting') return;
+      if (err || !res.ok) {
+        this.set({ recording: 'off' });
+        toast.error(err ? 'Could not reach the server' : !res.ok ? res.error : 'Could not request recording');
+      }
+    });
+  };
+
+  answerRecording = (accept: boolean) => {
+    const { session, recording } = this.state;
+    if (recording !== 'prompt' || !session?.callId) return;
+    const { callId } = session;
+    this.set({ recording: 'off', recordingPrompt: null });
+    this.socket?.timeout(SIGNAL_TIMEOUT_MS).emit('call:record-consent', { callId, accept }, (err, res) => {
+      if (accept && (err || !res.ok)) {
+        toast.error(err ? 'Could not reach the server' : !res.ok ? res.error : 'Could not start recording');
+      }
+    });
+  };
+
+  stopRecording = () => {
+    const { session, recording } = this.state;
+    if (!session?.callId || recording === 'off' || recording === 'prompt') return;
+    this.socket?.emit('call:record-stop', { callId: session.callId });
+    // The server confirms with call:record-stopped; reflect it right away.
+    this.set({ recording: 'off' });
+    void this.finishRecording();
+  };
+
+  /** Stops the doctor's recorder (if any) and uploads the audio for transcription. */
+  private async finishRecording() {
+    const active = this.recorder;
+    if (!active) return;
+    this.recorder = null;
+    try {
+      const { doctor, patient, durationSec } = await active.rec.stop();
+      if (!doctor && !patient) throw new Error('Nothing was recorded');
+      const toastId = toast.loading('Saving the consultation recording…');
+      try {
+        await uploadConsultationAudio(active.consultationId, { doctor, patient }, durationSec);
+        toast.success('Recording saved. The transcript will be ready for your review shortly.', { id: toastId });
+      } catch (error) {
+        toast.error(`Could not save the recording: ${handleAxiosError(error)}`, { id: toastId });
+      }
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Could not save the recording');
+    }
+    void queryClient.invalidateQueries({ queryKey: CONSULTATION_LIST_KEY });
+  }
+
+  private onRecordConsentRequest = (p: { callId: string; doctorName: string; notice: RecordingPrompt['notice'] }) => {
+    if (this.state.session?.callId !== p.callId) return;
+    this.set({ recording: 'prompt', recordingPrompt: { doctorName: p.doctorName, notice: p.notice } });
+  };
+
+  private onRecordDeclined = ({ callId }: { callId: string }) => {
+    if (this.state.session?.callId !== callId || this.state.recording !== 'requesting') return;
+    this.set({ recording: 'off' });
+    toast(`${this.state.session.peer.name} chose not to be recorded`, { icon: 'ℹ️' });
+  };
+
+  private onRecordStarted = ({ callId, consultationId }: { callId: string; consultationId: string }) => {
+    const { session, localStream, remoteStream } = this.state;
+    if (session?.callId !== callId) return;
+    this.set({ recording: 'on', recordingPrompt: null });
+
+    // Only the doctor's browser records.
+    if (session.peer.role !== 'patient' || this.recorder) return;
+    try {
+      this.recorder = { consultationId, rec: new ConsultRecorder(localStream, remoteStream) };
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Could not start recording');
+      this.socket?.emit('call:record-stop', { callId });
+      this.set({ recording: 'off' });
+    }
+  };
+
+  private onRecordStopped = ({ callId, by }: { callId: string; by: 'doctor' | 'patient' | 'system' }) => {
+    if (this.state.session?.callId !== callId) return;
+    const wasOn = this.state.recording === 'on';
+    this.set({ recording: 'off', recordingPrompt: null });
+    if (wasOn && by !== 'system') {
+      const mine = (by === 'doctor') === (this.state.session.peer.role === 'patient');
+      if (!mine) toast(`${this.state.session.peer.name} stopped the recording`, { icon: '⏹️' });
+    }
+    void this.finishRecording();
   };
 
   // ── socket events ─────────────────────────────────────────────────
@@ -556,6 +674,7 @@ export class CallEngine {
   }
 
   private teardown() {
+    void this.finishRecording();
     this.stopToneNow();
     this.stopIceRetry();
     clearTimeout(this.slowConnectTimer);
