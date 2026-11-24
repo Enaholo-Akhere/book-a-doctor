@@ -14,6 +14,7 @@ import ChatRoom from './components/ChatRooms';
 import AiChat from './components/AiChat';
 import ClientOnly from './components/ClientOnly';
 import { useChatRealtimeSync } from './Hook/useChat';
+import { usePathname } from 'next/navigation';
 
 /** Keeps chat caches in sync with socket events, app-wide. */
 const ChatRealtimeSync = () => {
@@ -24,6 +25,7 @@ const ChatRealtimeSync = () => {
 const AppShell = ({ children }: { children: ReactNode }) => {
   const { setGeolocation } = useAuthStore();
   const { data, isLoading, isError } = useGeolocation();
+  const isAdmin = usePathname()?.startsWith('/admin');
 
   useEffect(() => {
     if (!isLoading && !isError) {
@@ -45,10 +47,13 @@ const AppShell = ({ children }: { children: ReactNode }) => {
         <Suspense fallback={<div>Loading...</div>}>
           <Layout>{children}</Layout>
         </Suspense>
-        <ClientOnly>
-          <ChatRoom />
-          <AiChat />
-        </ClientOnly>
+        {/* Patient/doctor widgets; they'd float over the admin sidebar. */}
+        {!isAdmin && (
+          <ClientOnly>
+            <ChatRoom />
+            <AiChat />
+          </ClientOnly>
+        )}
       </CallProvider>
     </SocketProvider>
   );

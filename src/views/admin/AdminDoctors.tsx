@@ -198,14 +198,14 @@ const AdminDoctors = () => {
   const count = (k: ApprovalStatus | 'all') => (k === 'all' ? all?.length : all?.filter((r) => r.status === k).length) ?? 0;
 
   return (
-    <div className='min-h-[calc(100vh-80px)] bg-slate-50/70'>
-      <div className='mx-auto max-w-[1280px] px-4 py-6 sm:px-6 lg:py-10'>
+    <div>
+      <div className='mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:py-8'>
         <header className='mb-6 flex items-start gap-3'>
           <span className='flex h-11 w-11 items-center justify-center rounded-2xl bg-primaryColor/10 text-primaryColor'>
             <ShieldCheck size={22} />
           </span>
           <div>
-            <h1 className='text-2xl font-semibold text-headingColor sm:text-[28px]'>Doctor verification</h1>
+            <h1 className='text-[28px] font-semibold tracking-tight text-headingColor'>Doctor verification</h1>
             <p className='mt-1 text-sm text-slate-500'>Check each doctor’s documents. Only approved doctors are listed and bookable.</p>
           </div>
         </header>
@@ -221,7 +221,7 @@ const AdminDoctors = () => {
               }}
               aria-current={filter === f.key ? 'page' : undefined}
               className={`cursor-pointer rounded-full px-4 py-2 text-sm font-medium transition ${
-                filter === f.key ? 'bg-primaryColor text-white' : 'bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50'
+                filter === f.key ? 'bg-primary-950 text-white' : 'bg-white text-slate-600 hover:bg-[#ece9e3]'
               }`}
             >
               {f.label} <span className='ml-1 tabular-nums opacity-75'>{count(f.key)}</span>
