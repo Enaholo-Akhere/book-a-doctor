@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { doctorsInterface } from '@/types/doctors.ds';
 import starIconAsset from '@/assets/images/Star.png';
 import Link from 'next/link';
@@ -27,10 +28,13 @@ const DoctorCard = ({
     <CardMotion styling=''>
       <div className='p-3 lg:p-5 w-full'>
         <div>
-          <img
+          <Image
             src={photo.imageUrl}
             alt={`${name}, ${specialization}`}
-            className='w-full rounded'
+            width={400}
+            height={400}
+            sizes='(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 100vw'
+            className='w-full h-auto rounded'
           />
         </div>
         <h2 className='text-[16px] leading-[30px] h-[30px] lg:text-[20px] lg:leading-9 text-headingColor font-[700] mt-3 lg:mt-5 '>

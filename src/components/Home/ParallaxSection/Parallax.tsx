@@ -1,3 +1,4 @@
+import Image from 'next/image';
 // components/motion/ParallaxSection.tsx
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
@@ -5,7 +6,6 @@ import Link from 'next/link';
 import Button from '@/components/Button';
 import teamDoctorImgAsset from '@/assets/images/team_doctors.jpg';
 
-const teamDoctorImg: string = teamDoctorImgAsset.src;
 
 const ParallaxSection = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -36,14 +36,13 @@ const ParallaxSection = () => {
           top: '-20%',
         }}
       >
-        <img
-          src={teamDoctorImg}
+        {/* 5568×3712 original: next/image serves a screen-sized version. */}
+        <Image
+          src={teamDoctorImgAsset}
           alt='Our medical team'
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-          }}
+          fill
+          sizes='100vw'
+          style={{ objectFit: 'cover' }}
         />
       </motion.div>
 
