@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { NO_INDEX } from '@/constants/site';
-import AdminDoctors from '@/views/admin/AdminDoctors';
+import AdminOverview from '@/views/admin/AdminOverview';
 
-export const metadata: Metadata = { title: 'Doctor verification', robots: NO_INDEX };
+export const metadata: Metadata = { title: 'Admin overview', robots: NO_INDEX };
 
 export default function Page() {
-  return <AdminDoctors />;
+  return <AdminOverview />;
 }
