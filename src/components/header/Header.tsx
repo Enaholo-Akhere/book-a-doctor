@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { getDefaultRoute } from '@/routes/redirect';
 // import logo from '@/assets/images/logo.png';
 import { BiMenu } from 'react-icons/bi';
 import Link from 'next/link';
@@ -19,7 +20,7 @@ const Header = ({
 }) => {
   const user = useAuthStore((state) => state.user);
 
-  const role = user?.role === 'patient' ? 'users' : 'dashboard';
+  const accountPath = getDefaultRoute(user?.role);
 
   const headerRef = useRef<HTMLDivElement | null>(null);
 
@@ -77,7 +78,7 @@ const Header = ({
         <div className='flex items-center gap-4'>
           {user?.photo.imageUrl && (
             <div className=''>
-              <Link href={`/${role}/profile/me`}>
+              <Link href={accountPath}>
                 <figure className='w-[35px] h-[35px] rounded-full cursor-pointer'>
                   <img
                     src={user.photo.imageUrl}

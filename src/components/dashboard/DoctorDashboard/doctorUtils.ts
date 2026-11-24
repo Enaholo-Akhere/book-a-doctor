@@ -2,7 +2,7 @@ import { AppointmentPatient, appointments, doctorsInterface, ReviewInterface } f
 import { formatTime } from '@/utils/formatDate';
 import { newestFirst } from '../shared/healthUtils';
 
-export type DoctorTab = 'overview' | 'appointments' | 'patients' | 'records' | 'reviews' | 'profile';
+export type DoctorTab = 'overview' | 'appointments' | 'patients' | 'records' | 'reviews' | 'verification' | 'profile';
 
 export const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as const;
 

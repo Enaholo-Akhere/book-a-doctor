@@ -44,6 +44,11 @@ const DoctorsList = ({
           <Error errorMessage={handleAxiosError(error)} />
         </div>
       )}
+      {!isLoading && !isError && data?.data?.length === 0 && (
+        <p className='col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 py-12 text-center text-textColor'>
+          No doctors found. Try a different name or specialty.
+        </p>
+      )}
       {!isLoading &&
         !isError &&
         data &&

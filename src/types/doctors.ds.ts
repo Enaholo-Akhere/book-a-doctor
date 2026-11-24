@@ -87,7 +87,7 @@ export interface doctorsInterface {
     photo: { imageUrl: string, publicId: string };
     totalPatients: number | null;
     hospital: string;
-    isApproved: 'approved' | 'pending';
+    isApproved: 'approved' | 'pending' | 'cancelled';
     gender: 'male' | 'female' | 'other';
     bio: string;
     about: string;

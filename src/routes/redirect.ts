@@ -6,7 +6,7 @@ export type UserRole = 'patient' | 'doctor' | 'admin';
 const AUTH_PAGES = ['/login', '/signup'];
 
 export const getDefaultRoute = (role?: UserRole | null): string =>
-  role === 'doctor' ? '/dashboard/profile/me' : '/users/profile/me';
+  role === 'admin' ? '/admin' : role === 'doctor' ? '/dashboard/profile/me' : '/users/profile/me';
 
 /** Serialises the current browser location so it can be restored after login. */
 export const toRedirectPath = (): string =>
