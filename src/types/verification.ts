@@ -89,7 +89,7 @@ export interface AdminOverview {
   bookings: { created: number; paid: Change; paymentRatePct: number | null; cancellationRatePct: number | null };
   revenue: { currency: string; total: Change; perBooking: number | null };
   quality: { averageRating: number | null; totalReviews: number; newReviews: number; consultationsRecorded: number };
-  series: { date: string; signups: number; bookings: number; revenue: number }[];
+  series: { date: string; signups: number; bookings: number; revenue: number; prevSignups: number; prevBookings: number; prevRevenue: number }[];
   attention: {
     readyForReview: { _id: string; name: string; specialization?: string; photo?: string; since?: string }[];
     licencesExpiring: { _id: string; name: string; slug?: string; expiresAt: string }[];

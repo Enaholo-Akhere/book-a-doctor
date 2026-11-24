@@ -3,6 +3,7 @@ import Header from '@/components/header/Header';
 import NavBar from '@/components/navBar/NavBar';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 import AOS from 'aos';
+import { usePathname } from 'next/navigation';
 
 const navLink = [
   { path: '/', display: 'Home' },
@@ -27,6 +28,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
       easing: 'ease-out-cubic',
     });
   }, []);
+
+  // The admin dashboard is a full-screen app with its own sidebar.
+  const isAdmin = usePathname()?.startsWith('/admin');
+  if (isAdmin) return <main>{children}</main>;
 
   return (
     <>
