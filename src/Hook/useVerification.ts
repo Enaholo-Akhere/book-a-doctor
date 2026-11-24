@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   adminGetDoctor,
+  adminGetOverview,
   adminListDoctors,
   adminReviewDocument,
   adminSetApproval,
@@ -37,6 +38,14 @@ export const useDeleteVerificationDocument = () => {
 };
 
 // ── Admin ──
+export const useAdminOverview = (days: number) =>
+  useQuery({
+    queryKey: ['verification', 'admin', 'overview', days],
+    queryFn: () => adminGetOverview(days),
+    retry: false,
+    placeholderData: (prev) => prev, // keep the old numbers on screen while switching period
+  });
+
 export const useAdminDoctors = (status?: ApprovalStatus) =>
   useQuery({ queryKey: KEYS.adminList(status), queryFn: () => adminListDoctors(status), retry: false });
 

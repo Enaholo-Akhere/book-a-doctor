@@ -1,5 +1,5 @@
 import { api } from '@/library/api/axios';
-import type { AdminDoctorDetail, AdminDoctorRow, ApprovalStatus, DocumentStatus, MyVerification } from '@/types/verification';
+import type { AdminDoctorDetail, AdminDoctorRow, AdminOverview, ApprovalStatus, DocumentStatus, MyVerification } from '@/types/verification';
 
 type Envelope<T> = { data: T };
 
@@ -19,6 +19,9 @@ export const deleteVerificationDocument = async (documentId: string) =>
   (await api.delete<Envelope<MyVerification>>(`/doctors/me/documents/${documentId}`)).data.data;
 
 // ── Admin ──
+export const adminGetOverview = async (days: number) =>
+  (await api.get<Envelope<AdminOverview>>('/admin/overview', { params: { days } })).data.data;
+
 export const adminListDoctors = async (status?: ApprovalStatus) =>
   (await api.get<Envelope<AdminDoctorRow[]>>('/admin/doctors', { params: status ? { status } : {} })).data.data;
 
