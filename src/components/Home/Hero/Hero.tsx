@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion, MotionConfig, type Variants } from 'framer-motion';
 import { GoArrowUpRight } from 'react-icons/go';
@@ -9,8 +10,6 @@ import heroDoctorsAsset from '@/assets/images/hero-doctors.jpg';
 import { useAuthStore } from '@/store/authStore';
 import { getDefaultRoute } from '@/routes/redirect';
 import CountUp from './CountUp';
-
-const heroDoctors: string = heroDoctorsAsset.src;
 
 // ── Content ─────────────────────────────────────────────────────────
 const HEADLINE: { text: string; accent?: boolean }[] = [
@@ -41,9 +40,12 @@ const headline: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
 };
+// Only a slide, no fade or blur: the headline is the page's largest text,
+// and starting it at opacity 0 hid it until JavaScript ran, which delayed
+// Largest Contentful Paint (a Google ranking signal).
 const word: Variants = {
-  hidden: { opacity: 0, y: 28, filter: 'blur(8px)' },
-  show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: EASE } },
+  hidden: { y: 18 },
+  show: { y: 0, transition: { duration: 0.7, ease: EASE } },
 };
 const fromSide = (x: number, delay: number): Variants => ({
   hidden: { opacity: 0, x },
@@ -182,9 +184,11 @@ const Hero = () => {
                 transition={{ duration: 1, delay: 0.35, ease: EASE }}
                 className='relative mx-auto w-[88%] overflow-hidden rounded-t-[999px] shadow-[0_30px_80px_-20px_rgba(13,140,129,0.35)] ring-8 ring-white/60'
               >
-                <img
-                  src={heroDoctors}
+                <Image
+                  src={heroDoctorsAsset}
                   alt='Three CareConnect doctors in white coats'
+                  priority
+                  sizes='(min-width: 1024px) 600px, 100vw'
                   className='block aspect-[5/4] w-full object-cover object-[50%_20%] brightness-[1.12] contrast-[0.95] saturate-[0.92]'
                   fetchPriority='high'
                 />

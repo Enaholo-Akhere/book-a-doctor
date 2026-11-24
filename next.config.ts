@@ -5,6 +5,10 @@ const BACKEND_ORIGIN = process.env.BACKEND_ORIGIN || 'https://doctor-webapp-back
 
 const nextConfig: NextConfig = {
   agentRules: false,
+  images: {
+    // Doctor and patient photos are uploaded to Cloudinary.
+    remotePatterns: [{ protocol: 'https', hostname: 'res.cloudinary.com', pathname: '/careconnects/**' }],
+  },
   // Inlined into the browser bundle at build time, so production works
   // without any NEXT_PUBLIC_* variables set on Netlify.
   env: {

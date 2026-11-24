@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import FaqList from './FaqList';
 import faqImgAsset from '@/assets/images/faq-img.png';
 import {
@@ -8,7 +9,6 @@ import {
   sectionViewport,
 } from '@/components/Motions/flexMotion';
 
-const faqImg: string = faqImgAsset.src;
 
 const Faq = () => {
   return (
@@ -24,9 +24,10 @@ const Faq = () => {
             className='w-full md:w-[40%] h-full hidden md:block'
           >
             <div className='lg:w-[400px] 2xl:w-[450px]'>
-              <img
-                src={faqImg}
-                alt='doctors website'
+              <Image
+                src={faqImgAsset}
+                alt='A CareConnect doctor answering patient questions'
+                sizes='450px'
                 className='w-full h-full'
               />
             </div>

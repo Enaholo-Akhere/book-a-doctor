@@ -1,6 +1,8 @@
 import { pageMetadata } from '@/constants/site';
 import { fetchDoctors } from '@/library/api/server';
 import Home from '@/views/Home';
+import JsonLd from '@/components/seo/JsonLd';
+import { faqSchema, organizationSchema } from '@/constants/structuredData';
 
 // Re-render with fresh doctors at most every 10 minutes.
 export const revalidate = 600;
@@ -14,5 +16,10 @@ export const metadata = pageMetadata({
 });
 
 export default async function Page() {
-  return <Home initialDoctors={await fetchDoctors()} />;
+  return (
+    <>
+      <JsonLd data={[...organizationSchema(), faqSchema()]} />
+      <Home initialDoctors={await fetchDoctors()} />
+    </>
+  );
 }

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import featureImageAsset from '@/assets/images/feature-img.png';
 import videoIconAsset from '@/assets/images/video-icon.png';
 import avatarIconAsset from '@/assets/images/avatar-icon.png';
@@ -12,7 +13,6 @@ import {
   sectionViewport,
 } from '@/components/Motions/flexMotion';
 
-const featureImage: string = featureImageAsset.src;
 const videoIcon: string = videoIconAsset.src;
 const avatarIcon: string = avatarIconAsset.src;
 
@@ -65,10 +65,11 @@ const Feature = () => {
             className='relative z-0 xl:w-[770px] flex justify-end mt-[50px] lg:mt-0'
           >
             <div className='xl:w-[450px] lg:w-[350px] md:w-[400px] sm:w-[350px] w-[300px] flex justify-end items-end'>
-              <img
-                src={featureImage}
-                alt='feature image doctor app'
-                className='w-ful h-full'
+              <Image
+                src={featureImageAsset}
+                alt='A patient on a video consultation with a CareConnect doctor'
+                sizes='(min-width: 768px) 470px, 100vw'
+                className='w-full h-full'
               />
             </div>
 

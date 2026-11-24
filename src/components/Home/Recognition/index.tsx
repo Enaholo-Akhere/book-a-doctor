@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import aboutImgAsset from '@/assets/images/about.png';
 import aboutCardImgAsset from '@/assets/images/about-card.png';
 import Link from 'next/link';
@@ -11,8 +12,6 @@ import {
   sectionViewport,
 } from '@/components/Motions/flexMotion';
 
-const aboutImg: string = aboutImgAsset.src;
-const aboutCardImg: string = aboutCardImgAsset.src;
 
 const Recognition = (): React.JSX.Element => {
   return (
@@ -27,7 +26,7 @@ const Recognition = (): React.JSX.Element => {
             className='relative w-[100%] lg:w-[50%] z-0 order-2 lg:order-1'
           >
             <div className='w-[80%]'>
-              <img src={aboutImg} alt='about' className='w-full h-full' />
+              <Image src={aboutImgAsset} alt='A CareConnect doctor with a patient' sizes='(min-width: 768px) 470px, 100vw' className='w-full h-full' />
             </div>
             <MotionDiv
               initial='hidden'
@@ -36,7 +35,7 @@ const Recognition = (): React.JSX.Element => {
               variants={cardImageVariant}
               className='absolute z-20 right-0 left-auto bottom-[20px] w-[45%] max-w-[180px] sm:right-auto sm:max-w-none sm:left-[370px] sm:bottom-[60px] sm:w-[200px] md:left-[450px] md:bottom-[100px] md:w-[250px] lg:left-[260px] lg:bottom-[60px] lg:w-[200px] xl:left-[350px] xl:bottom-[50px] xl:w-[250px] 2xl:left-[430px] 2xl:bottom-[100px] 2xl:w-[300px]'
             >
-              <img src={aboutCardImg} alt='about' className='w-full h-full' />
+              <Image src={aboutCardImgAsset} alt='' sizes='334px' className='w-full h-full' />
             </MotionDiv>
           </MotionDiv>
 

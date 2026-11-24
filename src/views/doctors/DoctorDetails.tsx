@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import starIconAsset from '@/assets/images/Star.png';
 import DoctorAbout from '../../components/Doctors/DoctorAbout';
 import Feedback from '../../components/Doctors/Feedback';
@@ -32,10 +33,13 @@ const DoctorDetails = ({ initialDoctor }: { initialDoctor?: DoctorResponse }) =>
             <div className='md:col-span-2'>
               <div className='flex items-center gap-5'>
                 <figure className='max-w-[200px] max-h-[200px] '>
-                  <img
-                    src={doctorData?.photo?.imageUrl}
+                  <Image
+                    src={doctorData.photo.imageUrl}
                     alt={`${doctorData.name}, ${doctorData.specialization}`}
-                    className='full'
+                    width={200}
+                    height={200}
+                    priority
+                    className='w-full h-auto'
                   />
                 </figure>
                 <div>

@@ -5,6 +5,8 @@ import { fetchDoctor, isDoctorKey } from '@/library/api/server';
 import type { doctorsInterface } from '@/types/doctors.ds';
 import { doctorPath } from '@/utils/doctorPath';
 import DoctorDetails from '@/views/doctors/DoctorDetails';
+import JsonLd from '@/components/seo/JsonLd';
+import { doctorBreadcrumbSchema, physicianSchema } from '@/constants/structuredData';
 
 /** `slug` is a doctor's slug, or their id (older links, or a doctor without a slug yet). */
 type Props = { params: Promise<{ slug: string }> };
@@ -60,5 +62,10 @@ export default async function Page({ params }: Props) {
   if (doctor && doctorPath(doctor.data) !== `/doctors/${slug}`) permanentRedirect(doctorPath(doctor.data));
 
   // Undefined if the backend is slow or down; the profile then loads in the browser.
-  return <DoctorDetails initialDoctor={doctor} />;
+  return (
+    <>
+      {doctor && <JsonLd data={[physicianSchema(doctor.data), doctorBreadcrumbSchema(doctor.data)]} />}
+      <DoctorDetails initialDoctor={doctor} />
+    </>
+  );
 }

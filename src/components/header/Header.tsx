@@ -1,3 +1,4 @@
+import Image from 'next/image';
 // import logo from '@/assets/images/logo.png';
 import { BiMenu } from 'react-icons/bi';
 import Link from 'next/link';
@@ -51,7 +52,7 @@ const Header = ({
         <div className=''>
           <NavLink href='/'>
             <div className='w-[150px] h-full'>
-              <img src={logo1} alt='' className='w-[100%] h-[100%]' />
+              <Image src={logo1} alt='CareConnect' width={1069} height={183} sizes='150px' priority className='w-[100%] h-[100%]' />
             </div>
           </NavLink>
         </div>

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import {
   socialLinks,
@@ -18,9 +19,12 @@ const Footer = () => {
           <div className='flex justify-between flex-col md:flex-row flex-wrap gap-[35px]'>
             <div className='w-full md:w-[250px] h-full'>
               <div className='w-[150px] h-full'>
-                <img
+                <Image
                   src={logo}
-                  alt='doctors image'
+                  alt='CareConnect'
+                  width={1069}
+                  height={183}
+                  sizes='150px'
                   className='w-[100%] h-[100%]'
                 />
               </div>

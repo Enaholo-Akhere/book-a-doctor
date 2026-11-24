@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -140,7 +141,7 @@ const NavBar = ({ navLink, open, onClose }: NavBarProps) => {
         {/* Top bar */}
         <div className='flex items-center justify-between border-b border-slate-100 px-5 py-4'>
           <Link href='/' className='block w-[130px]'>
-            <img src={logo} alt='CareConnect home' className='h-auto w-full' />
+            <Image src={logo} alt='CareConnect home' width={1069} height={183} sizes='130px' className='h-auto w-full' />
           </Link>
           <button
             ref={closeRef}
