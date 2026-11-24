@@ -1,10 +1,10 @@
 'use client';
-import { ReactNode, Suspense, useEffect } from 'react';
+import { ReactNode, Suspense, useEffect, useState } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 import Layout from './layout/Layout';
-import { queryClient } from './library/provider/reactQuery';
+import { getQueryClient } from './library/provider/reactQuery';
 import { useGeolocation } from './Hook/useGeoLocation';
 import { useAuthStore } from './store/authStore';
 import SocketProvider from './library/socket/SocketProvider';
@@ -54,12 +54,16 @@ const AppShell = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const App = ({ children }: { children: ReactNode }) => (
-  <QueryClientProvider client={queryClient}>
-    <Toaster />
-    <AppShell>{children}</AppShell>
-    <ReactQueryDevtools initialIsOpen={false} />
-  </QueryClientProvider>
-);
+const App = ({ children }: { children: ReactNode }) => {
+  // One client per server request; the shared client in the browser.
+  const [queryClient] = useState(getQueryClient);
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Toaster />
+      <AppShell>{children}</AppShell>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  );
+};
 
 export default App;
