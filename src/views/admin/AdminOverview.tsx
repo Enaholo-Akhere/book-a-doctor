@@ -175,7 +175,7 @@ const NeedsAttention = ({ a }: { a: Overview['attention'] }) => {
 
 const ReviewCta = ({ waiting }: { waiting: number }) => (
   <Link
-    href='/admin/doctors'
+    href='/admin/verification'
     className='group flex items-center justify-between gap-4 rounded-[24px] bg-primary-950 px-5 py-5 text-white shadow-[0_10px_30px_rgba(3,44,41,0.2)] transition hover:bg-primary-900'
   >
     <div>

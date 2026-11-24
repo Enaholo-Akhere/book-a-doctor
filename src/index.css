@@ -235,3 +235,24 @@ body {
     }
   }
 }
+
+/* Rich-text editor on the admin Messages page (react-quill-new, snow theme) */
+.admin-quill .ql-toolbar.ql-snow {
+  border: 0;
+  border-bottom: 1px solid #eef0f2;
+  background: #faf9f7;
+  padding: 10px 12px;
+}
+.admin-quill .ql-container.ql-snow {
+  border: 0;
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+}
+.admin-quill .ql-editor {
+  min-height: 220px;
+  color: #1b1a1e;
+}
+.admin-quill .ql-editor.ql-blank::before {
+  color: #94a3b8;
+  font-style: normal;
+}
