@@ -10,9 +10,10 @@ import Testimonial from '../components/Testimonial';
 import { useGetAllDoctors } from '@/Hook/useDoctors';
 import { AxiosError } from 'axios';
 import ParallaxSection from '@/components/Home/ParallaxSection/Parallax';
+import type { DoctorsResponse } from '@/library/api/server';
 
-const Home = () => {
-  const { isLoading, isError, data, error } = useGetAllDoctors('');
+const Home = ({ initialDoctors }: { initialDoctors?: DoctorsResponse }) => {
+  const { isLoading, isError, data, error } = useGetAllDoctors('', initialDoctors);
   return (
     <>
       {/*======== hero section here ========*/}

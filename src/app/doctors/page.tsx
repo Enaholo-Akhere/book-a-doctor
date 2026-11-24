@@ -1,5 +1,9 @@
 import { pageMetadata } from '@/constants/site';
+import { fetchDoctors } from '@/library/api/server';
 import Doctors from '@/views/doctors/Doctors';
+
+// Re-render with fresh doctors at most every 10 minutes.
+export const revalidate = 600;
 
 export const metadata = pageMetadata({
   title: 'Find a Doctor Online',
@@ -8,6 +12,6 @@ export const metadata = pageMetadata({
   path: '/doctors',
 });
 
-export default function Page() {
-  return <Doctors />;
+export default async function Page() {
+  return <Doctors initialDoctors={await fetchDoctors()} />;
 }

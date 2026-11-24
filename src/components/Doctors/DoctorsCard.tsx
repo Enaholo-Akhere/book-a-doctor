@@ -29,7 +29,7 @@ const DoctorCard = ({
         <div>
           <img
             src={photo.imageUrl}
-            alt='doctor specialization'
+            alt={`${name}, ${specialization}`}
             className='w-full rounded'
           />
         </div>

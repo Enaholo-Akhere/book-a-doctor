@@ -1,5 +1,9 @@
 import { pageMetadata } from '@/constants/site';
+import { fetchDoctors } from '@/library/api/server';
 import Home from '@/views/Home';
+
+// Re-render with fresh doctors at most every 10 minutes.
+export const revalidate = 600;
 
 export const metadata = pageMetadata({
   title: 'CareConnect – Online Doctor Consultations from Home',
@@ -9,6 +13,6 @@ export const metadata = pageMetadata({
   path: '/',
 });
 
-export default function Page() {
-  return <Home />;
+export default async function Page() {
+  return <Home initialDoctors={await fetchDoctors()} />;
 }
