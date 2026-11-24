@@ -1,7 +1,6 @@
 'use client';
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { usePageTitle } from '@/Hook/useTitle';
 import { useChatUIStore } from '@/store/chatUIStore';
 import Button from '@/components/Button';
 
@@ -10,7 +9,6 @@ import Button from '@/components/Button';
  * into a conversation: /users/chat?with=<doctorId>.
  */
 const Chat = () => {
-  usePageTitle('Chat - CareConnect');
   const params = useSearchParams();
   const peerId = params.get('with');
   const isOpen = useChatUIStore((s) => s.isOpen);

@@ -5,7 +5,6 @@ import Testimonial from '@/components/Testimonial';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
-import { usePageTitle } from '@/Hook/useTitle';
 
 const Doctors = () => {
   const { register, watch } = useForm({
@@ -27,8 +26,6 @@ const Doctors = () => {
   }, [searchQuery]);
 
   const { isLoading, isError, data, error } = useGetAllDoctors(debouncedSearch);
-
-  usePageTitle('Doctors - CareConnect');
 
   return (
     <>
