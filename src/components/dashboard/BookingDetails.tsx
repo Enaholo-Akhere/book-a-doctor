@@ -111,8 +111,8 @@ function InfoRow({
         {icon}
         {/* {label} */}
       </span>
-      <span className='text-sm text-slate-800 font-[Cormorant_Infant] font-semibold'>
-        <span className='uppercase font-semibold text-[18px] font-[Cormorant_Infant] text-primaryColor'>
+      <span className='text-sm text-slate-800 font-[family-name:var(--font-cormorant)] font-semibold'>
+        <span className='uppercase font-semibold text-[18px] font-[family-name:var(--font-cormorant)] text-primaryColor'>
           {day}{' '}
         </span>{' '}
         {value} - {value2}

@@ -3,6 +3,7 @@ import 'aos/dist/aos.css';
 import '@/index.css';
 import App from '@/App';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/constants/site';
+import { cormorant, manrope } from './fonts';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -20,7 +21,10 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image' },
   manifest: '/manifest.webmanifest',
   icons: {
-    icon: '/careconnect-favicon.png',
+    icon: [
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-48.png', sizes: '48x48', type: 'image/png' },
+    ],
     apple: '/apple-touch-icon.png',
   },
 };
@@ -33,7 +37,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='en' data-scroll-behavior='smooth'>
+    <html lang='en' data-scroll-behavior='smooth' className={`${manrope.variable} ${cormorant.variable}`}>
       {/* Browser extensions (e.g. ColorZilla's cz-shortcut-listen) add
           attributes to <body> before React loads. This only ignores
           attribute differences on <body> itself, not its children. */}

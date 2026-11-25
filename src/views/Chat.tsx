@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useChatUIStore } from '@/store/chatUIStore';
 import Button from '@/components/Button';
@@ -29,4 +29,12 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+// useSearchParams needs a Suspense boundary of its own. Keeping it here, rather than one
+// around the whole app, stops every page being held back until JavaScript reveals it.
+const ChatWithSuspense = () => (
+  <Suspense fallback={null}>
+    <Chat />
+  </Suspense>
+);
+
+export default ChatWithSuspense;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
@@ -235,4 +235,12 @@ const UserDashboard = () => {
   );
 };
 
-export default UserDashboard;
+// useSearchParams needs a Suspense boundary of its own. Keeping it here, rather than one
+// around the whole app, stops every page being held back until JavaScript reveals it.
+const UserDashboardWithSuspense = () => (
+  <Suspense fallback={null}>
+    <UserDashboard />
+  </Suspense>
+);
+
+export default UserDashboardWithSuspense;

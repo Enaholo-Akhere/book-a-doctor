@@ -1,5 +1,5 @@
 'use client';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, ComponentProps, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { getPostLoginRoute } from '@/routes/redirect';
@@ -31,4 +31,12 @@ const AuthProtectedRoute = ({ children }: { children: ReactNode }) => {
   return <>{children}</>;
 };
 
-export default AuthProtectedRoute;
+// useSearchParams needs a Suspense boundary of its own. Keeping it here, rather than one
+// around the whole app, stops every page being held back until JavaScript reveals it.
+const AuthProtectedRouteWithSuspense = (props: ComponentProps<typeof AuthProtectedRoute>) => (
+  <Suspense fallback={null}>
+    <AuthProtectedRoute {...props} />
+  </Suspense>
+);
+
+export default AuthProtectedRouteWithSuspense;

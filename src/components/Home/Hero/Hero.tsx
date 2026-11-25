@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, MotionConfig, type Variants } from 'framer-motion';
+import { m, MotionConfig, type Variants } from 'framer-motion';
 import { GoArrowUpRight } from 'react-icons/go';
 import { TbHeartHandshake } from 'react-icons/tb';
 import { MdOutlineSupportAgent, MdOutlineVerified } from 'react-icons/md';
@@ -62,7 +62,7 @@ const rise: Variants = {
 
 /** Soft "+" marks that drift gently, as in the design. */
 const Plus = ({ className, delay = 0 }: { className: string; delay?: number }) => (
-  <motion.span
+  <m.span
     aria-hidden
     className={`pointer-events-none absolute text-white/70 select-none ${className}`}
     initial={{ opacity: 0, scale: 0.6 }}
@@ -76,7 +76,7 @@ const Plus = ({ className, delay = 0 }: { className: string; delay?: number }) =
     <svg viewBox='0 0 24 24' className='size-full' fill='currentColor'>
       <path d='M9 2h6v7h7v6h-7v7H9v-7H2V9h7z' />
     </svg>
-  </motion.span>
+  </m.span>
 );
 
 const Hero = () => {
@@ -92,27 +92,27 @@ const Hero = () => {
       <section className='hero__section relative overflow-hidden !px-0 !pb-0 pt-10 md:pt-14 max-lg:!bg-[length:100%_100%]'>
         <div className='container relative'>
           {/* ── Headline ─────────────────────────────────────── */}
-          <motion.h1
+          <m.h1
             variants={headline}
             initial='hidden'
             animate='show'
             className='mx-auto max-w-[980px] text-center text-[34px] leading-[1.15] sm:text-[48px] lg:text-[64px] xl:text-[72px] font-[800] tracking-[-0.02em] text-headingColor'
           >
             {HEADLINE.map((w, i) => (
-              <motion.span
+              <m.span
                 key={w.text}
                 variants={word}
                 className={`inline-block ${w.accent ? 'text-primaryColor' : ''} ${i < HEADLINE.length - 1 ? 'mr-[0.25em]' : ''}`}
               >
                 {w.text}
-              </motion.span>
+              </m.span>
             ))}
-          </motion.h1>
+          </m.h1>
 
           {/* ── Body: copy | photo stage | stats ─────────────── */}
           <div className='mt-8 lg:mt-12 grid grid-cols-1 lg:grid-cols-[1fr_minmax(0,600px)_1fr] items-end gap-y-10 lg:gap-x-6'>
             {/* Left */}
-            <motion.div
+            <m.div
               variants={fromSide(-30, 0.7)}
               initial='hidden'
               animate='show'
@@ -141,7 +141,7 @@ const Hero = () => {
                   <p className='mt-1 text-[13px] text-textColor'>Happy patients</p>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
 
             {/* Center: arch stage */}
             <div className='order-1 lg:order-2 relative mx-auto w-full max-w-[600px]'>
@@ -153,7 +153,7 @@ const Hero = () => {
                 fill='none'
               >
                 {[290, 250, 210].map((r, i) => (
-                  <motion.path
+                  <m.path
                     key={r}
                     d={`M ${300 - r} 360 A ${r} ${r} 0 0 1 ${300 + r} 360`}
                     stroke='#0c8075'
@@ -178,7 +178,7 @@ const Hero = () => {
               <Plus className='size-5 sm:size-7 right-[-2%] top-[42%] text-primaryColor/20' delay={1.6} />
 
               {/* photo in an arch, fading into the strip below */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 50, scale: 0.94 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 1, delay: 0.35, ease: EASE }}
@@ -195,10 +195,10 @@ const Hero = () => {
                 <div aria-hidden className='absolute inset-0 bg-gradient-to-b from-white/30 via-white/5 to-transparent' />
                 <div aria-hidden className='absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white via-white/40 to-transparent' />
                 <div aria-hidden className='absolute inset-0 bg-gradient-to-br from-primaryColor/10 via-transparent to-[#feb60d]/10 mix-blend-multiply' />
-              </motion.div>
+              </m.div>
 
               {/* CTA pill */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 16, scale: 0.92 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.6, delay: 1.1, ease: EASE }}
@@ -216,18 +216,18 @@ const Hero = () => {
                 >
                   {secondary.label}
                 </Link>
-              </motion.div>
+              </m.div>
             </div>
 
             {/* Right: stats */}
-            <motion.div
+            <m.div
               variants={stagger(0.85, 0.18)}
               initial='hidden'
               animate='show'
               className='order-3 flex justify-center gap-10 lg:flex-col lg:items-end lg:gap-14 lg:self-center lg:pb-24'
             >
               {STATS.map((s) => (
-                <motion.div key={s.label} variants={fromSide(30, 0)} className='flex items-center gap-5'>
+                <m.div key={s.label} variants={fromSide(30, 0)} className='flex items-center gap-5'>
                   <div className='text-center lg:text-right'>
                     <p className='text-[44px] lg:text-[60px] leading-none font-[700] text-primaryColor'>
                       <CountUp to={s.to} suffix={s.suffix} delay={1} duration={2} />
@@ -238,14 +238,14 @@ const Hero = () => {
                   <span aria-hidden className='relative hidden lg:block h-24 w-px bg-primaryColor/40'>
                     <span className='absolute left-1/2 top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-primaryColor' />
                   </span>
-                </motion.div>
+                </m.div>
               ))}
-            </motion.div>
+            </m.div>
           </div>
         </div>
 
         {/* ── Trust strip ───────────────────────────────────── */}
-        <motion.div
+        <m.div
           variants={stagger(1.25, 0.08)}
           initial='hidden'
           animate='show'
@@ -253,17 +253,17 @@ const Hero = () => {
         >
           <ul className='container grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-center gap-x-6 sm:gap-x-10 gap-y-4 py-8 lg:justify-between lg:px-16'>
             {TRUST_ITEMS.map(({ icon: Icon, label }) => (
-              <motion.li
+              <m.li
                 key={label}
                 variants={rise}
                 className='flex items-center gap-2 sm:gap-2.5 text-[14px] sm:text-[17px] lg:text-[20px] font-semibold text-slate-500 last:col-span-2 last:justify-center sm:last:col-span-1'
               >
                 <Icon className='size-6 text-slate-400' aria-hidden />
                 {label}
-              </motion.li>
+              </m.li>
             ))}
           </ul>
-        </motion.div>
+        </m.div>
       </section>
     </MotionConfig>
   );

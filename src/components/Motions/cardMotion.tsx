@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 const CardMotion = ({
   children,
@@ -8,7 +8,7 @@ const CardMotion = ({
   styling: string;
 }) => {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
@@ -18,7 +18,7 @@ const CardMotion = ({
       className={`${styling} cursor-pointer`}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 };
 
