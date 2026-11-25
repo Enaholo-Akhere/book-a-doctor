@@ -1,10 +1,14 @@
 'use client';
+import { Suspense } from 'react';
 import EmailVerify from '@/components/emailVerify';
 
 const EmailVerification = () => {
   return (
     <section>
-      <EmailVerify />
+      {/* EmailVerify reads the URL's search params, which Next requires to sit inside Suspense. */}
+      <Suspense fallback={null}>
+        <EmailVerify />
+      </Suspense>
     </section>
   );
 };

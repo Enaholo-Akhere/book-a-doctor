@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { registerUser, loginUser, verifyUser, logoutUser, forgotPassword, setPassword } from "@/services/auth.service";
+import { registerUser, loginUser, verifyUser, logoutUser, forgotPassword, setPassword, resendVerification } from "@/services/auth.service";
 import { useAuthStore } from "@/store/authStore";
 
 export const useRegister = () => {
@@ -33,6 +33,12 @@ export const useSetPassword = () => {
 export const useVerifyEmail = () => {
     return useMutation({
         mutationFn: verifyUser,
+    });
+}
+
+export const useResendVerification = () => {
+    return useMutation({
+        mutationFn: resendVerification,
     });
 }
 

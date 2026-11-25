@@ -54,9 +54,9 @@ const SignupComp = () => {
     formData.append('photo', data.photo[0]);
 
     mutate(formData, {
-      onSuccess: () => {
-        toast.success('Signup successful');
-        router.push('/login');
+      onSuccess: (res) => {
+        toast.success(res?.message || 'Account created. Check your email to verify it.');
+        router.push(`/verify-email?email=${encodeURIComponent(data.email)}`);
       },
       onError: (err) => {
         const error = err as AxiosError;
