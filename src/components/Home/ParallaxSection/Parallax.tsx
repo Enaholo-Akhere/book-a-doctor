@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 // components/motion/ParallaxSection.tsx
 import { m, useScroll, useTransform } from 'framer-motion';

@@ -1,3 +1,4 @@
+'use client';
 import { questionContent } from '@/types/doctors.ds';
 import { useState } from 'react';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';

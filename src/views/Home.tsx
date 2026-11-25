@@ -5,15 +5,12 @@ import GetInTouch from '@/components/Home/GetInTouch/GetInTouch';
 import Feature from '@/components/Home/Feature/Feature';
 import Faq from '@/components/Home/Faq';
 import Services from '../components/Services';
-import DoctorsHome from '../components/Doctors';
+import HomeDoctors from '@/components/Home/HomeDoctors';
 import Testimonial from '../components/Testimonial';
-import { useGetAllDoctors } from '@/Hook/useDoctors';
-import { AxiosError } from 'axios';
 import ParallaxSection from '@/components/Home/ParallaxSection/Parallax';
 import type { DoctorsResponse } from '@/library/api/server';
 
 const Home = ({ initialDoctors }: { initialDoctors?: DoctorsResponse }) => {
-  const { isLoading, isError, data, error } = useGetAllDoctors('', initialDoctors);
   return (
     <>
       {/*======== hero section here ========*/}
@@ -41,15 +38,7 @@ const Home = ({ initialDoctors }: { initialDoctors?: DoctorsResponse }) => {
 
       {/* ======== Our great doctors ======== */}
 
-      <DoctorsHome
-        subtitle=' Our team of compassionate, skilled doctors is here to provide
-            personalized, top-quality care every step of the way.'
-        title='Our great doctors'
-        isLoading={isLoading}
-        isError={isError}
-        data={data}
-        error={error as AxiosError}
-      />
+      <HomeDoctors initialDoctors={initialDoctors} />
 
       {/* ======== FAQ ======== */}
       <Faq />

@@ -1,19 +1,17 @@
 import Link from 'next/link';
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
 import { Service } from '@/assets/data/services';
-import { useAuthStore } from '@/store/authStore';
-import { openAiChat } from '@/components/AiChat/openAiChat';
+import ServiceAiCta from './ServiceAiCta';
 
 /**
  * - light: the home page section
  * - dark:  the Services page (glowing dark cards, after the reference design)
+ *
+ * Rendered on the server; only the AI assistant's button (ServiceAiCta) runs in the browser.
  */
 const ServiceCard = ({ item, variant = 'light' }: { item: Service; variant?: 'light' | 'dark' }) => {
   const { name, desc, includes, icon: Icon, color, cta, category } = item;
-  const role = useAuthStore((s) => s.user?.role);
   const isAi = category === 'ai';
-  // The AI assistant is for patients and guests only.
-  const aiUnavailable = isAi && role === 'doctor';
 
   if (variant === 'dark') {
     const ctaClass = 'inline-flex items-center gap-1.5 text-sm font-bold text-white transition hover:gap-2.5';
@@ -50,12 +48,13 @@ const ServiceCard = ({ item, variant = 'light' }: { item: Service; variant?: 'li
         </ul>
 
         <div className='relative mt-auto flex justify-center pt-7'>
-          {aiUnavailable ? (
-            <span className='text-sm text-white/40'>Available to patients</span>
-          ) : cta.to === 'ai' ? (
-            <button type='button' onClick={openAiChat} className={`${ctaClass} cursor-pointer`}>
-              {cta.label} <ArrowUpRight size={16} />
-            </button>
+          {cta.to === 'ai' ? (
+            <ServiceAiCta
+              label={cta.label}
+              arrow='up-right'
+              className={`${ctaClass} cursor-pointer`}
+              unavailableClassName='text-sm text-white/40'
+            />
           ) : (
             <Link href={cta.to} className={ctaClass}>
               {cta.label} <ArrowUpRight size={16} />
@@ -96,12 +95,13 @@ const ServiceCard = ({ item, variant = 'light' }: { item: Service; variant?: 'li
         ))}
       </ul>
 
-      {aiUnavailable ? (
-        <p className='mt-auto pt-5 text-sm text-slate-400'>Available to patients</p>
-      ) : cta.to === 'ai' ? (
-        <button type='button' onClick={openAiChat} className={`${ctaClass} cursor-pointer text-secondary-700`}>
-          {cta.label} <ArrowRight size={16} />
-        </button>
+      {cta.to === 'ai' ? (
+        <ServiceAiCta
+          label={cta.label}
+          arrow='right'
+          className={`${ctaClass} cursor-pointer text-secondary-700`}
+          unavailableClassName='mt-auto pt-5 text-sm text-slate-400'
+        />
       ) : (
         <Link href={cta.to} className={ctaClass}>
           {cta.label} <ArrowRight size={16} />
