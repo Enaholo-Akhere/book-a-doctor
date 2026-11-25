@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import HashLoader from 'react-spinners/HashLoader';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useResendVerification, useVerifyEmail } from '@/Hook/auth/userAuth';
+import { useResendVerification } from '@/Hook/auth/userAuth';
+import { verifyUser } from '@/services/auth.service';
 import { toast } from 'react-hot-toast';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { handleAxiosError } from '@/utils/axiosError';
@@ -19,31 +20,33 @@ const EmailVerify = () => {
   const token = searchParams.get('token') || '';
   const isLink = Boolean(userId && token);
 
-  const verify = useVerifyEmail();
   const resend = useResendVerification();
 
   const [email, setEmail] = useState(searchParams.get('email') || '');
+  const [status, setStatus] = useState<'verifying' | 'success' | 'error'>('verifying');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Effects run twice in development; the link should only be submitted once.
+  // In development React mounts effects twice. The ref makes sure the link is submitted only
+  // once. The result goes into this component's own state rather than useMutation's, which
+  // stops reporting back after that first simulated unmount, leaving the spinner up forever.
   const submitted = useRef(false);
 
   useEffect(() => {
     if (!isLink || submitted.current) return;
     submitted.current = true;
 
-    verify.mutate(
-      { token, id: userId },
-      {
-        onSuccess: (res) => {
-          toast.success(res?.message || 'Email verified successfully');
-          setTimeout(() => router.push('/login'), 2500);
-        },
-        onError: (err) => setErrorMessage(handleAxiosError(err) || 'Email verification failed'),
-      }
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLink, token, userId]);
+    verifyUser({ token, id: userId })
+      .then((res) => {
+        setStatus('success');
+        // The Toaster lives in the app shell, so this stays on screen after the redirect.
+        toast.success(res?.message || 'Email verified successfully. You can now log in.', { duration: 5000 });
+        router.replace('/login');
+      })
+      .catch((err) => {
+        setErrorMessage(handleAxiosError(err) || 'Email verification failed');
+        setStatus('error');
+      });
+  }, [isLink, token, userId, router]);
 
   const requestNewLink = (e?: FormEvent) => {
     e?.preventDefault();
@@ -86,7 +89,7 @@ const EmailVerify = () => {
     </form>
   );
 
-  if (isLink && (verify.isPending || verify.isIdle)) {
+  if (isLink && status === 'verifying') {
     return (
       <div className='flex justify-center items-center flex-col gap-5 py-10'>
         <HashLoader size={50} color={'#0073e6'} loading={true} />
@@ -95,12 +98,12 @@ const EmailVerify = () => {
     );
   }
 
-  if (isLink && verify.isSuccess) {
+  if (isLink && status === 'success') {
     return (
       <div className='px-5'>
         <div className={card}>
           <h2 className='text-2xl font-bold text-headingColor'>Email verified ✅</h2>
-          <p className='mt-3 text-textColor'>{verify.data?.message} Taking you to login…</p>
+          <p className='mt-3 text-textColor'>Taking you to login…</p>
           <Link href='/login' className={`${button} inline-block mt-6`}>
             Go to login
           </Link>
@@ -109,7 +112,7 @@ const EmailVerify = () => {
     );
   }
 
-  if (isLink && verify.isError) {
+  if (isLink && status === 'error') {
     return (
       <div className='px-5'>
         <div className={card}>
