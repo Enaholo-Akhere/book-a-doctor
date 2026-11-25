@@ -254,3 +254,87 @@ body {
   color: #94a3b8;
   font-style: normal;
 }
+
+/* ── Hero entrance ─────────────────────────────────────────────────────
+   Plain CSS rather than framer-motion: these start with the first paint and
+   need no JavaScript, so the hero is fully drawn without waiting for the
+   bundle to download and hydrate (which slowed Speed Index and LCP).
+   Use with an inline `animation-delay`. */
+@keyframes hero-slide-up {
+  from { transform: translateY(18px); }
+}
+@keyframes hero-in-left {
+  from { opacity: 0; transform: translateX(-30px); }
+}
+@keyframes hero-in-right {
+  from { opacity: 0; transform: translateX(30px); }
+}
+@keyframes hero-photo {
+  from { opacity: 0; transform: translateY(50px) scale(0.94); }
+}
+@keyframes hero-pop {
+  from { opacity: 0; transform: translateY(16px) scale(0.92); }
+}
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(20px); }
+}
+@keyframes hero-draw {
+  from { stroke-dashoffset: 1; opacity: 0; }
+  to { stroke-dashoffset: 0; opacity: 1; }
+}
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes hero-fade-scale {
+  from { opacity: 0; transform: scale(0.6); }
+}
+
+.hero-anim {
+  animation-duration: 0.7s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: both;
+}
+.hero-anim-slide-up { animation-name: hero-slide-up; }
+.hero-anim-in-left { animation-name: hero-in-left; }
+.hero-anim-in-right { animation-name: hero-in-right; }
+.hero-anim-photo { animation-name: hero-photo; animation-duration: 0.9s; }
+.hero-anim-pop { animation-name: hero-pop; animation-duration: 0.6s; }
+.hero-anim-rise { animation-name: hero-rise; animation-duration: 0.6s; }
+.hero-anim-draw {
+  stroke-dasharray: 1;
+  animation-name: hero-draw;
+  animation-duration: 1.2s;
+}
+.hero-plus {
+  animation:
+    hero-fade-scale 0.6s cubic-bezier(0.16, 1, 0.3, 1) both,
+    hero-float 5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-anim,
+  .hero-plus {
+    animation: none;
+  }
+}
+
+/* ── Scroll reveal ─────────────────────────────────────────────────────
+   [data-aos='fade-up'] elements slide up into view; useScrollReveal adds
+   [data-aos-shown] when they enter the viewport. Same timing as the AOS
+   setup it replaces (700ms, ease-out-cubic, 100px travel). */
+@media (prefers-reduced-motion: no-preference) {
+  [data-aos='fade-up'] {
+    opacity: 0;
+    transform: translateY(100px);
+    transition:
+      opacity 0.7s cubic-bezier(0.215, 0.61, 0.355, 1),
+      transform 0.7s cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  [data-aos][data-aos-delay='100'] { transition-delay: 0.1s; }
+  [data-aos][data-aos-delay='200'] { transition-delay: 0.2s; }
+  [data-aos][data-aos-shown] {
+    opacity: 1;
+    transform: none;
+  }
+}

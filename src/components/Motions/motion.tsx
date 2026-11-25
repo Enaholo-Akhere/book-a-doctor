@@ -1,3 +1,4 @@
+'use client';
 import { m } from 'framer-motion';
 
 const FadeInSection = ({ children }: { children: React.ReactNode }) => {

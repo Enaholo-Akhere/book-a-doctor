@@ -1,3 +1,4 @@
+'use client';
 import { usePathname } from 'next/navigation';
 import DoctorsList from './DoctorsList';
 import { doctorsInterface } from '@/types/doctors.ds';

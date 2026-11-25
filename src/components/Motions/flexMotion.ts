@@ -1,4 +1,4 @@
-import { m, Variants } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 
 export const imageVariant: Variants = {
   hidden: { opacity: 0, x: -50, scale: 0.95 },
@@ -38,5 +38,6 @@ export const textItemVariant: Variants = {
 
 export const sectionViewport = { once: true, amount: 0.3 } as const;
 
-export const MotionSection = m.section;
-export const MotionDiv = m.div;
+// The motion elements live in a client module; the variants above are plain data, so
+// server components can import them and pass them as props.
+export { MotionDiv, MotionSection } from './flexMotionClient';
