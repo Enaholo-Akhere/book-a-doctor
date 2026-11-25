@@ -1,5 +1,12 @@
 import { usePathname } from 'next/navigation';
-import TestimonialSwiper from './TestimonialSwiper';
+import dynamic from 'next/dynamic';
+
+// The carousel (and the Swiper library) sits far below the fold on every page that shows it,
+// so load it after the page is up rather than in the initial bundle.
+const TestimonialSwiper = dynamic(() => import('./TestimonialSwiper'), {
+  ssr: false,
+  loading: () => <div className='min-h-[320px]' aria-hidden />,
+});
 
 const Testimonial = () => {
   const pathname = usePathname();

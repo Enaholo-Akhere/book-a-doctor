@@ -1,6 +1,6 @@
 import { api } from "@/library/api/axios";
 import { useAuthStore } from "@/store/authStore";
-import { feedbackType } from "@/utils/authSchema";
+import type { feedbackType } from "@/utils/authSchema";
 import { ReviewInterface } from "@/types/doctors.ds";
 export const review = async ({ id, payload }: { id: string; payload: feedbackType }) => {
     const userId = useAuthStore.getState().user?._id

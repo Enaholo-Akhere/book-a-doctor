@@ -1,4 +1,5 @@
 'use client';
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Check, X } from 'lucide-react';
 import { useBookingTransactionFlutterwave } from '@/Hook/useBooking';
@@ -79,7 +80,15 @@ const PaymentSuccessPage = () => {
   }
 };
 
-export default PaymentSuccessPage;
+// useSearchParams needs a Suspense boundary of its own. Keeping it here, rather than one
+// around the whole app, stops every page being held back until JavaScript reveals it.
+const PaymentSuccessPageWithSuspense = () => (
+  <Suspense fallback={null}>
+    <PaymentSuccessPage />
+  </Suspense>
+);
+
+export default PaymentSuccessPageWithSuspense;
 
 const Row = ({ label, value }: { label: string; value: React.ReactNode }) => (
   <div className='flex justify-between items-center'>

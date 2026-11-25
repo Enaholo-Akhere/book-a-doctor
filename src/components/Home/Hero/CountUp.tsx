@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { animate, useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from 'framer-motion';
 
 interface CountUpProps {
   to: number;
@@ -12,6 +12,9 @@ interface CountUpProps {
 
 const defaultFormat = (v: number) => Math.round(v).toLocaleString('en-US', { useGrouping: false });
 
+// Fast start, gentle landing; close to the cubic-bezier(0.16, 1, 0.3, 1) the hero uses.
+const easeOutExpo = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
+
 /** Counts from 0 to `to` once on mount; jumps straight to the value for reduced-motion users. */
 const CountUp = ({ to, suffix = '', delay = 0, duration = 2, format = defaultFormat }: CountUpProps) => {
   const reduceMotion = useReducedMotion();
@@ -22,13 +25,17 @@ const CountUp = ({ to, suffix = '', delay = 0, duration = 2, format = defaultFor
       setValue(to);
       return;
     }
-    const controls = animate(0, to, {
-      delay,
-      duration,
-      ease: [0.16, 1, 0.3, 1], // fast start, gentle landing
-      onUpdate: setValue,
-    });
-    return () => controls.stop();
+    // A small requestAnimationFrame loop, so the hero doesn't pull in framer's animation engine.
+    let frame = 0;
+    let start: number | null = null;
+    const tick = (now: number) => {
+      if (start === null) start = now + delay * 1000;
+      const t = Math.max(0, (now - start) / (duration * 1000));
+      setValue(to * easeOutExpo(t));
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
   }, [to, delay, duration, reduceMotion]);
 
   return (

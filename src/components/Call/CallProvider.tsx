@@ -2,7 +2,10 @@ import { ReactNode, useEffect, useMemo, useState, useSyncExternalStore } from 'r
 import { useSocket } from '@/library/socket/socketContext';
 import { CallContext, CallContextValue } from './callContext';
 import { CallEngine } from './callEngine';
-import CallOverlay from './CallOverlay';
+import dynamic from 'next/dynamic';
+
+// The call UI is only needed once a call starts; load it as its own chunk after the page is up.
+const CallOverlay = dynamic(() => import('./CallOverlay'), { ssr: false });
 
 const CallProvider = ({ children }: { children: ReactNode }) => {
   const { socket } = useSocket();

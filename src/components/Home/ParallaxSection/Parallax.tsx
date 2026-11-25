@@ -1,6 +1,6 @@
 import Image from 'next/image';
 // components/motion/ParallaxSection.tsx
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { m, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import Link from 'next/link';
 import Button from '@/components/Button';
@@ -27,7 +27,7 @@ const ParallaxSection = () => {
         overflow: 'hidden',
       }}
     >
-      <motion.div
+      <m.div
         style={{
           position: 'absolute',
           inset: 0,
@@ -44,7 +44,7 @@ const ParallaxSection = () => {
           sizes='100vw'
           style={{ objectFit: 'cover' }}
         />
-      </motion.div>
+      </m.div>
 
       {/* dark overlay for text legibility */}
       <div
@@ -68,7 +68,7 @@ const ParallaxSection = () => {
           padding: '0 1.5rem',
         }}
       >
-        <motion.h2
+        <m.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -82,9 +82,9 @@ const ParallaxSection = () => {
           }}
         >
           Care from professionals you can trust
-        </motion.h2>
+        </m.h2>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -93,7 +93,7 @@ const ParallaxSection = () => {
           <Link href='/doctors'>
             <Button title='Meet our doctors' />
           </Link>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

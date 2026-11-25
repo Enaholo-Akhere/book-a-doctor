@@ -17,16 +17,26 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const openMenu = useCallback(() => setMenuOpen(true), []);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
-  // Initialised here, inside the same Suspense boundary as the page, so it
-  // runs only after the page has hydrated: AOS adds classes to [data-aos]
-  // elements, which would otherwise make the server HTML mismatch.
+  // Effects run only after hydration has finished, so AOS adding classes to
+  // [data-aos] elements can't make the server HTML mismatch.
+  //
+  // AOS measures every animated element when it starts, which is a lot of layout work.
+  // Start it once the browser is idle so it doesn't compete with the first paint and
+  // hydration. Its elements are all below the fold, so nothing visible waits on it.
   useEffect(() => {
-    AOS.init({
-      duration: 700,
-      once: true,
-      offset: 100,
-      easing: 'ease-out-cubic',
-    });
+    const start = () =>
+      AOS.init({
+        duration: 700,
+        once: true,
+        offset: 100,
+        easing: 'ease-out-cubic',
+      });
+    if ('requestIdleCallback' in window) {
+      const id = window.requestIdleCallback(start, { timeout: 2000 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = setTimeout(start, 200);
+    return () => clearTimeout(id);
   }, []);
 
   // The admin dashboard is a full-screen app with its own sidebar.

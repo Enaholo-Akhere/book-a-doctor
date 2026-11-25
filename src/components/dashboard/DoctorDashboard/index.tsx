@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, Suspense } from 'react';
 import { doctorPath } from '@/utils/doctorPath';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -295,4 +295,12 @@ const DoctorDashboard = () => {
   );
 };
 
-export default DoctorDashboard;
+// useSearchParams needs a Suspense boundary of its own. Keeping it here, rather than one
+// around the whole app, stops every page being held back until JavaScript reveals it.
+const DoctorDashboardWithSuspense = () => (
+  <Suspense fallback={null}>
+    <DoctorDashboard />
+  </Suspense>
+);
+
+export default DoctorDashboardWithSuspense;

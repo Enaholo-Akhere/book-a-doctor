@@ -1,6 +1,6 @@
 'use client';
 import { useBookingSessionStripe } from '@/Hook/useBooking';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 // ── Icons (keep all your existing icon components) ──────────────────────────
@@ -363,4 +363,12 @@ const CheckoutSuccess = () => {
   );
 };
 
-export default CheckoutSuccess;
+// useSearchParams needs a Suspense boundary of its own. Keeping it here, rather than one
+// around the whole app, stops every page being held back until JavaScript reveals it.
+const CheckoutSuccessWithSuspense = () => (
+  <Suspense fallback={null}>
+    <CheckoutSuccess />
+  </Suspense>
+);
+
+export default CheckoutSuccessWithSuspense;

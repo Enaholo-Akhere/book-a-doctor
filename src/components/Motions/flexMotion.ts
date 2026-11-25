@@ -1,4 +1,4 @@
-import { motion, Variants } from 'framer-motion';
+import { m, Variants } from 'framer-motion';
 
 export const imageVariant: Variants = {
   hidden: { opacity: 0, x: -50, scale: 0.95 },
@@ -38,5 +38,5 @@ export const textItemVariant: Variants = {
 
 export const sectionViewport = { once: true, amount: 0.3 } as const;
 
-export const MotionSection = motion.section;
-export const MotionDiv = motion.div;
+export const MotionSection = m.section;
+export const MotionDiv = m.div;

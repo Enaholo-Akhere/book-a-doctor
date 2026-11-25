@@ -1,5 +1,6 @@
 import { api } from "@/library/api/axios";
-import { forgotPasswordType, loginType } from "@/utils/authSchema";
+// Type-only, so zod and the schemas stay out of every page that uses this service.
+import type { forgotPasswordType, loginType } from "@/utils/authSchema";
 
 
 interface setPasswordPayload {

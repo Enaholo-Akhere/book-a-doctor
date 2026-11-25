@@ -1,3 +1,4 @@
+import { preload } from 'react-dom';
 import { pageMetadata } from '@/constants/site';
 import { fetchDoctors } from '@/library/api/server';
 import Home from '@/views/Home';
@@ -16,6 +17,10 @@ export const metadata = pageMetadata({
 });
 
 export default async function Page() {
+  // The hero background is the page's Largest Contentful Paint, but as a CSS background the
+  // browser wouldn't find it until the stylesheet loaded. Preloading starts it with the HTML.
+  preload('/hero-bg.webp', { as: 'image', fetchPriority: 'high' });
+
   return (
     <>
       <JsonLd data={[...organizationSchema(), faqSchema()]} />

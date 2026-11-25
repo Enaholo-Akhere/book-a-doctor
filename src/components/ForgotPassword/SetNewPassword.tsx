@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import HashLoader from 'react-spinners/HashLoader';
 import { handleAxiosError } from '@/utils/axiosError';
 import PassStrength from '../Signup/PassStre';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 import { useSetPassword } from '@/Hook/auth/userAuth';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -126,4 +126,12 @@ const SetNewPasswordComp = () => {
   );
 };
 
-export default SetNewPasswordComp;
+// useSearchParams needs a Suspense boundary of its own. Keeping it here, rather than one
+// around the whole app, stops every page being held back until JavaScript reveals it.
+const SetNewPasswordCompWithSuspense = () => (
+  <Suspense fallback={null}>
+    <SetNewPasswordComp />
+  </Suspense>
+);
+
+export default SetNewPasswordCompWithSuspense;
