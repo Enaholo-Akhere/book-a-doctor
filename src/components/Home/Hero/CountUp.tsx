@@ -40,7 +40,10 @@ const CountUp = ({ to, suffix = '', delay = 0, duration = 2, format = defaultFor
   }, [to, delay, duration, reduceMotion]);
 
   return (
-    <span className='tabular-nums' aria-label={`${format(to)}${suffix}`}>
+    // aria-label isn't allowed on a plain span, so screen readers get the final value as
+    // visually hidden text and skip the animating digits.
+    <span className='tabular-nums'>
+      <span className='sr-only'>{`${format(to)}${suffix}`}</span>
       <span aria-hidden>
         {format(value)}
         {suffix}

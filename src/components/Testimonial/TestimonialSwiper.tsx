@@ -55,9 +55,9 @@ const TestimonialSwiper = () => {
                     />
                   </div>
                   <div>
-                    <h4 className='text-[18px] leading-[30px] font-semibold text-headingColor '>
+                    <h3 className='text-[18px] leading-[30px] font-semibold text-headingColor '>
                       {review?.user?.name}
-                    </h4>
+                    </h3>
                     <div className='flex items-center gap-[2px]'>
                       {handleRatings(review?.rating)}
                     </div>

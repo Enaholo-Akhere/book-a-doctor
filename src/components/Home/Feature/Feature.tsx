@@ -95,9 +95,9 @@ const Feature = () => {
               </div>
               <div className='flex items-center gap-[6px] lg:gap-[10px] mt-2 lg:mt-[18px]'>
                 <img src={avatarIcon} alt='available doctor' />
-                <h4 className='text-[10px] leading-3 lg:text-[16px] lg:leading-[22px] font-[700]'>
+                <p className='text-[10px] leading-3 lg:text-[16px] lg:leading-[22px] font-[700]'>
                   Wayne Collins
-                </h4>
+                </p>
               </div>
             </MotionDiv>
           </MotionDiv>

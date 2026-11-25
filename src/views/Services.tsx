@@ -22,7 +22,7 @@ const Services = () => {
       <div className='container py-12 lg:py-16'>
         {/* Intro */}
         <header className='max-w-[760px]'>
-          <p className='text-sm font-semibold uppercase tracking-wider text-primaryColor'>Online care</p>
+          <p className='text-sm font-semibold uppercase tracking-wider text-primary-700'>Online care</p>
           <h1 className='mt-3 text-[2.6rem] font-medium leading-[1.05] tracking-tight text-headingColor sm:text-[3.5rem]'>
             Care you can get <span className='text-primaryColor'>from home.</span>
           </h1>
@@ -86,7 +86,7 @@ const Services = () => {
                   <span className='flex h-11 w-11 items-center justify-center rounded-xl bg-headingColor' style={{ color }}>
                     <Icon size={20} />
                   </span>
-                  <span className='text-3xl font-medium tabular-nums text-slate-300'>0{i + 1}</span>
+                  <span aria-hidden className='text-3xl font-medium tabular-nums text-slate-500'>0{i + 1}</span>
                 </div>
                 <p className='mt-4 text-lg font-medium text-headingColor'>{title}</p>
                 <p className='mt-1 text-sm leading-6 text-textColor'>{text}</p>

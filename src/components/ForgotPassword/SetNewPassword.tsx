@@ -72,7 +72,9 @@ const SetNewPasswordComp = () => {
               />
               <button
                 type='button'
-                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    aria-pressed={showPassword}
+                    onClick={() => setShowPassword((prev) => !prev)}
                 className='text-slate-600 hover:text-slate-800'
               >
                 {showPassword ? <FaEye /> : <FaEyeSlash />}
@@ -91,7 +93,9 @@ const SetNewPasswordComp = () => {
               />
               <button
                 type='button'
-                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    aria-pressed={showPassword}
+                    onClick={() => setShowPassword((prev) => !prev)}
                 className='text-slate-600 hover:text-slate-800'
               >
                 {showPassword ? <FaEye /> : <FaEyeSlash />}

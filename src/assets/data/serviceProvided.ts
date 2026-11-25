@@ -26,7 +26,7 @@ export const medicalServices: medicalServiceInterface[] = [
   {
     id: 2,
     title: 'Find a Location',
-    url: '',
+    url: '/contact',
     icon: icon02,
     subtext:
       "With locations near you, it's easy to access the expert care you need — wherever and whenever you need it.",

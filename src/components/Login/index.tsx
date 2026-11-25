@@ -65,7 +65,9 @@ const LoginComp = () => {
               />
               <button
                 type='button'
-                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    aria-pressed={showPassword}
+                    onClick={() => setShowPassword((prev) => !prev)}
                 className='text-slate-600 hover:text-slate-800'
               >
                 {showPassword ? <FaEye /> : <FaEyeSlash />}
@@ -108,7 +110,7 @@ const LoginComp = () => {
           )}
           <p className='mt-5 text-textColor text-center '>
             Don&apos;t have an account?{' '}
-            <Link href='/signup' className='text-primaryColor font-medium ml-1 '>
+            <Link href='/signup' className='text-primaryColor font-medium ml-1 underline underline-offset-2'>
               Register
             </Link>
           </p>
