@@ -148,6 +148,8 @@ const SignupComp = () => {
                   />
                   <button
                     type='button'
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    aria-pressed={showPassword}
                     onClick={() => setShowPassword((prev) => !prev)}
                     className='text-slate-600 hover:text-slate-800'
                   >
@@ -244,7 +246,7 @@ const SignupComp = () => {
 
               <p className='mt-5 text-textColor text-center text-[15px] font-bold'>
                 Already have an account?
-                <Link href='/login' className='text-primaryColor ml-1'>
+                <Link href='/login' className='text-primaryColor ml-1 underline underline-offset-2'>
                   Login
                 </Link>
               </p>

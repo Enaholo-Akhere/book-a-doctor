@@ -111,7 +111,9 @@ export interface questionContent {
 
 export interface SocialLinkInterface {
     path: string,
-    icon: ReactNode
+    icon: ReactNode,
+    /** Accessible name; the links show only an icon. */
+    label: string
 }
 
 export interface QuickLinkInterface {

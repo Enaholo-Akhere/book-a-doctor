@@ -32,7 +32,7 @@ const Footer = () => {
               <div className='flex items-center gap-3 mt-4'>
                 {socialLinks.map(
                   (socials: SocialLinkInterface, index: number) => (
-                    <Link href={socials.path} key={index + 'social-link'}>
+                    <Link href={socials.path} key={index + 'social-link'} aria-label={socials.label}>
                       <div className='w-9 h-9 border border-solid border-[#1B1A1E] rounded-full flex items-center justify-center group hover:bg-primaryColor hover:border-none '>
                         {socials.icon}
                       </div>
@@ -98,10 +98,10 @@ const Footer = () => {
             </div>
           </div>
           <div className='border-t border-solid border-slate-100 pt-5 flex items-center justify-between flex-wrap gap-2'>
-            <p className='text-[13px] text-slate-400'>
+            <p className='text-[13px] text-slate-500'>
               © {year} CareConnect. Developed by Enaholo Akhere.
             </p>
-            <div className='flex items-center gap-1 text-[13px] text-slate-400'>
+            <div className='flex items-center gap-1 text-[13px] text-slate-500'>
               <span>🔒</span> HIPAA compliant
             </div>
           </div>

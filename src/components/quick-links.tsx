@@ -7,13 +7,15 @@ import {
 import { QuickLinkInterface, SocialLinkInterface } from '@/types/doctors.ds';
 
 export const socialLinks: SocialLinkInterface[] = [
-  { path: 'https://www.youtube.com', icon: <AiFillYoutube /> },
+  { path: 'https://www.youtube.com', icon: <AiFillYoutube />, label: 'CareConnect on YouTube' },
 
-  { path: 'https://www.youtube.com', icon: <AiOutlineInstagram /> },
-  { path: 'https://github.com/Enaholo-Akhere', icon: <AiFillGithub /> },
+  // TODO: this points at YouTube; replace with the real Instagram profile URL.
+  { path: 'https://www.youtube.com', icon: <AiOutlineInstagram />, label: 'CareConnect on Instagram' },
+  { path: 'https://github.com/Enaholo-Akhere', icon: <AiFillGithub />, label: 'GitHub' },
   {
     path: 'https://www.linkedin.com/in/enaholo-akhere',
     icon: <RiLinkedinFill />,
+    label: 'LinkedIn',
   },
 ];
 
