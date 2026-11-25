@@ -33,7 +33,13 @@ export const setPassword = async (payload: setPasswordPayload) => {
 };
 
 export const verifyUser = async (payload: { token: string, id: string }) => {
-    const { data } = await api.post(`/auth/verify-email?token=${payload.token}&id=${payload.id}`);
+    // `params` URL-encodes the values instead of splicing them into the path.
+    const { data } = await api.post('/auth/verify-email', null, { params: { token: payload.token, id: payload.id } });
+    return data;
+};
+
+export const resendVerification = async (payload: { email: string }) => {
+    const { data } = await api.post('/auth/resend-verification', payload);
     return data;
 };
 

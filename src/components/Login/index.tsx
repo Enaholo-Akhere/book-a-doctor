@@ -8,10 +8,13 @@ import HashLoader from 'react-spinners/HashLoader';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useState } from 'react';
 import { handleAxiosError } from '@/utils/axiosError';
+import { AxiosError } from 'axios';
 
 const LoginComp = () => {
   const { mutate, isPending } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
+  // Set when the account exists but its email hasn't been verified yet.
+  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
 
   const {
     register,
@@ -24,9 +27,11 @@ const LoginComp = () => {
   // No navigation here: on success `useLogin` stores the token and
   // AuthProtectedRoute redirects to the originally requested page.
   const submitHandler = (data: loginType) => {
+    setUnverifiedEmail(null);
     mutate(data, {
       onError: (error) => {
         toast.error(handleAxiosError(error));
+        if ((error as AxiosError)?.response?.status === 403) setUnverifiedEmail(data.email);
       },
     });
   };
@@ -90,6 +95,17 @@ const LoginComp = () => {
               )}
             </button>
           </div>
+          {unverifiedEmail && (
+            <p className='mt-5 text-center text-sm text-textColor'>
+              Your email isn&apos;t verified yet.{' '}
+              <Link
+                href={`/verify-email?email=${encodeURIComponent(unverifiedEmail)}`}
+                className='text-primaryColor font-medium'
+              >
+                Resend the verification link
+              </Link>
+            </p>
+          )}
           <p className='mt-5 text-textColor text-center '>
             Don&apos;t have an account?{' '}
             <Link href='/signup' className='text-primaryColor font-medium ml-1 '>
