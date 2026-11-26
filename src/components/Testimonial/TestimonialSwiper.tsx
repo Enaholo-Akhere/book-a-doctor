@@ -47,12 +47,21 @@ const TestimonialSwiper = () => {
             <SwiperSlide key={review._id}>
               <div className=' p-2 rounded-3 mb-[20px]'>
                 <div className='flex items-center gap-[20px] '>
-                  <div className='w-[50px] h-[50px]'>
-                    <img
-                      src={review?.user?.photo?.imageUrl}
-                      alt='patient avatar'
-                      className='w-full h-full rounded'
-                    />
+                  <div className='w-[50px] h-[50px] shrink-0'>
+                    {/* object-cover crops the (portrait) photo to the square instead of
+                        squashing it. A plain img, not next/image, because photo URLs aren't
+                        guaranteed to match the configured Cloudinary folder. The reviewer's
+                        name sits right beside it, so the image is decorative. */}
+                    {review?.user?.photo?.imageUrl && (
+                      <img
+                        src={review.user.photo.imageUrl}
+                        alt=''
+                        width={50}
+                        height={50}
+                        loading='lazy'
+                        className='w-full h-full rounded object-cover'
+                      />
+                    )}
                   </div>
                   <div>
                     <h3 className='text-[18px] leading-[30px] font-semibold text-headingColor '>
