@@ -5,12 +5,21 @@ import { ZoomIn, ZoomOut } from 'lucide-react';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import { secondaryBtn } from '@/components/dashboard/shared/ui';
+import Loading from '@/components/Loader';
 
 // pdf.js parses the file in a web worker, bundled from the installed pdfjs-dist.
 // The legacy build (see next.config.ts) is the one that works in Safari on iOS.
 pdfjs.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/legacy/build/pdf.worker.min.mjs', import.meta.url).toString();
 
 const iconBtn = `${secondaryBtn} !px-2.5 !py-2`;
+
+/** Spinner shown while the PDF downloads and while each page renders. */
+const PdfSpinner = ({ label = 'Loading PDF…' }: { label?: string }) => (
+  <div role='status' aria-live='polite' className='flex min-h-[40vh] w-full flex-col items-center justify-center gap-3'>
+    <Loading />
+    <span className='text-sm text-slate-500'>{label}</span>
+  </div>
+);
 
 /**
  * Renders every page of a PDF with react-pdf (pdf.js) in one scrollable
@@ -55,7 +64,7 @@ const ReactPdfViewer = ({ url, className = '' }: { url: string; className?: stri
             console.error('react-pdf failed to load the PDF', e);
             setLoadError(e.message);
           }}
-          loading={<p className='py-16 text-sm text-slate-500'>Loading PDF…</p>}
+          loading={<PdfSpinner />}
           error={
             <div className='py-16 text-center text-sm text-red-600'>
               <p>Couldn’t load this PDF.</p>
@@ -65,7 +74,7 @@ const ReactPdfViewer = ({ url, className = '' }: { url: string; className?: stri
         >
           <div className='flex w-max min-w-full flex-col items-center gap-4'>
             {Array.from({ length: pages }, (_, i) => (
-              <Page key={i + 1} pageNumber={i + 1} width={width} scale={scale} className='shadow-md' />
+              <Page key={i + 1} pageNumber={i + 1} width={width} scale={scale} className='shadow-md' loading={<PdfSpinner label={`Loading page ${i + 1}…`} />} />
             ))}
           </div>
         </Document>
