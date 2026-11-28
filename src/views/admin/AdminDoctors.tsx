@@ -104,6 +104,7 @@ const DoctorDetail = ({ id, onClose }: { id: string; onClose: () => void }) => {
       { id, documentId, status, note: status === 'rejected' ? docNote.trim() : undefined },
       {
         onSuccess: () => {
+          toast.success(status === 'accepted' ? 'Document accepted' : 'Document rejected');
           setRejectingDoc(null);
           setDocNote('');
         },
