@@ -1,11 +1,12 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { deleteAccount, getAccounts, getSentMessages, restoreAccount, sendMessage, updateAccount } from '@/services/admin.service';
+import { deleteAccount, getAccounts, getAdminDocuments, getSentMessages, restoreAccount, sendMessage, updateAccount } from '@/services/admin.service';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import type { AccountRole } from '@/types/admin';
 
 const KEYS = {
   accounts: (role: AccountRole, params: object) => ['admin', 'accounts', role, params] as const,
   messages: ['admin', 'messages'] as const,
+  documents: ['admin', 'documents'] as const,
 };
 
 export const useAccounts = (role: AccountRole, params: { search?: string; page?: number; limit?: number; deleted?: boolean }, enabled = true) =>
@@ -40,3 +41,13 @@ export const useSendMessage = () => {
   const qc = useQueryClient();
   return useMutation({ mutationFn: sendMessage, onSuccess: () => qc.invalidateQueries({ queryKey: KEYS.messages }) });
 };
+
+/** Document links expire after 10 minutes, so refetch fresh ones before then. */
+export const useAdminDocuments = () =>
+  useQuery({
+    queryKey: KEYS.documents,
+    queryFn: getAdminDocuments,
+    retry: false,
+    staleTime: 8 * 60_000,
+    refetchInterval: 8 * 60_000,
+  });

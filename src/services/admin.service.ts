@@ -1,5 +1,5 @@
 import { api } from '@/library/api/axios';
-import type { AccountPage, AccountRole, AccountRow, AccountUpdate, Audience, SentMessage } from '@/types/admin';
+import type { AdminDocument, AccountPage, AccountRole, AccountRow, AccountUpdate, Audience, SentMessage } from '@/types/admin';
 
 type Envelope<T> = { data: T };
 
@@ -19,3 +19,11 @@ export const getSentMessages = async () => (await api.get<Envelope<SentMessage[]
 
 export const sendMessage = async (body: { audience: Audience; recipients?: { id: string; role: AccountRole }[]; subject: string; html: string }) =>
   (await api.post<Envelope<{ recipientCount: number; sent: number; failed: number }>>('/admin/messages', body)).data.data;
+
+/** The API returns file links relative to /api/v1; make them absolute so <iframe> and react-pdf can use them as is. */
+const absoluteFileUrl = (path: string) => new URL(`${api.defaults.baseURL ?? ''}${path}`, window.location.origin).href;
+const withAbsoluteUrl = (d: AdminDocument): AdminDocument => ({ ...d, url: absoluteFileUrl(d.url) });
+
+export const getAdminDocuments = async () => (await api.get<Envelope<AdminDocument[]>>('/admin/documents')).data.data.map(withAbsoluteUrl);
+
+export const getAdminDocument = async (id: string) => withAbsoluteUrl((await api.get<Envelope<AdminDocument>>(`/admin/documents/${id}`)).data.data);
