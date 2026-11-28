@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { LayoutDashboard, LogOut, Mail, ShieldCheck, Stethoscope, Users } from 'lucide-react';
+import { FileText, LayoutDashboard, LogOut, Mail, ShieldCheck, Stethoscope, Users } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { useLogout } from '@/Hook/auth/userAuth';
 import { handleAxiosError } from '@/utils/axiosError';
@@ -16,6 +16,7 @@ const LINKS = [
   { href: '/admin/patients', label: 'Patients', short: 'Patients', icon: Users },
   { href: '/admin/verification', label: 'Doctor verification', short: 'Verify', icon: ShieldCheck },
   { href: '/admin/messages', label: 'Messages', short: 'Messages', icon: Mail },
+  { href: '/admin/documents', label: 'Documents', short: 'Docs', icon: FileText },
 ];
 
 const isCurrent = (pathname: string, href: string) => (href === '/admin' ? pathname === href : pathname.startsWith(href));

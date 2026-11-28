@@ -54,3 +54,14 @@ export interface SentMessage {
   sentBy: string;
   createdAt: string;
 }
+
+/** An admin-only PDF. `url` ends in .pdf and works for `expiresInSeconds` without an auth header. */
+export interface AdminDocument {
+  id: string;
+  title: string;
+  fileName: string;
+  bytes: number;
+  createdAt: string;
+  url: string;
+  expiresInSeconds: number;
+}
