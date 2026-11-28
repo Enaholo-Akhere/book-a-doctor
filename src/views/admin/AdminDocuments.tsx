@@ -11,7 +11,12 @@ import PdfIframeViewer from '@/components/PdfViewer/PdfIframeViewer';
 // react-pdf uses browser-only APIs (canvas, web workers).
 const ReactPdfViewer = dynamic(() => import('@/components/PdfViewer/ReactPdfViewer'), {
   ssr: false,
-  loading: () => <div className='h-[60vh] rounded-2xl bg-slate-50' />,
+  loading: () => (
+    <div role='status' aria-live='polite' className='flex h-[60vh] flex-col items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-slate-50'>
+      <Loading />
+      <span className='text-sm text-slate-500'>Loading viewer…</span>
+    </div>
+  ),
 });
 
 type Mode = 'iframe' | 'react-pdf';
