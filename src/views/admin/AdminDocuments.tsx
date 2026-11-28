@@ -32,7 +32,7 @@ const AdminDocuments = () => {
     <div className='mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:py-8'>
       <header className='mb-6'>
         <h1 className='text-[28px] font-semibold tracking-tight text-headingColor'>Documents</h1>
-        <p className='mt-1 text-sm text-slate-500'>PDFs only admins can open. Links last 10 minutes and refresh while this page is open.</p>
+        <p className='mt-1 text-sm text-slate-500'>PDFs for admins. Each has a permanent link that opens without logging in, so share it only with people who should see it.</p>
       </header>
 
       {isLoading ? (

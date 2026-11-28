@@ -17,9 +17,6 @@ const iconBtn = `${secondaryBtn} !px-2.5 !py-2`;
  * column, so it looks the same in every browser. Uses browser APIs: import it with next/dynamic and ssr: false.
  */
 const ReactPdfViewer = ({ url, className = '' }: { url: string; className?: string }) => {
-  // Keep the first link: a refreshed one (new token, same file) would reload the PDF and lose the scroll position.
-  // Mount with a new `key` to show a different document.
-  const [file] = useState(url);
   const box = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number>();
   const [pages, setPages] = useState(0);
@@ -52,7 +49,7 @@ const ReactPdfViewer = ({ url, className = '' }: { url: string; className?: stri
 
       <div ref={box} className='max-h-[75vh] overflow-auto p-4'>
         <Document
-          file={file}
+          file={url}
           onLoadSuccess={({ numPages }) => setPages(numPages)}
           onLoadError={(e) => {
             console.error('react-pdf failed to load the PDF', e);
@@ -61,7 +58,7 @@ const ReactPdfViewer = ({ url, className = '' }: { url: string; className?: stri
           loading={<p className='py-16 text-sm text-slate-500'>Loading PDF…</p>}
           error={
             <div className='py-16 text-center text-sm text-red-600'>
-              <p>Couldn’t load this PDF. The link may have expired; reload the page.</p>
+              <p>Couldn’t load this PDF.</p>
               {loadError && <p className='mt-1 text-xs text-slate-500'>{loadError}</p>}
             </div>
           }
