@@ -7,7 +7,8 @@ import 'react-pdf/dist/Page/TextLayer.css';
 import { secondaryBtn } from '@/components/dashboard/shared/ui';
 
 // pdf.js parses the file in a web worker, bundled from the installed pdfjs-dist.
-pdfjs.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString();
+// The legacy build (see next.config.ts) is the one that works in Safari on iOS.
+pdfjs.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/legacy/build/pdf.worker.min.mjs', import.meta.url).toString();
 
 const iconBtn = `${secondaryBtn} !px-2.5 !py-2`;
 
@@ -23,6 +24,7 @@ const ReactPdfViewer = ({ url, className = '' }: { url: string; className?: stri
   const [width, setWidth] = useState<number>();
   const [pages, setPages] = useState(0);
   const [scale, setScale] = useState(1);
+  const [loadError, setLoadError] = useState<string>();
 
   // Fit pages to the container width.
   useEffect(() => {
@@ -52,8 +54,17 @@ const ReactPdfViewer = ({ url, className = '' }: { url: string; className?: stri
         <Document
           file={file}
           onLoadSuccess={({ numPages }) => setPages(numPages)}
+          onLoadError={(e) => {
+            console.error('react-pdf failed to load the PDF', e);
+            setLoadError(e.message);
+          }}
           loading={<p className='py-16 text-sm text-slate-500'>Loading PDF…</p>}
-          error={<p className='py-16 text-sm text-red-600'>Couldn’t load this PDF. The link may have expired; reload the page.</p>}
+          error={
+            <div className='py-16 text-center text-sm text-red-600'>
+              <p>Couldn’t load this PDF. The link may have expired; reload the page.</p>
+              {loadError && <p className='mt-1 text-xs text-slate-500'>{loadError}</p>}
+            </div>
+          }
         >
           <div className='flex w-max min-w-full flex-col items-center gap-4'>
             {Array.from({ length: pages }, (_, i) => (
