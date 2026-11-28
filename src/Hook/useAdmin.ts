@@ -42,12 +42,4 @@ export const useSendMessage = () => {
   return useMutation({ mutationFn: sendMessage, onSuccess: () => qc.invalidateQueries({ queryKey: KEYS.messages }) });
 };
 
-/** Document links expire after 10 minutes, so refetch fresh ones before then. */
-export const useAdminDocuments = () =>
-  useQuery({
-    queryKey: KEYS.documents,
-    queryFn: getAdminDocuments,
-    retry: false,
-    staleTime: 8 * 60_000,
-    refetchInterval: 8 * 60_000,
-  });
+export const useAdminDocuments = () => useQuery({ queryKey: KEYS.documents, queryFn: getAdminDocuments, retry: false });

@@ -55,7 +55,7 @@ export interface SentMessage {
   createdAt: string;
 }
 
-/** An admin-only PDF. `url` ends in .pdf and works for `expiresInSeconds` without an auth header. */
+/** An admin document. `url` is its permanent link: it ends in .pdf and needs no auth header. */
 export interface AdminDocument {
   id: string;
   title: string;
@@ -63,5 +63,4 @@ export interface AdminDocument {
   bytes: number;
   createdAt: string;
   url: string;
-  expiresInSeconds: number;
 }
